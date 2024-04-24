@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="RepositorioDocRCModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Department">
+    <Key>
+      <PropertyRef Name="DeptoCode" />
+      <PropertyRef Name="DeptoOwner" />
+      <PropertyRef Name="UserRole" />
+    </Key>
+    <Property Name="DeptoCode" Type="int" Nullable="false" />
+    <Property Name="DeptoName" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="DeptoOwner" Type="int" Nullable="false" />
+    <Property Name="UserRole" Type="char" MaxLength="9" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="LoginHistory">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="LastLogin" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="IdHash" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IdHash" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="EmployeeID" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="PasswordHash" Type="varchar" MaxLength="200" />
+    <Property Name="Role" Type="varchar" MaxLength="15" />
+    <Property Name="Email" Type="varchar" MaxLength="40" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="RepositorioDocRCModelStoreContainer">
+    <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LoginHistory" EntityType="Self.LoginHistory" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+  </EntityContainer>
+</Schema>
