@@ -112,7 +112,7 @@ namespace RepositorioDocumentos.App_Start
             {
                 using (var db = new RepositorioDocRCEntities())
                 {
-                    var _departments = db.Departments.Where(d => d.UserRole == "DIRECTOR")
+                    var _departments = db.Departments
                                          .Select(s => new { s.DeptoCode, s.DeptoName })
                                          .Distinct()
                                          .OrderBy(o => o.DeptoName)

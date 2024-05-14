@@ -132,16 +132,64 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\Helper.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\DepartamentoController.cs" />
+    <Compile Include="Controllers\DireccionController.cs" />
+    <Compile Include="Controllers\DocumentoCodigoController.cs" />
+    <Compile Include="Controllers\DocumentoTiposController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\InstructivoController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Area.cs">
+      <DependentUpon>RepositorioDocRC.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Department.cs">
       <DependentUpon>RepositorioDocRC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Directorate.cs">
+      <DependentUpon>RepositorioDocRC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DocumentApproval.cs">
+      <DependentUpon>RepositorioDocRC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DocumentChange.cs">
+      <DependentUpon>RepositorioDocRC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DocumentCode.cs">
+      <DependentUpon>RepositorioDocRC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DocumentContent.cs">
+      <DependentUpon>RepositorioDocRC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DocumentDetail.cs">
+      <DependentUpon>RepositorioDocRC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DocumentGlossary.cs">
+      <DependentUpon>RepositorioDocRC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DocumentGuideline.cs">
+      <DependentUpon>RepositorioDocRC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DocumentHeader.cs">
+      <DependentUpon>RepositorioDocRC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DocumentProcedure.cs">
+      <DependentUpon>RepositorioDocRC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DocumentReference.cs">
+      <DependentUpon>RepositorioDocRC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DocumentType.cs">
+      <DependentUpon>RepositorioDocRC.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\LoginHistory.cs">
+      <DependentUpon>RepositorioDocRC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Macroprocess.cs">
+      <DependentUpon>RepositorioDocRC.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Process.cs">
       <DependentUpon>RepositorioDocRC.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\RepositorioDocRC.Context.cs">
@@ -224,6 +272,10 @@
     <Content Include="Views\User\Edit.cshtml" />
     <Content Include="Views\User\RecoverPassword.cshtml" />
     <Content Include="Views\User\ChangePassword.cshtml" />
+    <Content Include="Views\DocumentoTipos\Index.cshtml" />
+    <Content Include="Views\Direccion\Index.cshtml" />
+    <Content Include="Views\DocumentoCodigo\Index.cshtml" />
+    <Content Include="Views\Departamento\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

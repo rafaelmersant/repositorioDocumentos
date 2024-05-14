@@ -12,24 +12,21 @@ namespace RepositorioDocumentos.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Department
+    public partial class Process
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Department()
+        public Process()
         {
-            this.Areas = new HashSet<Area>();
             this.DocumentHeaders = new HashSet<DocumentHeader>();
         }
     
-        public int DeptoCode { get; set; }
-        public string DeptoName { get; set; }
-        public int DeptoOwner { get; set; }
-        public short DirectorateId { get; set; }
+        public int Id { get; set; }
+        public string Description { get; set; }
+        public int MacroprocessId { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Area> Areas { get; set; }
+        public virtual Macroprocess Macroprocess { get; set; }
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DocumentHeader> DocumentHeaders { get; set; }

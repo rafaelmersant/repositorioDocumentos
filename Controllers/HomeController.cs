@@ -10,6 +10,7 @@ namespace RepositorioDocumentos.Controllers
     {
         public ActionResult Index()
         {
+            if (Session["role"] == null) return RedirectToAction("Login", "User");
             return View();
         }
 

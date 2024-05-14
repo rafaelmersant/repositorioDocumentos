@@ -12,49 +12,45 @@ namespace RepositorioDocumentos.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class User
+    public partial class DocumentHeader
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public User()
+        public DocumentHeader()
         {
-            this.Areas = new HashSet<Area>();
-            this.Departments = new HashSet<Department>();
-            this.Directorates = new HashSet<Directorate>();
             this.DocumentApprovals = new HashSet<DocumentApproval>();
             this.DocumentChanges = new HashSet<DocumentChange>();
-            this.DocumentCodes = new HashSet<DocumentCode>();
             this.DocumentContents = new HashSet<DocumentContent>();
             this.DocumentDetails = new HashSet<DocumentDetail>();
             this.DocumentGlossaries = new HashSet<DocumentGlossary>();
             this.DocumentGuidelines = new HashSet<DocumentGuideline>();
             this.DocumentProcedures = new HashSet<DocumentProcedure>();
             this.DocumentReferences = new HashSet<DocumentReference>();
-            this.DocumentTypes = new HashSet<DocumentType>();
-            this.Macroprocesses = new HashSet<Macroprocess>();
-            this.Processes = new HashSet<Process>();
-            this.DocumentHeaders = new HashSet<DocumentHeader>();
         }
     
         public int Id { get; set; }
-        public System.Guid IdHash { get; set; }
-        public string EmployeeID { get; set; }
-        public string PasswordHash { get; set; }
-        public string Role { get; set; }
-        public string Email { get; set; }
+        public int DocumentTypeId { get; set; }
+        public string Status { get; set; }
+        public string Image { get; set; }
+        public string Code { get; set; }
+        public short Revision { get; set; }
+        public System.DateTime Date { get; set; }
+        public string Title { get; set; }
+        public short DirectorateId { get; set; }
+        public int DepartmentCode { get; set; }
+        public short AreaId { get; set; }
+        public int MacroprocessId { get; set; }
+        public int ProcessId { get; set; }
+        public string Objetive { get; set; }
         public System.DateTime CreatedDate { get; set; }
+        public int CreatedBy { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Area> Areas { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Department> Departments { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Directorate> Directorates { get; set; }
+        public virtual Area Area { get; set; }
+        public virtual Department Department { get; set; }
+        public virtual Directorate Directorate { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DocumentApproval> DocumentApprovals { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DocumentChange> DocumentChanges { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DocumentCode> DocumentCodes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DocumentContent> DocumentContents { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -63,17 +59,12 @@ namespace RepositorioDocumentos.Models
         public virtual ICollection<DocumentGlossary> DocumentGlossaries { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DocumentGuideline> DocumentGuidelines { get; set; }
+        public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DocumentProcedure> DocumentProcedures { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DocumentReference> DocumentReferences { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DocumentType> DocumentTypes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Macroprocess> Macroprocesses { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Process> Processes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DocumentHeader> DocumentHeaders { get; set; }
+        public virtual Macroprocess Macroprocess { get; set; }
+        public virtual Process Process { get; set; }
     }
 }
