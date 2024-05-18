@@ -26,8 +26,6 @@ namespace RepositorioDocumentos.Models
         }
     
         public virtual DbSet<LoginHistory> LoginHistories { get; set; }
-        public virtual DbSet<Area> Areas { get; set; }
-        public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<Directorate> Directorates { get; set; }
         public virtual DbSet<DocumentApproval> DocumentApprovals { get; set; }
         public virtual DbSet<DocumentChange> DocumentChanges { get; set; }
@@ -43,5 +41,7 @@ namespace RepositorioDocumentos.Models
         public virtual DbSet<Process> Processes { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<DocumentHeader> DocumentHeaders { get; set; }
+        public virtual DbSet<Area> Areas { get; set; }
+        public virtual DbSet<Department> Departments { get; set; }
     }
 }

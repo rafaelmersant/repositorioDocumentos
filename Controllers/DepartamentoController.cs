@@ -17,10 +17,12 @@ namespace RepositorioDocumentos.Controllers
 
             try
             {
+                ViewBag.Areas = new AreaController().GetAreas();
+
                 var db = new RepositorioDocRCEntities();
 
-                var tipos = db.Directorates.OrderBy(o => o.Description).ToList();
-                return View(tipos);
+                var departments = db.Departments.OrderBy(o => o.DeptoName).ToList();
+                return View(departments);
 
             }
             catch (Exception ex)
@@ -32,7 +34,7 @@ namespace RepositorioDocumentos.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddDirectorate(string description)
+        public JsonResult AddDepartment(int code, short areaId, string description, string owner)
         {
             try
             {
@@ -40,10 +42,18 @@ namespace RepositorioDocumentos.Controllers
 
                 using (var db = new RepositorioDocRCEntities())
                 {
-                    var directorate = db.Directorates.FirstOrDefault(o => o.Description.ToLower() == description.ToLower());
-                    if (directorate != null) return Json(new { result = "500", message = "Esta dirección ya existe." });
+                    var department = db.Departments.FirstOrDefault(o => o.DeptoName.ToLower() == description.ToLower() && o.DeptoCode == code);
+                    if (department != null) return Json(new { result = "500", message = "Este departamento ya existe." });
 
-                    db.Directorates.Add(new Directorate { Description = description, CreatedDate = DateTime.Now, CreatedBy = int.Parse(Session["userID"].ToString()) });
+                    db.Departments.Add(new Department
+                    {
+                        DeptoCode = code,
+                        DeptoName = description,
+                        DeptoOwner = owner,
+                        AreaId = areaId,
+                        CreatedDate = DateTime.Now,
+                        CreatedBy = int.Parse(Session["userID"].ToString())
+                    });
                     db.SaveChanges();
                 }
 
@@ -58,7 +68,7 @@ namespace RepositorioDocumentos.Controllers
         }
 
         [HttpPost]
-        public JsonResult UpdateDirectorate(int id, string description)
+        public JsonResult UpdateDepartment(int code, short areaId, string description, string owner)
         {
             try
             {
@@ -66,11 +76,15 @@ namespace RepositorioDocumentos.Controllers
 
                 using (var db = new RepositorioDocRCEntities())
                 {
-                    var directorate = db.Directorates.FirstOrDefault(o => o.Id == id);
-                    if (directorate == null) return Json(new { result = "500", message = "Dirección no encontrada." });
-                    if (directorate.Description.ToLower() == description.ToLower()) return Json(new { result = "500", message = "Esta dirección ya existe." });
+                    var departament = db.Departments.FirstOrDefault(o => o.DeptoCode == code);
+                    if (departament == null) return Json(new { result = "500", message = "Departamento no encontrado." });
+                    if (departament.DeptoName.ToLower() == description.ToLower() 
+                        && departament.AreaId == areaId
+                        && departament.DeptoOwner == owner) return Json(new { result = "500", message = "Este departamento ya existe." });
 
-                    directorate.Description = description;
+                    departament.DeptoName = description;
+                    departament.AreaId = areaId;
+                    departament.DeptoOwner = owner;
                     db.SaveChanges();
                 }
 
@@ -78,14 +92,14 @@ namespace RepositorioDocumentos.Controllers
             }
             catch (Exception ex)
             {
-                Helper.SendException(ex, $"Id: {id} | description: {description}");
+                Helper.SendException(ex, $"Code: {code} | description: {description}");
 
                 return Json(new { result = "500", message = ex.Message });
             }
         }
 
         [HttpPost]
-        public JsonResult DeleteDirectorate(int id)
+        public JsonResult DeleteDepartment(int code)
         {
             try
             {
@@ -93,10 +107,10 @@ namespace RepositorioDocumentos.Controllers
 
                 using (var db = new RepositorioDocRCEntities())
                 {
-                    var directorate = db.Directorates.FirstOrDefault(o => o.Id == id);
-                    if (directorate == null) return Json(new { result = "500", message = "Esta dirección no existe." });
+                    var department = db.Departments.FirstOrDefault(o => o.DeptoCode == code);
+                    if (department == null) return Json(new { result = "500", message = "Este departamento no existe." });
 
-                    db.Directorates.Remove(directorate);
+                    db.Departments.Remove(department);
                     db.SaveChanges();
                 }
 
@@ -104,7 +118,7 @@ namespace RepositorioDocumentos.Controllers
             }
             catch (Exception ex)
             {
-                Helper.SendException(ex, $"id: {id}");
+                Helper.SendException(ex, $"code: {code}");
 
                 return Json(new { result = "500", message = ex.Message });
             }

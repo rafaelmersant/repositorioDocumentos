@@ -8,9 +8,9 @@ using RepositorioDocumentos.Models;
 
 namespace RepositorioDocumentos.Controllers
 {
-    public class DireccionController : Controller
+    public class MacroprocesoController : Controller
     {
-        // GET: Direccion
+        // GET: Macroproceso
         public ActionResult Index()
         {
             if (Session["role"] == null) return RedirectToAction("Index", "Home");
@@ -19,8 +19,8 @@ namespace RepositorioDocumentos.Controllers
             {
                 var db = new RepositorioDocRCEntities();
 
-                var directorates = db.Directorates.OrderBy(o => o.Description).ToList();
-                return View(directorates);
+                var macroprocesos = db.Macroprocesses.OrderBy(o => o.Description).ToList();
+                return View(macroprocesos);
 
             }
             catch (Exception ex)
@@ -32,7 +32,7 @@ namespace RepositorioDocumentos.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddDirectorate(string description)
+        public JsonResult AddMacroprocess(string description)
         {
             try
             {
@@ -40,10 +40,10 @@ namespace RepositorioDocumentos.Controllers
 
                 using (var db = new RepositorioDocRCEntities())
                 {
-                    var directorate = db.Directorates.FirstOrDefault(o => o.Description.ToLower() == description.ToLower());
-                    if (directorate != null) return Json(new { result = "500", message = "Esta dirección ya existe." });
+                    var macroprocess = db.Macroprocesses.FirstOrDefault(o => o.Description.ToLower() == description.ToLower());
+                    if (macroprocess != null) return Json(new { result = "500", message = "Este macroproceso ya existe." });
 
-                    db.Directorates.Add(new Directorate { Description = description, CreatedDate = DateTime.Now, CreatedBy = int.Parse(Session["userID"].ToString()) });
+                    db.Macroprocesses.Add(new Macroprocess { Description = description, CreatedDate = DateTime.Now, CreatedBy = int.Parse(Session["userID"].ToString()) });
                     db.SaveChanges();
                 }
 
@@ -58,7 +58,7 @@ namespace RepositorioDocumentos.Controllers
         }
 
         [HttpPost]
-        public JsonResult UpdateDirectorate(int id, string description)
+        public JsonResult UpdateMacroprocess(int id, string description)
         {
             try
             {
@@ -66,11 +66,11 @@ namespace RepositorioDocumentos.Controllers
 
                 using (var db = new RepositorioDocRCEntities())
                 {
-                    var directorate = db.Directorates.FirstOrDefault(o => o.Id == id);
-                    if (directorate == null) return Json(new { result = "500", message = "Dirección no encontrada." });
-                    if (directorate.Description.ToLower() == description.ToLower()) return Json(new { result = "500", message = "Esta dirección ya existe." });
+                    var macroprocess = db.Directorates.FirstOrDefault(o => o.Id == id);
+                    if (macroprocess == null) return Json(new { result = "500", message = "Macroproceso no encontrado." });
+                    if (macroprocess.Description.ToLower() == description.ToLower()) return Json(new { result = "500", message = "Este macroproceso ya existe." });
 
-                    directorate.Description = description;
+                    macroprocess.Description = description;
                     db.SaveChanges();
                 }
 
@@ -85,7 +85,7 @@ namespace RepositorioDocumentos.Controllers
         }
 
         [HttpPost]
-        public JsonResult DeleteDirectorate(int id)
+        public JsonResult DeleteMacroprocess(int id)
         {
             try
             {
@@ -93,10 +93,10 @@ namespace RepositorioDocumentos.Controllers
 
                 using (var db = new RepositorioDocRCEntities())
                 {
-                    var directorate = db.Directorates.FirstOrDefault(o => o.Id == id);
-                    if (directorate == null) return Json(new { result = "500", message = "Esta dirección no existe." });
+                    var macroprocess = db.Macroprocesses.FirstOrDefault(o => o.Id == id);
+                    if (macroprocess == null) return Json(new { result = "500", message = "Este macroproceso no existe." });
 
-                    db.Directorates.Remove(directorate);
+                    db.Macroprocesses.Remove(macroprocess);
                     db.SaveChanges();
                 }
 
@@ -110,24 +110,24 @@ namespace RepositorioDocumentos.Controllers
             }
         }
 
-        public List<SelectListItem> GetDirecciones()
+        public List<SelectListItem> GetMacroprocesos()
         {
-            List<SelectListItem> direcciones = new List<SelectListItem>();
+            List<SelectListItem> macroprocesos = new List<SelectListItem>();
 
             try
             {
                 var db = new RepositorioDocRCEntities();
-                direcciones.Add(new SelectListItem { Text = "Seleccionar", Value = "" });
-                var _direcciones = db.Directorates.ToArray();
-                foreach (var item in _direcciones)
-                    direcciones.Add(new SelectListItem { Text = item.Description, Value = item.Id.ToString() });
+                macroprocesos.Add(new SelectListItem { Text = "Seleccionar", Value = "" });
+                var _macroprocesos = db.Macroprocesses.ToArray();
+                foreach (var item in _macroprocesos)
+                    macroprocesos.Add(new SelectListItem { Text = item.Description, Value = item.Id.ToString() });
             }
             catch (Exception ex)
             {
                 Helper.SendException(ex);
             }
 
-            return direcciones;
+            return macroprocesos;
         }
     }
 }

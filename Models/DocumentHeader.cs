@@ -44,8 +44,6 @@ namespace RepositorioDocumentos.Models
         public System.DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
     
-        public virtual Area Area { get; set; }
-        public virtual Department Department { get; set; }
         public virtual Directorate Directorate { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DocumentApproval> DocumentApprovals { get; set; }
@@ -66,5 +64,7 @@ namespace RepositorioDocumentos.Models
         public virtual ICollection<DocumentReference> DocumentReferences { get; set; }
         public virtual Macroprocess Macroprocess { get; set; }
         public virtual Process Process { get; set; }
+        public virtual Area Area { get; set; }
+        public virtual Department Department { get; set; }
     }
 }

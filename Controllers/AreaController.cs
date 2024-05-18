@@ -8,9 +8,9 @@ using RepositorioDocumentos.Models;
 
 namespace RepositorioDocumentos.Controllers
 {
-    public class DireccionController : Controller
+    public class AreaController : Controller
     {
-        // GET: Direccion
+        // GET: Area
         public ActionResult Index()
         {
             if (Session["role"] == null) return RedirectToAction("Index", "Home");
@@ -18,9 +18,11 @@ namespace RepositorioDocumentos.Controllers
             try
             {
                 var db = new RepositorioDocRCEntities();
+                
+                ViewBag.Direcciones = new DireccionController().GetDirecciones();
 
-                var directorates = db.Directorates.OrderBy(o => o.Description).ToList();
-                return View(directorates);
+                var areas = db.Areas.OrderBy(o => o.Description).ToList();
+                return View(areas);
 
             }
             catch (Exception ex)
@@ -32,7 +34,7 @@ namespace RepositorioDocumentos.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddDirectorate(string description)
+        public JsonResult AddArea(short directorateId, string description)
         {
             try
             {
@@ -40,10 +42,10 @@ namespace RepositorioDocumentos.Controllers
 
                 using (var db = new RepositorioDocRCEntities())
                 {
-                    var directorate = db.Directorates.FirstOrDefault(o => o.Description.ToLower() == description.ToLower());
-                    if (directorate != null) return Json(new { result = "500", message = "Esta dirección ya existe." });
+                    var area = db.Areas.FirstOrDefault(o => o.Description.ToLower() == description.ToLower() && o.DirectorateId == directorateId);
+                    if (area != null) return Json(new { result = "500", message = "Esta área ya existe." });
 
-                    db.Directorates.Add(new Directorate { Description = description, CreatedDate = DateTime.Now, CreatedBy = int.Parse(Session["userID"].ToString()) });
+                    db.Areas.Add(new Area {DirectorateId = directorateId, Description = description, CreatedDate = DateTime.Now, CreatedBy = int.Parse(Session["userID"].ToString()) });
                     db.SaveChanges();
                 }
 
@@ -58,7 +60,7 @@ namespace RepositorioDocumentos.Controllers
         }
 
         [HttpPost]
-        public JsonResult UpdateDirectorate(int id, string description)
+        public JsonResult UpdateArea(int id, short directorateId, string description)
         {
             try
             {
@@ -66,11 +68,12 @@ namespace RepositorioDocumentos.Controllers
 
                 using (var db = new RepositorioDocRCEntities())
                 {
-                    var directorate = db.Directorates.FirstOrDefault(o => o.Id == id);
-                    if (directorate == null) return Json(new { result = "500", message = "Dirección no encontrada." });
-                    if (directorate.Description.ToLower() == description.ToLower()) return Json(new { result = "500", message = "Esta dirección ya existe." });
+                    var area = db.Areas.FirstOrDefault(o => o.Id == id);
+                    if (area == null) return Json(new { result = "500", message = "Area no encontrada." });
+                    if (area.Description.ToLower() == description.ToLower() && area.DirectorateId == directorateId) return Json(new { result = "500", message = "Esta área ya existe." });
 
-                    directorate.Description = description;
+                    area.DirectorateId = directorateId;
+                    area.Description = description;
                     db.SaveChanges();
                 }
 
@@ -85,7 +88,7 @@ namespace RepositorioDocumentos.Controllers
         }
 
         [HttpPost]
-        public JsonResult DeleteDirectorate(int id)
+        public JsonResult DeleteArea(int id)
         {
             try
             {
@@ -93,10 +96,10 @@ namespace RepositorioDocumentos.Controllers
 
                 using (var db = new RepositorioDocRCEntities())
                 {
-                    var directorate = db.Directorates.FirstOrDefault(o => o.Id == id);
-                    if (directorate == null) return Json(new { result = "500", message = "Esta dirección no existe." });
+                    var area = db.Areas.FirstOrDefault(o => o.Id == id);
+                    if (area == null) return Json(new { result = "500", message = "Esta área no existe." });
 
-                    db.Directorates.Remove(directorate);
+                    db.Areas.Remove(area);
                     db.SaveChanges();
                 }
 
@@ -110,24 +113,24 @@ namespace RepositorioDocumentos.Controllers
             }
         }
 
-        public List<SelectListItem> GetDirecciones()
+        public List<SelectListItem> GetAreas()
         {
-            List<SelectListItem> direcciones = new List<SelectListItem>();
+            List<SelectListItem> areas = new List<SelectListItem>();
 
             try
             {
                 var db = new RepositorioDocRCEntities();
-                direcciones.Add(new SelectListItem { Text = "Seleccionar", Value = "" });
-                var _direcciones = db.Directorates.ToArray();
-                foreach (var item in _direcciones)
-                    direcciones.Add(new SelectListItem { Text = item.Description, Value = item.Id.ToString() });
+                areas.Add(new SelectListItem { Text = "Seleccionar", Value = "" });
+                var _areas = db.Areas.ToArray();
+                foreach (var item in _areas)
+                    areas.Add(new SelectListItem { Text = item.Description, Value = item.Id.ToString() });
             }
             catch (Exception ex)
             {
                 Helper.SendException(ex);
             }
 
-            return direcciones;
+            return areas;
         }
     }
 }

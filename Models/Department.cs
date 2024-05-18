@@ -17,19 +17,17 @@ namespace RepositorioDocumentos.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Department()
         {
-            this.Areas = new HashSet<Area>();
             this.DocumentHeaders = new HashSet<DocumentHeader>();
         }
     
         public int DeptoCode { get; set; }
         public string DeptoName { get; set; }
-        public int DeptoOwner { get; set; }
-        public short DirectorateId { get; set; }
+        public string DeptoOwner { get; set; }
+        public short AreaId { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Area> Areas { get; set; }
+        public virtual Area Area { get; set; }
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DocumentHeader> DocumentHeaders { get; set; }

@@ -10,29 +10,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Areas">
-      <EntityTypeMapping TypeName="RepositorioDocRCModel.Area">
-        <MappingFragment StoreEntitySet="Area">
-          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="DepartmentCode" ColumnName="DepartmentCode" />
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Departments">
-      <EntityTypeMapping TypeName="RepositorioDocRCModel.Department">
-        <MappingFragment StoreEntitySet="Department">
-          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="DirectorateId" ColumnName="DirectorateId" />
-          <ScalarProperty Name="DeptoOwner" ColumnName="DeptoOwner" />
-          <ScalarProperty Name="DeptoName" ColumnName="DeptoName" />
-          <ScalarProperty Name="DeptoCode" ColumnName="DeptoCode" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Directorates">
       <EntityTypeMapping TypeName="RepositorioDocRCModel.Directorate">
         <MappingFragment StoreEntitySet="Directorate">
@@ -217,6 +194,29 @@
           <ScalarProperty Name="Status" ColumnName="Status" />
           <ScalarProperty Name="DocumentTypeId" ColumnName="DocumentTypeId" />
           <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Areas">
+      <EntityTypeMapping TypeName="RepositorioDocRCModel.Area">
+        <MappingFragment StoreEntitySet="Area">
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="DirectorateId" ColumnName="DirectorateId" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Departments">
+      <EntityTypeMapping TypeName="RepositorioDocRCModel.Department">
+        <MappingFragment StoreEntitySet="Department">
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="AreaId" ColumnName="AreaId" />
+          <ScalarProperty Name="DeptoOwner" ColumnName="DeptoOwner" />
+          <ScalarProperty Name="DeptoName" ColumnName="DeptoName" />
+          <ScalarProperty Name="DeptoCode" ColumnName="DeptoCode" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

@@ -70,17 +70,18 @@
         $("#directorateTable").DataTable();
 
         $('.btn-new').click(function () {
+            if (!$('.save-btn')[0]) {
+                const newRowHtml = '<tr>' +
+                    '<td class="text-center">##</td>' +
+                    '<td class="field-description-new"><input type="text" maxlength="50" min="3" class="form-control form-control-sm new-description" placeholder="Escribir descripción"></td>' +
+                    '<td class="text-center">' +
+                    '<button class="btn btn-sm btn-success save-btn">Guardar</button>' +
+                    '<button class="btn btn-sm btn-danger cancel-btn">Cancelar</button>' +
+                    '</td>' +
+                    '</tr>';
 
-            var newRowHtml = '<tr>' +
-                '<td class="text-center">##</td>' +
-                '<td class="field-description-new"><input type="text" class="form-control form-control-sm new-description" placeholder="Escribir descripción"></td>' +
-                '<td class="text-center">' +
-                '<button class="btn btn-sm btn-success save-btn">Guardar</button>' +
-                '<button class="btn btn-sm btn-danger cancel-btn">Cancelar</button>' +
-                '</td>' +
-                '</tr>';
-
-            $('#directorateTable tbody').prepend(newRowHtml);
+                $('#directorateTable tbody').prepend(newRowHtml);
+            }
         });
 
         $(document).on('click', '.save-btn', function () {
@@ -123,9 +124,8 @@
 
                 const description = editButton.closest('tr').find('.field-description').text();
 
-                editButton.closest('tr').find('.field-description').html('<input type="text" class="form-control form-control-sm edit-description" value="' + description + '">');
+                editButton.closest('tr').find('.field-description').html('<input type="text" maxlength="50" min="3" class="form-control form-control-sm edit-description" value="' + description + '">');
 
-                $("#edit-image").removeClass('fa-edit').addClass('fa-save');
             } else {
                 const id = editButton.closest('tr').find('.field-id').text();
                 const description = editButton.closest('tr').find('.edit-description').val();
@@ -143,8 +143,7 @@
                             toastr.success(`El registro #${id} fue actualizado!`);
                             editButton.prop('title', 'Editar');
                             editButton.closest('tr').find('.field-description').text(description);
-                            $("#edit-image").removeClass('fa-save').addClass('fa-edit');
-
+    
                             editButton.html("Editar");
                             editButton.closest('tr').find('.btn-remove').html("Eliminar");
                             editButton.closest('tr').find('.btn-remove').prop("title", "Eliminar");

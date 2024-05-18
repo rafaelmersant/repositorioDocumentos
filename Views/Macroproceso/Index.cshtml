@@ -1,7 +1,7 @@
-﻿@model IEnumerable<RepositorioDocumentos.Models.Department>
+﻿@model IEnumerable<RepositorioDocumentos.Models.Macroprocess>
 
 @{
-    ViewBag.Title = "Listado de Departamentos";
+    ViewBag.Title = "Listado de Macroprocesos";
 }
 
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -12,48 +12,41 @@
     <section class="text-dark border-custom border">
         <div class="bg-secondary text-light panel-custom border">
             <h6 class="panel-title">
-                Listado de Departamentos
+                Listado de Macroprocesos
             </h6>
         </div>
 
         <div class="mt-3 ml-2 mr-2">
-            <a href="javascript:void(0);" class="btn btn-danger btn-sm btn-new">Nuevo departamento</a>
-            <table id="departmentTable" class="table table-striped table-bordered table-condensed table-sm mt-1">
+            <a href="javascript:void(0);" class="btn btn-danger btn-sm btn-new">Nuevo macroproceso</a>
+            <table id="macroprocessTable" class="table table-striped table-bordered table-condensed table-sm mt-1">
                 <thead>
                     <tr>
                         <th class="text-center">
                             Id
                         </th>
                         <th>
-                            Area
+                            Descripción
                         </th>
-                        <th>
-                            Departamento
-                        </th>
-                        <th>
-                            Encargado
-                        </th>
+
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model)
                     {
-                    <tr>
-                        <td class="text-center field-code">@item.DeptoCode</td>
-                        <td class="field-area">@item.Area.Description</td>
-                        <td class="field-description">@item.DeptoName</td>
-                        <td class="field-owner">@item.DeptoOwner</td>
-
-                        <td align="center">
-                            <a class="btn btn-sm btn-success edit-btn" href="javascript:void(0)" title="Editar">
-                                Editar
-                            </a>
-                            <a class="btn btn-sm btn-danger btn-remove" href="javascript:void(0)" title="Eliminar">
-                                Eliminar
-                            </a>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td class="text-center field-id">@item.Id</td>
+                            <td class="field-description">@item.Description</td>
+                            
+                            <td align="center">
+                                <a class="btn btn-sm btn-success edit-btn" href="javascript:void(0)" title="Editar">
+                                    Editar
+                                </a>
+                                <a class="btn btn-sm btn-danger btn-remove" href="javascript:void(0)" title="Eliminar">
+                                    Eliminar
+                                </a>
+                            </td>
+                        </tr>
                     }
                 </tbody>
             </table>
@@ -73,56 +66,39 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
-        $("#Department").addClass("menu-active");
-        $("#departmentTable").DataTable();
+        $("#Macroprocess").addClass("menu-active");
+        $("#macroprocessTable").DataTable();
 
         $('.btn-new').click(function () {
             if (!$('.save-btn')[0]) {
-                 //Areas
-                let _areas = @Html.Raw(Json.Encode(ViewBag.Areas));
-                let areas = [];
+                const newRowHtml = '<tr>' +
+                    '<td class="text-center">##</td>' +
+                    '<td class="field-description-new"><input type="text" maxlength="50" min="3" class="form-control form-control-sm new-description" placeholder="Escribir descripción"></td>' +
+                    '<td class="text-center">' +
+                    '<button class="btn btn-sm btn-success save-btn">Guardar</button>' +
+                    '<button class="btn btn-sm btn-danger cancel-btn">Cancelar</button>' +
+                    '</td>' +
+                    '</tr>';
 
-                for (const area of _areas) {
-                    areas.push(`<option value="${area.Value}">${area.Text}</option>`)
-                }
-
-                const newRowHtml = `<tr>` +
-                    `<td class="text-center field-code-new"><input type="text" class="form-control form-control-sm new-code" placeholder="Código"></td>` +
-                    `<td class="field-area-new"><select class="form-control form-control-sm new-area" id="area"> ${areas} </select></td>` +
-                    `<td class="field-description-new"><input type="text" class="form-control form-control-sm new-description" placeholder="Departamento"></td>` +
-                    `<td class="field-owner-new"><input type="text" class="form-control form-control-sm new-owner" placeholder="Encargado"></td>` +
-                    `<td class="text-center">` +
-                    `<button class="btn btn-sm btn-success save-btn">Guardar</button>` +
-                    `<button class="btn btn-sm btn-danger cancel-btn">Cancelar</button>` +
-                    `</td>` +
-                    `</tr>`;
-
-                $('#departmentTable tbody').prepend(newRowHtml);
+                $('#macroprocessTable tbody').prepend(newRowHtml);
             }
         });
 
         $(document).on('click', '.save-btn', function () {
-            const code = $(this).closest('tr').find('.new-code').val();
-            const areaText = $(this).closest('tr').find('.new-area :selected').text();
-            const areaId = $(this).closest('tr').find('.new-area').val();
-            const description = $(this).closest('tr').find('.new-description').val();
-            const owner = $(this).closest('tr').find('.new-owner').val();
+            var description = $(this).closest('tr').find('.new-description').val();
 
-            if (!code || !area || !description || !owner) {
-                toastr.error("Debe completar todos los campos para guardar el registro.");
+            if (!description) {
+                toastr.error("El campo descripción no puede estar vacio.");
                 return false;
             }
 
             $.ajax({
-                "url": `/Departamento/AddDepartment?code=${code}&areaId=${areaId}&description=${description}&owner=${owner}`,
+                "url": `/Macroproceso/AddMacroprocess?description=${description}`,
                 "type": "POST",
                 "success": function (response) {
                     if (response.result === "200") {
                         toastr.success(`El registro fue agregado!`);
-                        $('.field-code-new').text(code);
-                        $('.field-area-new').html(areaText);
                         $('.field-description-new').text(description);
-                        $('.field-owner-new').text(owner);
                         setTimeout(function () {
                             window.location.reload(true);
                         }, 1000);
@@ -146,44 +122,27 @@
                 editButton.closest('tr').find('.btn-remove').html("Cancelar");
                 editButton.closest('tr').find('.btn-remove').prop("title", "Cancelar");
 
-                const __area = editButton.closest('tr').find('.field-area').text();
                 const description = editButton.closest('tr').find('.field-description').text();
-                const owner = editButton.closest('tr').find('.field-owner').text();
 
-                //Areas
-                let _areas = @Html.Raw(Json.Encode(ViewBag.Areas));
-                let areas = [];
-
-                for (const area of _areas) {
-                    areas.push(`<option value="${area.Value}" ${__area === area.Text? "selected" : ""}>${area.Text}</option>`)
-                }
-
-                editButton.closest('tr').find('.field-area').html(`<select class="form-control form-control-sm edit-area" id="areas"> ${areas} </select>`);
-                editButton.closest('tr').find('.field-description').html('<input type="text" class="form-control form-control-sm edit-description" value="' + description + '">');
-                editButton.closest('tr').find('.field-owner').html('<input type="text" class="form-control form-control-sm edit-owner" value="' + owner + '">');
+                editButton.closest('tr').find('.field-description').html('<input type="text" maxlength="50" min="3" class="form-control form-control-sm edit-description" value="' + description + '">');
 
             } else {
-                const code = editButton.closest('tr').find('.field-code').text();
-                const areaText = editButton.closest('tr').find('.edit-area :selected').text();
-                const areaId = editButton.closest('tr').find('.edit-area').val();
+                const id = editButton.closest('tr').find('.field-id').text();
                 const description = editButton.closest('tr').find('.edit-description').val();
-                const owner = editButton.closest('tr').find('.edit-owner').val();
 
-                if (!areaId || !description || !owner) {
-                    toastr.error("Debe completar todos los campos para guardar el registro.");
+                if (!description) {
+                    toastr.error("El campo descripción no puede estar vacio.");
                     return false;
                 }
 
                 $.ajax({
-                    "url": `/Departamento/UpdateDepartment?code=${code}&areaId=${areaId}&description=${description}&owner=${owner}`,
+                    "url": `/Macroproceso/UpdateMacroprocess?id=${id}&description=${description}`,
                     "type": "POST",
                     "success": function (response) {
                         if (response.result === "200") {
-                            toastr.success(`El departamento #${code} ${description} fue actualizado!`);
+                            toastr.success(`El registro #${id} fue actualizado!`);
                             editButton.prop('title', 'Editar');
-                            editButton.closest('tr').find('.field-area').html(areaText);
                             editButton.closest('tr').find('.field-description').text(description);
-                            editButton.closest('tr').find('.field-owner').text(owner);
 
                             editButton.html("Editar");
                             editButton.closest('tr').find('.btn-remove').html("Eliminar");
@@ -202,12 +161,12 @@
             if (removeButton.html() === "Cancelar") {
                 window.location.reload(true);
             } else {
-                const code = removeButton.closest('tr').find('.field-code').text();
+                const id = removeButton.closest('tr').find('.field-id').text();
                 const description = removeButton.closest('tr').find('.field-description').text();
 
-                if (confirm(`Confirma que desea eliminar el departamento: ${description}`)) {
+                if (confirm(`Confirma que desea eliminar la dirección: ${description}`)) {
                     $.ajax({
-                        "url": `/Departamento/DeleteDepartment?code=${code}`,
+                        "url": `/Macroproceso/DeleteMacroprocess?id=${id}`,
                         "type": "POST",
                         "success": function (response) {
                             if (response.result === "200") {

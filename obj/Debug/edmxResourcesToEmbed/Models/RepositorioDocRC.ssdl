@@ -6,7 +6,7 @@
     </Key>
     <Property Name="Id" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Description" Type="varchar" MaxLength="50" Nullable="false" />
-    <Property Name="DepartmentCode" Type="int" Nullable="false" />
+    <Property Name="DirectorateId" Type="smallint" Nullable="false" />
     <Property Name="CreatedDate" Type="datetime" Nullable="false" />
     <Property Name="CreatedBy" Type="int" Nullable="false" />
   </EntityType>
@@ -16,8 +16,8 @@
     </Key>
     <Property Name="DeptoCode" Type="int" Nullable="false" />
     <Property Name="DeptoName" Type="varchar" MaxLength="100" Nullable="false" />
-    <Property Name="DeptoOwner" Type="int" Nullable="false" />
-    <Property Name="DirectorateId" Type="smallint" Nullable="false" />
+    <Property Name="DeptoOwner" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="AreaId" Type="smallint" Nullable="false" />
     <Property Name="CreatedDate" Type="datetime" Nullable="false" />
     <Property Name="CreatedBy" Type="int" Nullable="false" />
   </EntityType>
@@ -201,6 +201,18 @@
     <Property Name="Email" Type="varchar" MaxLength="40" />
     <Property Name="CreatedDate" Type="datetime" Nullable="false" />
   </EntityType>
+  <Association Name="FK_Area_Department">
+    <End Role="Area" Type="Self.Area" Multiplicity="1" />
+    <End Role="Department" Type="Self.Department" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Area">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Department">
+        <PropertyRef Name="AreaId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Area_DocumentHeader">
     <End Role="Area" Type="Self.Area" Multiplicity="1" />
     <End Role="DocumentHeader" Type="Self.DocumentHeader" Multiplicity="*" />
@@ -405,18 +417,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_Department_Area">
-    <End Role="Department" Type="Self.Department" Multiplicity="1" />
-    <End Role="Area" Type="Self.Area" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Department">
-        <PropertyRef Name="DeptoCode" />
-      </Principal>
-      <Dependent Role="Area">
-        <PropertyRef Name="DepartmentCode" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_Department_DocumentHeader">
     <End Role="Department" Type="Self.Department" Multiplicity="1" />
     <End Role="DocumentHeader" Type="Self.DocumentHeader" Multiplicity="*" />
@@ -426,6 +426,18 @@
       </Principal>
       <Dependent Role="DocumentHeader">
         <PropertyRef Name="DepartmentCode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Directorate_Area">
+    <End Role="Directorate" Type="Self.Directorate" Multiplicity="1" />
+    <End Role="Area" Type="Self.Area" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Directorate">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Area">
+        <PropertyRef Name="DirectorateId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -592,6 +604,10 @@
     <EntitySet Name="Macroprocess" EntityType="Self.Macroprocess" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Process" EntityType="Self.Process" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Area_Department" Association="Self.FK_Area_Department">
+      <End Role="Area" EntitySet="Area" />
+      <End Role="Department" EntitySet="Department" />
+    </AssociationSet>
     <AssociationSet Name="FK_Area_DocumentHeader" Association="Self.FK_Area_DocumentHeader">
       <End Role="Area" EntitySet="Area" />
       <End Role="DocumentHeader" EntitySet="DocumentHeader" />
@@ -660,13 +676,13 @@
       <End Role="User" EntitySet="User" />
       <End Role="Process" EntitySet="Process" />
     </AssociationSet>
-    <AssociationSet Name="FK_Department_Area" Association="Self.FK_Department_Area">
-      <End Role="Department" EntitySet="Department" />
-      <End Role="Area" EntitySet="Area" />
-    </AssociationSet>
     <AssociationSet Name="FK_Department_DocumentHeader" Association="Self.FK_Department_DocumentHeader">
       <End Role="Department" EntitySet="Department" />
       <End Role="DocumentHeader" EntitySet="DocumentHeader" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Directorate_Area" Association="Self.FK_Directorate_Area">
+      <End Role="Directorate" EntitySet="Directorate" />
+      <End Role="Area" EntitySet="Area" />
     </AssociationSet>
     <AssociationSet Name="FK_Directorate_DocumentHeader" Association="Self.FK_Directorate_DocumentHeader">
       <End Role="Directorate" EntitySet="Directorate" />
