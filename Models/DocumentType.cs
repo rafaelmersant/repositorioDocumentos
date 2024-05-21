@@ -14,11 +14,19 @@ namespace RepositorioDocumentos.Models
     
     public partial class DocumentType
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public DocumentType()
+        {
+            this.DocumentHeaders = new HashSet<DocumentHeader>();
+        }
+    
         public int Id { get; set; }
         public string Description { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
     
         public virtual User User { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DocumentHeader> DocumentHeaders { get; set; }
     }
 }

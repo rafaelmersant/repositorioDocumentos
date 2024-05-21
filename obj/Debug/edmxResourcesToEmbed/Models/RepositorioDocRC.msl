@@ -175,28 +175,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="DocumentHeaders">
-      <EntityTypeMapping TypeName="RepositorioDocRCModel.DocumentHeader">
-        <MappingFragment StoreEntitySet="DocumentHeader">
-          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="Objetive" ColumnName="Objetive" />
-          <ScalarProperty Name="ProcessId" ColumnName="ProcessId" />
-          <ScalarProperty Name="MacroprocessId" ColumnName="MacroprocessId" />
-          <ScalarProperty Name="AreaId" ColumnName="AreaId" />
-          <ScalarProperty Name="DepartmentCode" ColumnName="DepartmentCode" />
-          <ScalarProperty Name="DirectorateId" ColumnName="DirectorateId" />
-          <ScalarProperty Name="Title" ColumnName="Title" />
-          <ScalarProperty Name="Date" ColumnName="Date" />
-          <ScalarProperty Name="Revision" ColumnName="Revision" />
-          <ScalarProperty Name="Code" ColumnName="Code" />
-          <ScalarProperty Name="Image" ColumnName="Image" />
-          <ScalarProperty Name="Status" ColumnName="Status" />
-          <ScalarProperty Name="DocumentTypeId" ColumnName="DocumentTypeId" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="Areas">
       <EntityTypeMapping TypeName="RepositorioDocRCModel.Area">
         <MappingFragment StoreEntitySet="Area">
@@ -217,6 +195,28 @@
           <ScalarProperty Name="DeptoOwner" ColumnName="DeptoOwner" />
           <ScalarProperty Name="DeptoName" ColumnName="DeptoName" />
           <ScalarProperty Name="DeptoCode" ColumnName="DeptoCode" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DocumentHeaders">
+      <EntityTypeMapping TypeName="RepositorioDocRCModel.DocumentHeader">
+        <MappingFragment StoreEntitySet="DocumentHeader">
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="Objetive" ColumnName="Objetive" />
+          <ScalarProperty Name="ProcessId" ColumnName="ProcessId" />
+          <ScalarProperty Name="MacroprocessId" ColumnName="MacroprocessId" />
+          <ScalarProperty Name="AreaId" ColumnName="AreaId" />
+          <ScalarProperty Name="DepartmentCode" ColumnName="DepartmentCode" />
+          <ScalarProperty Name="DirectorateId" ColumnName="DirectorateId" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Revision" ColumnName="Revision" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="Image" ColumnName="Image" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="DocumentTypeId" ColumnName="DocumentTypeId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

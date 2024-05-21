@@ -109,5 +109,25 @@ namespace RepositorioDocumentos.Controllers
                 return Json(new { result = "500", message = ex.Message });
             }
         }
+
+        public List<SelectListItem> GetDocumentoTipos()
+        {
+            List<SelectListItem> documentTypes = new List<SelectListItem>();
+
+            try
+            {
+                var db = new RepositorioDocRCEntities();
+                documentTypes.Add(new SelectListItem { Text = "Seleccionar Tipo de Doc.", Value = "" });
+                var _documentTypes = db.DocumentTypes.ToArray();
+                foreach (var item in _documentTypes)
+                    documentTypes.Add(new SelectListItem { Text = item.Description, Value = item.Id.ToString() });
+            }
+            catch (Exception ex)
+            {
+                Helper.SendException(ex);
+            }
+
+            return documentTypes;
+        }
     }
 }

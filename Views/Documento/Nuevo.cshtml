@@ -1,0 +1,297 @@
+﻿
+@{
+    ViewBag.Title = "Nuevo Documento";
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link href="~/Content/toastr.css" rel="stylesheet" type="text/css" />
+
+<div class="container-fluid">
+    <section class="bg-light text-dark border-custom">
+        <div class="bg-secondary text-light panel-custom border">
+            <h6 class="panel-title">
+                Nuevo Documento
+            </h6>
+        </div>
+
+        <section class="mt-3">
+            <div class="row mb-3">
+                <section class="col-xl-3 col-md-3 col-sm-12">
+                    <div class="row">
+                        <div class="col-12 mb-1">
+                            <label for="DocumentTypeId">Tipo de Documento</label>
+                            @Html.DropDownList("DocumentTypeId", new SelectList(ViewBag.DocumentoTipos, "Value", "Text"), new
+                              {
+                                  @class = "form-control form-control-sm col-12",
+                                  @style = "border: 1px solid lightgray; color: gray;"
+                              })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 mb-1">
+                            <label for="DocumentCode">Código Documento</label>
+                            @Html.DropDownList("DocumentCode", new SelectList(ViewBag.DocumentoCodigos, "Value", "Text"), new
+                              {
+                                  @class = "form-control form-control-sm col-12",
+                                  @style = "border: 1px solid lightgray; color: gray;"
+                              })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 mb-1">
+                            <label for="Revision">Revisión</label>
+                            <input type="text" id="Revision" name="Revision" value="" class="form-control form-control-sm col-12" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 mb-1">
+                            <label for="docDate">Fecha</label>
+                            <input type="text" id="docDate" name="docDate" value="" class="form-control form-control-sm col-12 datepicker" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 mb-1">
+                            <label for="Logo">Logo</label>
+                            <input type="text" id="Logo" name="Logo" value="Predeterminado" class="form-control form-control-sm col-12" readonly />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 mb-1">
+                            <label for="Status">Estatus</label>
+                            <input type="text" id="Status" name="Status" value="Iniciado" class="form-control form-control-sm col-12" readonly />
+                        </div>
+                    </div>
+
+                </section>
+
+                <!--SECOND SECTION HEADER-->
+                <section class="col-xl-9 col-md-9 col-sm-12" style="border-left: 3px solid lightgray">
+                    <div class="row">
+                        <div class="col-xl-11 col-md-11 col-sm-12 col- mb-1">
+                            <label for="Title">Título</label>
+                            <input type="text" id="Title" name="Title" value="" class="form-control form-control-sm col-12" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xl-11 col-md-11 col-sm-12 col- mb-1">
+                            <label for="DirectorateId">Dirección</label>
+                            @Html.DropDownList("DirectorateId", new SelectList(ViewBag.Direcciones, "Value", "Text"), new
+                               {
+                                   @class = "form-control form-control-sm col-12",
+                                   @style = "border: 1px solid lightgray; color: gray;",
+                                   @onchange = "getAreasByDirectorateId($('#DirectorateId').val())"
+                               })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xl-11 col-md-11 col-sm-12 col- mb-1">
+                            <label for="AreaId">Area</label>
+                            @Html.DropDownList("AreaId", new SelectList(ViewBag.Areas, "Value", "Text"), new
+                               {
+                                   @class = "form-control form-control-sm col-12",
+                                   @style = "border: 1px solid lightgray; color: gray;",
+                                   @onchange = "getDepartmentsByAreaId($('#AreaId').val())"
+                               })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xl-11 col-md-11 col-sm-12 col- mb-1">
+                            <label for="DepartmentCode">Departamento</label>
+                            @Html.DropDownList("DepartmentCode", new SelectList(ViewBag.Departamentos, "Value", "Text"), new
+                              {
+                                  @class = "form-control form-control-sm col-12",
+                                  @style = "border: 1px solid lightgray; color: gray;"
+                              })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xl-11 col-md-11 col-sm-12 col- mb-1">
+                            <label for="MacroprocessId">Macroproceso</label>
+                            @Html.DropDownList("MacroprocessId", new SelectList(ViewBag.Macroprocesos, "Value", "Text"), new
+                               {
+                                   @class = "form-control form-control-sm col-12",
+                                   @style = "border: 1px solid lightgray; color: gray;",
+                                   @onchange = "getProcessesByMacroprocessId($('#MacroprocessId').val())"
+                               })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xl-11 col-md-11 col-sm-12 col- mb-1">
+                            <label for="ProcessId">Proceso</label>
+                            @Html.DropDownList("ProcessId", new SelectList(ViewBag.Procesos, "Value", "Text"), new
+                              {
+                                  @class = "form-control form-control-sm col-12",
+                                  @style = "border: 1px solid lightgray; color: gray;"
+                              })
+                        </div>
+                    </div>
+                </section>
+
+                <section class="col-12 mt-4">
+                    <div class="row">
+                        <div class="col-12 mb-1">
+                            <label for="Objetivo">Objetivo</label>
+                            <textarea type="tex" id="Objetivo" name="Title" class="form-control form-control-sm col-12"></textarea>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <button id="btnNext" class="btn btn-danger col-12 mt-2 mb-2">
+                Presione aquí para continuar
+            </button>
+
+            <span id="message" class="d-block pl-2 pr-2 pb-1 pt-1 mt-3 mb-0"></span>
+
+            <section id="sectionContent">
+                <div class="form-group">
+                    <label for="contenido">Contenido:</label>
+                    <textarea class="form-control col-12" style="min-height: 200px" id="contenido"></textarea>
+                </div>
+            </section>
+        </section>
+    </section>
+</div>
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+    <script src="~/Scripts/dataTables.bootstrap4.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="~/Scripts/toastr.js"></script>
+}
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#Documents").addClass("menu-active");
+        //$("#sectionContent").hide();
+
+        $(".datepicker").datepicker(
+            {
+                dateFormat: 'dd/mm/yy',
+                //beforeShowDay: $.datepicker.noWeekends
+            }
+        );
+
+        $("#btnNext").click(function (evt) {
+
+            const _validateFields = validateFields();
+            if (_validateFields) {
+                toastr.error(_validateFields);
+                return false;
+            }
+
+            $("#sectionContent").fadeIn();
+        });
+    });
+
+    function getAreasByDirectorateId(directorateId) {
+        $("#AreaId").empty();
+
+        $.ajax({
+            url: "/Area/GetAreasByDirectorateId?directorateId=" + directorateId,
+            "type": "POST",
+        }).done(function (data) {
+            if (data.result === "200") {
+
+                $.each(data.message, function (index, option) {
+                    $('#AreaId').append($('<option>', {
+                        value: option.Value,
+                        text: option.Text
+                    }));
+                });
+            }
+            else {
+                toastr.error(data.message);
+            }
+        });
+    }
+
+    function getDepartmentsByAreaId(areaId) {
+        $("#DepartmentCode").empty();
+
+        $.ajax({
+            url: "/Departamento/getDepartmentsByAreaId?areaId=" + areaId,
+            "type": "POST",
+        }).done(function (data) {
+            if (data.result === "200") {
+
+                $.each(data.message, function (index, option) {
+                    $('#DepartmentCode').append($('<option>', {
+                        value: option.Value,
+                        text: option.Text
+                    }));
+                });
+            }
+            else {
+                toastr.error(data.message);
+            }
+        });
+    }
+
+    function getProcessesByMacroprocessId(macroprocessId) {
+        $("#ProcessId").empty();
+
+        $.ajax({
+            url: "/Proceso/getProcessesByMacroprocessId?macroprocessId=" + macroprocessId,
+            "type": "POST",
+        }).done(function (data) {
+            if (data.result === "200") {
+
+                $.each(data.message, function (index, option) {
+                    $('#ProcessId').append($('<option>', {
+                        value: option.Value,
+                        text: option.Text
+                    }));
+                });
+            }
+            else {
+                toastr.error(data.message);
+            }
+        });
+    }
+
+    function validateFields() {
+        if (!$("#DocumentTypeId").val())
+            return "Debe seleccionar un tipo de documento";
+
+        if (!$("#DocumentCode").val())
+            return "Debe seleccionar un código de documento";
+
+        if (!$("#Revision").val())
+            return "Debe especificar la revisión";
+
+        if (!$("#docDate").val())
+            return "Debe especificar una fecha válida";
+
+        if (!$("#Title").val())
+            return "Debe digitar un titulo";
+
+        if (!$("#DirectorateId").val())
+            return "Debe seleccionar la dirección";
+
+        if (!$("#AreaId").val())
+            return "Debe seleccionar el área";
+
+        if (!$("#DepartmentCode").val())
+            return "Debe seleccionar el departamento";
+
+        if (!$("#MacroprocessId").val())
+            return "Debe seleccionar un macroproceso";
+
+        if (!$("#ProcessId").val())
+            return "Debe seleccionar un proceso";
+    }
+
+</script>

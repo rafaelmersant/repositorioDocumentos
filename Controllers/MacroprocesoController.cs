@@ -66,7 +66,7 @@ namespace RepositorioDocumentos.Controllers
 
                 using (var db = new RepositorioDocRCEntities())
                 {
-                    var macroprocess = db.Directorates.FirstOrDefault(o => o.Id == id);
+                    var macroprocess = db.Macroprocesses.FirstOrDefault(o => o.Id == id);
                     if (macroprocess == null) return Json(new { result = "500", message = "Macroproceso no encontrado." });
                     if (macroprocess.Description.ToLower() == description.ToLower()) return Json(new { result = "500", message = "Este macroproceso ya existe." });
 
@@ -117,7 +117,7 @@ namespace RepositorioDocumentos.Controllers
             try
             {
                 var db = new RepositorioDocRCEntities();
-                macroprocesos.Add(new SelectListItem { Text = "Seleccionar", Value = "" });
+                macroprocesos.Add(new SelectListItem { Text = "Seleccionar Macroproceso", Value = "" });
                 var _macroprocesos = db.Macroprocesses.ToArray();
                 foreach (var item in _macroprocesos)
                     macroprocesos.Add(new SelectListItem { Text = item.Description, Value = item.Id.ToString() });

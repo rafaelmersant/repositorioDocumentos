@@ -113,15 +113,36 @@ namespace RepositorioDocumentos.Controllers
             }
         }
 
-        public List<SelectListItem> Processos()
+        [HttpPost]
+        public JsonResult getProcessesByMacroprocessId(int macroprocessId)
+        {
+            try
+            {
+                if (Session["userID"] == null) throw new Exception("505: Por favor intente logearse de nuevo en el sistema. (La Sesión expiró)");
+
+                var processes = GetProcessos(macroprocessId);
+
+                return Json(new { result = "200", message = processes });
+            }
+            catch (Exception ex)
+            {
+                Helper.SendException(ex, $"macroprocessId: {macroprocessId}");
+
+                return Json(new { result = "500", message = ex.Message });
+            }
+        }
+
+        public List<SelectListItem> GetProcessos(int macroprocessId = 0)
         {
             List<SelectListItem> procesos = new List<SelectListItem>();
 
             try
             {
                 var db = new RepositorioDocRCEntities();
-                procesos.Add(new SelectListItem { Text = "Seleccionar", Value = "" });
+                procesos.Add(new SelectListItem { Text = "Seleccionar Proceso", Value = "" });
                 var _procesos = db.Processes.ToArray();
+                if (macroprocessId > 0) _procesos = _procesos.Where(p => p.MacroprocessId == macroprocessId).ToArray();
+
                 foreach (var item in _procesos)
                     procesos.Add(new SelectListItem { Text = item.Description, Value = item.Id.ToString() });
             }

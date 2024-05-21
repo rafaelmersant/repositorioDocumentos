@@ -30,9 +30,9 @@ namespace RepositorioDocumentos.Models
             this.DocumentTypes = new HashSet<DocumentType>();
             this.Macroprocesses = new HashSet<Macroprocess>();
             this.Processes = new HashSet<Process>();
-            this.DocumentHeaders = new HashSet<DocumentHeader>();
             this.Areas = new HashSet<Area>();
             this.Departments = new HashSet<Department>();
+            this.DocumentHeaders = new HashSet<DocumentHeader>();
         }
     
         public int Id { get; set; }
@@ -70,10 +70,10 @@ namespace RepositorioDocumentos.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Process> Processes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DocumentHeader> DocumentHeaders { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Area> Areas { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Department> Departments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DocumentHeader> DocumentHeaders { get; set; }
     }
 }

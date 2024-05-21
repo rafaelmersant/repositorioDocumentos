@@ -17,8 +17,8 @@ namespace RepositorioDocumentos.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Directorate()
         {
-            this.DocumentHeaders = new HashSet<DocumentHeader>();
             this.Areas = new HashSet<Area>();
+            this.DocumentHeaders = new HashSet<DocumentHeader>();
         }
     
         public short Id { get; set; }
@@ -28,8 +28,8 @@ namespace RepositorioDocumentos.Models
     
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DocumentHeader> DocumentHeaders { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Area> Areas { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DocumentHeader> DocumentHeaders { get; set; }
     }
 }

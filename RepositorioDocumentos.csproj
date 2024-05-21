@@ -136,6 +136,7 @@
     <Compile Include="Controllers\DepartamentoController.cs" />
     <Compile Include="Controllers\DireccionController.cs" />
     <Compile Include="Controllers\DocumentoCodigoController.cs" />
+    <Compile Include="Controllers\DocumentoController.cs" />
     <Compile Include="Controllers\DocumentoTiposController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MacroprocesoController.cs" />
@@ -282,6 +283,8 @@
     <Content Include="Views\Area\Index.cshtml" />
     <Content Include="Views\Macroproceso\Index.cshtml" />
     <Content Include="Views\Proceso\Index.cshtml" />
+    <Content Include="Views\Documento\Index.cshtml" />
+    <Content Include="Views\Documento\Nuevo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

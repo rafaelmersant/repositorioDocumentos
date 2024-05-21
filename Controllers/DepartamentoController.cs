@@ -123,5 +123,46 @@ namespace RepositorioDocumentos.Controllers
                 return Json(new { result = "500", message = ex.Message });
             }
         }
+
+        [HttpPost]
+        public JsonResult getDepartmentsByAreaId(int areaId)
+        {
+            try
+            {
+                if (Session["userID"] == null) throw new Exception("505: Por favor intente logearse de nuevo en el sistema. (La Sesión expiró)");
+
+                var departments = GetDepartamentos(areaId);
+
+                return Json(new { result = "200", message = departments });
+            }
+            catch (Exception ex)
+            {
+                Helper.SendException(ex, $"areaId: {areaId}");
+
+                return Json(new { result = "500", message = ex.Message });
+            }
+        }
+
+        public List<SelectListItem> GetDepartamentos(int areaId = 0)
+        {
+            List<SelectListItem> departamentos = new List<SelectListItem>();
+
+            try
+            {
+                var db = new RepositorioDocRCEntities();
+                departamentos.Add(new SelectListItem { Text = "Seleccionar Departamento", Value = "" });
+                var _departamentos = db.Departments.ToArray();
+                if (areaId > 0) _departamentos = _departamentos.Where(d => d.AreaId == areaId).ToArray();
+
+                foreach (var item in _departamentos)
+                    departamentos.Add(new SelectListItem { Text = item.DeptoName, Value = item.DeptoCode.ToString() });
+            }
+            catch (Exception ex)
+            {
+                Helper.SendException(ex);
+            }
+
+            return departamentos;
+        }
     }
 }

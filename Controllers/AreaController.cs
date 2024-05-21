@@ -113,15 +113,36 @@ namespace RepositorioDocumentos.Controllers
             }
         }
 
-        public List<SelectListItem> GetAreas()
+        [HttpPost]
+        public JsonResult GetAreasByDirectorateId(int directorateId)
+        {
+            try
+            {
+                if (Session["userID"] == null) throw new Exception("505: Por favor intente logearse de nuevo en el sistema. (La Sesión expiró)");
+
+                var areas = GetAreas(directorateId);
+
+                return Json(new { result = "200", message = areas });
+            }
+            catch (Exception ex)
+            {
+                Helper.SendException(ex, $"directorateId: {directorateId}");
+
+                return Json(new { result = "500", message = ex.Message });
+            }
+        }
+
+        public List<SelectListItem> GetAreas(int directorateId = 0)
         {
             List<SelectListItem> areas = new List<SelectListItem>();
 
             try
             {
                 var db = new RepositorioDocRCEntities();
-                areas.Add(new SelectListItem { Text = "Seleccionar", Value = "" });
+                areas.Add(new SelectListItem { Text = "Seleccionar Area", Value = "" });
                 var _areas = db.Areas.ToArray();
+                if (directorateId > 0) _areas = _areas.Where(a => a.DirectorateId == directorateId).ToArray();
+
                 foreach (var item in _areas)
                     areas.Add(new SelectListItem { Text = item.Description, Value = item.Id.ToString() });
             }

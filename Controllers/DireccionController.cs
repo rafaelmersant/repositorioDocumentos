@@ -117,7 +117,7 @@ namespace RepositorioDocumentos.Controllers
             try
             {
                 var db = new RepositorioDocRCEntities();
-                direcciones.Add(new SelectListItem { Text = "Seleccionar", Value = "" });
+                direcciones.Add(new SelectListItem { Text = "Seleccionar Dirección", Value = "" });
                 var _direcciones = db.Directorates.ToArray();
                 foreach (var item in _direcciones)
                     direcciones.Add(new SelectListItem { Text = item.Description, Value = item.Id.ToString() });

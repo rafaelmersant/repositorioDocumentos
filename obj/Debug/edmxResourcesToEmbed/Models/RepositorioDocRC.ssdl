@@ -5,7 +5,7 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Description" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="100" Nullable="false" />
     <Property Name="DirectorateId" Type="smallint" Nullable="false" />
     <Property Name="CreatedDate" Type="datetime" Nullable="false" />
     <Property Name="CreatedBy" Type="int" Nullable="false" />
@@ -549,6 +549,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_DocType_DocumentHeader">
+    <End Role="DocumentType" Type="Self.DocumentType" Multiplicity="1" />
+    <End Role="DocumentHeader" Type="Self.DocumentHeader" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DocumentType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="DocumentHeader">
+        <PropertyRef Name="DocumentTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Macroprocess_DocumentHeader">
     <End Role="Macroprocess" Type="Self.Macroprocess" Multiplicity="1" />
     <End Role="DocumentHeader" Type="Self.DocumentHeader" Multiplicity="*" />
@@ -719,6 +731,10 @@
     <AssociationSet Name="FK_DocHeader_DocumentReference" Association="Self.FK_DocHeader_DocumentReference">
       <End Role="DocumentHeader" EntitySet="DocumentHeader" />
       <End Role="DocumentReference" EntitySet="DocumentReference" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DocType_DocumentHeader" Association="Self.FK_DocType_DocumentHeader">
+      <End Role="DocumentType" EntitySet="DocumentType" />
+      <End Role="DocumentHeader" EntitySet="DocumentHeader" />
     </AssociationSet>
     <AssociationSet Name="FK_Macroprocess_DocumentHeader" Association="Self.FK_Macroprocess_DocumentHeader">
       <End Role="Macroprocess" EntitySet="Macroprocess" />

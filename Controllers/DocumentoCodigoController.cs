@@ -109,5 +109,25 @@ namespace RepositorioDocumentos.Controllers
                 return Json(new { result = "500", message = ex.Message });
             }
         }
+
+        public List<SelectListItem> GetDocumentoCodigos()
+        {
+            List<SelectListItem> documentoCodigos = new List<SelectListItem>();
+
+            try
+            {
+                var db = new RepositorioDocRCEntities();
+                documentoCodigos.Add(new SelectListItem { Text = "Seleccionar Código", Value = "" });
+                var _documentoCodigos = db.DocumentCodes.ToArray();
+                foreach (var item in _documentoCodigos)
+                    documentoCodigos.Add(new SelectListItem { Text = item.Code, Value = item.Id.ToString() });
+            }
+            catch (Exception ex)
+            {
+                Helper.SendException(ex);
+            }
+
+            return documentoCodigos;
+        }
     }
 }
