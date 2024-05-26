@@ -48,35 +48,12 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="DocumentCodes">
-      <EntityTypeMapping TypeName="RepositorioDocRCModel.DocumentCode">
-        <MappingFragment StoreEntitySet="DocumentCode">
-          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="Code" ColumnName="Code" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="DocumentContents">
       <EntityTypeMapping TypeName="RepositorioDocRCModel.DocumentContent">
         <MappingFragment StoreEntitySet="DocumentContent">
           <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
           <ScalarProperty Name="Body" ColumnName="Body" />
-          <ScalarProperty Name="DocumentHeaderId" ColumnName="DocumentHeaderId" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="DocumentDetails">
-      <EntityTypeMapping TypeName="RepositorioDocRCModel.DocumentDetail">
-        <MappingFragment StoreEntitySet="DocumentDetail">
-          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="Policy" ColumnName="Policy" />
-          <ScalarProperty Name="Responsabilities" ColumnName="Responsabilities" />
-          <ScalarProperty Name="Scope" ColumnName="Scope" />
           <ScalarProperty Name="DocumentHeaderId" ColumnName="DocumentHeaderId" />
           <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
@@ -198,12 +175,24 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="DocumentCodes">
+      <EntityTypeMapping TypeName="RepositorioDocRCModel.DocumentCode">
+        <MappingFragment StoreEntitySet="DocumentCode">
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="UsedDate" ColumnName="UsedDate" />
+          <ScalarProperty Name="Used" ColumnName="Used" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="DocumentHeaders">
       <EntityTypeMapping TypeName="RepositorioDocRCModel.DocumentHeader">
         <MappingFragment StoreEntitySet="DocumentHeader">
           <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="Objetive" ColumnName="Objetive" />
+          <ScalarProperty Name="Objective" ColumnName="Objective" />
           <ScalarProperty Name="ProcessId" ColumnName="ProcessId" />
           <ScalarProperty Name="MacroprocessId" ColumnName="MacroprocessId" />
           <ScalarProperty Name="AreaId" ColumnName="AreaId" />
@@ -216,6 +205,19 @@
           <ScalarProperty Name="Image" ColumnName="Image" />
           <ScalarProperty Name="Status" ColumnName="Status" />
           <ScalarProperty Name="DocumentTypeId" ColumnName="DocumentTypeId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DocumentDetails">
+      <EntityTypeMapping TypeName="RepositorioDocRCModel.DocumentDetail">
+        <MappingFragment StoreEntitySet="DocumentDetail">
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="Policy" ColumnName="Policy" />
+          <ScalarProperty Name="Responsabilities" ColumnName="Responsabilities" />
+          <ScalarProperty Name="Scope" ColumnName="Scope" />
+          <ScalarProperty Name="DocumentHeaderId" ColumnName="DocumentHeaderId" />
           <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>

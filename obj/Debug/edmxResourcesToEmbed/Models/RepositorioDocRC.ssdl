@@ -62,6 +62,8 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Code" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="Used" Type="bit" Nullable="false" />
+    <Property Name="UsedDate" Type="datetime" />
     <Property Name="CreatedDate" Type="datetime" Nullable="false" />
     <Property Name="CreatedBy" Type="int" Nullable="false" />
   </EntityType>
@@ -79,7 +81,7 @@
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="DocumentHeaderId" Type="int" Nullable="false" />
     <Property Name="Scope" Type="varchar" MaxLength="500" />
     <Property Name="Responsabilities" Type="varchar(max)" />
@@ -126,7 +128,7 @@
     <Property Name="AreaId" Type="smallint" Nullable="false" />
     <Property Name="MacroprocessId" Type="int" Nullable="false" />
     <Property Name="ProcessId" Type="int" Nullable="false" />
-    <Property Name="Objetive" Type="varchar" MaxLength="500" />
+    <Property Name="Objective" Type="varchar" MaxLength="500" />
     <Property Name="CreatedDate" Type="datetime" Nullable="false" />
     <Property Name="CreatedBy" Type="int" Nullable="false" />
   </EntityType>

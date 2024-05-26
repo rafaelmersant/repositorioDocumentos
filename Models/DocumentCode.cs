@@ -16,6 +16,8 @@ namespace RepositorioDocumentos.Models
     {
         public int Id { get; set; }
         public string Code { get; set; }
+        public bool Used { get; set; }
+        public Nullable<System.DateTime> UsedDate { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
     
