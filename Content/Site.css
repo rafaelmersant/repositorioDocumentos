@@ -90,6 +90,10 @@ p {
     margin-bottom: 0px !important;
 }
 
+.action-column {
+    width: 164px;
+}
+
 a,
 a:hover,
 a:focus {

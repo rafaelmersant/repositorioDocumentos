@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Nuevo Documento";
+    ViewBag.Title = "Documento";
 }
 
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -21,9 +21,7 @@
         </div>
 
         <section class="mt-3">
-            <input type="hidden" name="DocumentHeaderId" id="DocumentHeaderId" value="" />
-            <input type="hidden" name="DocumentContentId" id="DocumentContentId" value="" />
-            <input type="hidden" name="DocumentDetailId" id="DocumentDetailId" value="" />
+            <input type="hidden" name="DocumentHeaderId" id="DocumentHeaderId" value="0" />
 
             <div class="row mb-3">
                 <section class="col-xl-3 col-md-3 col-sm-12">
@@ -164,7 +162,7 @@
     </section>
 
     <!--Contenido-->
-    <section class="bg-light text-dark border-custom mb-4" id="sectionContent">
+    <section class="bg-light text-dark border-custom mb-4 mt-3" id="sectionContent">
         <div class="bg-secondary text-light panel-custom border">
             <h6 class="panel-title" id="contentLabel">
                 Contenido
@@ -193,6 +191,8 @@
         <div id="responsabilitiesBody" style="min-height: 100px"><h4></h4></div>
     </section>
 
+    <button id="btnDetail" class="btn btn-danger col-12 mb-4 btnDetail">Guardar cambios en el detalle</button>
+
     <!--Glosario-->
     <section class="bg-light text-dark border-custom mb-4" id="sectionGlossary">
         <div class="bg-secondary text-light panel-custom border">
@@ -201,20 +201,33 @@
             </h6>
         </div>
         <div class="mt-3 ml-2 mr-2">
-            <a href="javascript:void(0);" class="btn btn-danger btn-sm btn-new">Nuevo Registro</a>
+            <a href="javascript:void(0);" class="btn btn-danger btn-sm btn-new-glossary">Nuevo Registro</a>
             <table id="glossaryTable" class="table table-striped table-bordered table-condensed table-sm mt-1">
-                <thead>
+                <thead class="bg-warning">
                     <tr>
-                        <th class="text-center">
+                        <th style="width:300px">
                             Palabra
                         </th>
                         <th>
                             Descripción
                         </th>
-                        <th></th>
+                        <th class="action-column"></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="glossary-tbody">
+                    <tr hidden="hidden">
+                        <td></td>
+                        <td></td>
+
+                        <td align="center">
+                            <a class="btn btn-sm btn-success edit-btn" href="javascript:void(0)" title="Editar">
+                                Editar
+                            </a>
+                            <a class="btn btn-sm btn-danger btn-remove" href="javascript:void(0)" title="Eliminar">
+                                Eliminar
+                            </a>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -228,20 +241,33 @@
             </h6>
         </div>
         <div class="mt-3 ml-2 mr-2">
-            <a href="javascript:void(0);" class="btn btn-danger btn-sm btn-new">Nueva Directriz</a>
+            <a href="javascript:void(0);" class="btn btn-danger btn-sm btn-new-glossary">Nueva Directriz</a>
             <table id="guidelineTable" class="table table-striped table-bordered table-condensed table-sm mt-1">
-                <thead>
+                <thead class="bg-warning">
                     <tr>
-                        <th class="text-center">
+                        <th style="width:300px">
                             #
                         </th>
                         <th>
                             Descripción
                         </th>
-                        <th></th>
+                        <th class="action-column"></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="guideline-tbody">
+                    <tr hidden="hidden">
+                        <td></td>
+                        <td></td>
+
+                        <td align="center">
+                            <a class="btn btn-sm btn-success edit-btn" href="javascript:void(0)" title="Editar">
+                                Editar
+                            </a>
+                            <a class="btn btn-sm btn-danger btn-remove" href="javascript:void(0)" title="Eliminar">
+                                Eliminar
+                            </a>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -257,6 +283,8 @@
         <div id="policyBody" style="min-height: 100px"><h4></h4></div>
     </section>
 
+    <button class="btn btn-danger col-12 mb-4 btnDetail">Guardar cambios en la política</button>
+
     <!--Procedimiento-->
     <section class="bg-light text-dark border-custom mb-4" id="sectionProcedure">
         <div class="bg-secondary text-light panel-custom border">
@@ -265,7 +293,7 @@
             </h6>
         </div>
         <div class="mt-3 ml-2 mr-2">
-            <a href="javascript:void(0);" class="btn btn-danger btn-sm btn-new">Nuevo Procedimiento</a>
+            <a href="javascript:void(0);" class="btn btn-danger btn-sm btn-new-procedurre">Nuevo Procedimiento</a>
             <table id="procedureTable" class="table table-striped table-bordered table-condensed table-sm mt-1">
                 <thead>
                     <tr>
@@ -278,7 +306,7 @@
                         <th>
                             Descripción
                         </th>
-                        <th></th>
+                        <th class="action-column"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -295,7 +323,7 @@
             </h6>
         </div>
         <div class="mt-3 ml-2 mr-2" id="referencesBody">
-         <a href="javascript:void(0);" class="btn btn-danger btn-sm btn-new">Nuevo Procedimiento</a>
+            <a href="javascript:void(0);" class="btn btn-danger btn-sm btn-new-reference">Agregar referencia</a>
         </div>
     </section>
 
@@ -307,7 +335,7 @@
             </h6>
         </div>
         <div class="mt-3 ml-2 mr-2">
-            <a href="javascript:void(0);" class="btn btn-danger btn-sm btn-new">Nuevo Registro</a>
+            <a href="javascript:void(0);" class="btn btn-danger btn-sm btn-new-change">Nuevo Registro</a>
             <table id="changeTable" class="table table-striped table-bordered table-condensed table-sm mt-1">
                 <thead>
                     <tr>
@@ -330,7 +358,7 @@
                             Naturaleza del cambio
                         </th>
 
-                        <th></th>
+                        <th class="action-column"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -347,7 +375,7 @@
             </h6>
         </div>
         <div class="mt-3 ml-2 mr-2">
-            <a href="javascript:void(0);" class="btn btn-danger btn-sm btn-new">Nuevo Registro</a>
+            <a href="javascript:void(0);" class="btn btn-danger btn-sm btn-new-approval">Nuevo Registro</a>
             <table id="approvalTable" class="table table-striped table-bordered table-condensed table-sm mt-1">
                 <thead>
                     <tr>
@@ -360,7 +388,7 @@
                         <th>
                             Director del Area
                         </th>
-                        <th></th>
+                        <th class="action-column"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -368,8 +396,6 @@
             </table>
         </div>
     </section>
-
-    <button id="btnDetail" class="btn btn-danger col-12 mt-2 mb-2">Guardar cambios en el detalle</button>
 </div>
 
 @section scripts {
@@ -383,7 +409,11 @@
 }
 <script type="text/javascript">
 
-    $(document).ready(function () {
+    $(document).ready(async function () {
+        //Variables
+        var wordGlossaryEditing = "";
+        var descriptionGlossaryEditing = "";
+
         $("#Documents").addClass("menu-active");
         $("#sectionContent").hide();
         $("#sectionScope").hide();
@@ -396,7 +426,7 @@
         $("#sectionChange").hide();
         $("#sectionApproval").hide();
        
-        $("#btnDetail").hide();
+        $(".btnDetail").hide();
 
         var toolbarOptions = [
              ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
@@ -447,6 +477,13 @@
             }
         );
 
+        const _documentHeaderId = new URLSearchParams(window.location.search).get('id');
+
+        if (_documentHeaderId) {
+            $("#DocumentHeaderId").val(_documentHeaderId);
+            await getDocument(_documentHeaderId, quill_contenidoBody, quill_responsabilitiesBody, quill_policyBody);
+        }
+
         $("#btnNext").click(function (evt) {
 
             const _validateFields = validateFields();
@@ -456,6 +493,7 @@
             }
 
             const documentHeader = {
+                Id: $("#DocumentHeaderId").val(),
                 DocumentTypeId: $("#DocumentTypeId").val(),
                 Status: $("#Status").val(),
                 Image: $("#Logo").val(),
@@ -474,7 +512,7 @@
             console.log('documentHeader:', documentHeader)
 
             $.ajax({
-                url: "/Documento/AddDocumentHeader",
+                url: "/Documento/SaveDocumentHeader",
                 type: "POST",
                 data: documentHeader
             }).done(function (data) {
@@ -482,8 +520,10 @@
                     console.log('Document HEADER saved:', data)
                     applyChangesAccordingToDocumentType();
                     prepareNextSection();
-                    $("#btnDetail").show();
-                    $("#DocumentHeaderId").val(data.message.Id)
+                    $(".btnDetail").show();
+
+                    if (!$("#DocumentHeaderId").val())
+                        $("#DocumentHeaderId").val(data.message.Id)
 
                     toastr.success("El documento fue guardado. Favor continuar");
                 } else {
@@ -492,14 +532,178 @@
             });
         });
 
-        $("#btnDetail").click(function (evt) {
+        $(".btnDetail").click(function (evt) {
             evt.preventDefault();
             evt.stopPropagation();
 
             saveDocumentContent(quill_contenidoBody);
             saveDocumentDetail(quill_responsabilitiesBody, quill_policyBody);
         });
+
+        //GLOSSARY SECTION
+        $('.btn-new-glossary').click(function () {
+            if (!$('.save-glossary-btn')[0]) {
+                const newRowHtml = '<tr>' +
+                    '<td class="field-word-glossary-new"><input type="text" maxlength="50" min="3" class="form-control form-control-sm new-word-glossary"></td>' +
+                    '<td class="field-description-glossary-new"><input type="text" maxlength="800" min="3" class="form-control form-control-sm col-12 new-description-glossary" placeholder="Escribir descripción"></td>' +
+                    '<td class="text-center">' +
+                    '<button class="btn btn-sm btn-success save-glossary-btn">Guardar</button>' +
+                    '<button class="btn btn-sm btn-danger cancel-glossary-btn">Cancelar</button>' +
+                    '</td>' +
+                    '</tr>';
+
+                $('#glossaryTable tbody').prepend(newRowHtml);
+            }
+        });
+
+        $(document).on('click', '.save-glossary-btn', function () {
+            var word = $(this).closest('tr').find('.new-word-glossary').val();
+            var description = $(this).closest('tr').find('.new-description-glossary').val();
+            const documentHeaderId = $("#DocumentHeaderId").val();
+
+            if (!word || !description) {
+                toastr.error("Debe completar todos los campos.");
+                return false;
+            }
+
+            $.ajax({
+                "url": `/Documento/AddGlossary?documentHeaderId=${documentHeaderId}&word=${word}&description=${description}`,
+                "type": "POST",
+                "success": function (response) {
+                    if (response.result === "200") {
+                        toastr.success(`El registro fue agregado!`);
+                        $('.field-word-glossary-new').text(word);
+                        $('.field-description-glossary-new').text(description);
+
+                        getGlossary();
+
+                    } else {
+                        toastr.error(response.message);
+                    }
+                }
+            });
+        });
+
+        $(document).on('click', '.cancel-glossary-btn', function () {
+            $(this).closest('tr').remove();
+        });       
+        //END: GLOSSARY SECTION
     });
+
+    function getGlossary() {
+        $("#glossary-tbody").empty();
+        const documentHeaderId = $("#DocumentHeaderId").val();
+       
+        $.ajax({
+            url: `/Documento/GetGlossary?documentHeaderId=${documentHeaderId}`,
+            type: "POST",
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json'
+        }).done(function (data) {
+            console.log('DATA GetGlossary:', data)
+
+            if (data.result === "200") {
+                for (const item of data.message) {
+                    const itemRow = '<tr>' +
+                        `<td class="field-word-glossary">${item.Word}</td>` +
+                        `<td class="field-description-glossary">${item.Description}</td>` +
+                        '<td class="text-center">' +
+                        `<input type="hidden" class="field-id-glossary" value="${item.Id}">` +
+                        '<a class="btn btn-sm btn-success btn-edit-glossary" href="javascript:void(0)" title="Editar">Editar</a> ' +
+                        ' <a class="btn btn-sm btn-danger btn-remove-glossary" href="javascript:void(0)" title="Eliminar">Eliminar</a>' +
+                        '</td>' +
+                        '</tr>';
+
+                    $('#glossaryTable tbody').append(itemRow);
+                }
+
+                $('.btn-edit-glossary').click(function () {
+                    var editButton = $(this);
+               
+                    if (editButton.prop('title') === "Editar") {
+                        editButton.prop('title', 'Guardar');
+                        editButton.html("Guardar");
+                        editButton.closest('tr').find('.btn-remove-glossary').html("Cancelar");
+                        editButton.closest('tr').find('.btn-remove-glossary').prop("title", "Cancelar");
+
+                        const word = editButton.closest('tr').find('.field-word-glossary').text();
+                        const description = editButton.closest('tr').find('.field-description-glossary').text();
+
+                        wordGlossaryEditing = word;
+                        descriptionGlossaryEditing = description;
+
+                        editButton.closest('tr').find('.field-word-glossary').html('<input type="text" maxlength="50" min="3" class="form-control form-control-sm edit-word-glossary" value="' + word + '">');
+                        editButton.closest('tr').find('.field-description-glossary').html('<input type="text" maxlength="800" min="3" class="form-control form-control-sm col-12 edit-description-glossary" value="' + description + '">');
+
+                    } else {
+                        const id = editButton.closest('tr').find('.field-id-glossary').val();
+                        const word = editButton.closest('tr').find('.edit-word-glossary').val();
+                        const description = editButton.closest('tr').find('.edit-description-glossary').val();
+
+                        if (!word || !description) {
+                            toastr.error("Debe completar todos los campos.");
+                            return false;
+                        }
+
+                        $.ajax({
+                            "url": `/Documento/UpdateGlossary?id=${id}&word=${word}&description=${description}`,
+                            "type": "POST",
+                            "success": function (response) {
+                                if (response.result === "200") {
+                                    toastr.success(`El registro #${id} fue actualizado!`);
+                                    editButton.prop('title', 'Editar');
+                                    editButton.closest('tr').find('.field-word-glossary').text(word);
+                                    editButton.closest('tr').find('.field-description-glossary').text(description);
+
+                                    editButton.html("Editar");
+                                    editButton.closest('tr').find('.btn-remove-glossary').html("Eliminar");
+                                    editButton.closest('tr').find('.btn-remove-glossary').prop("title", "Eliminar");
+                                } else {
+                                    toastr.error(response.message);
+                                }
+                            }
+                        });
+                    }
+                });
+
+                $('.btn-remove-glossary').click(function () {
+                    var removeButton = $(this);
+
+                    if (removeButton.html() === "Cancelar") {
+                        removeButton.prop('title', 'Eliminar');
+                        removeButton.html("Eliminar");
+
+                        removeButton.closest('tr').find('.field-word-glossary').text(wordGlossaryEditing);
+                        removeButton.closest('tr').find('.field-description-glossary').text(descriptionGlossaryEditing);
+
+                        removeButton.closest('tr').find('.btn-edit-glossary').html("Editar");
+                        removeButton.closest('tr').find('.btn-edit-glossary').prop("title", "Editar");
+                    } else {
+                        const id = removeButton.closest('tr').find('.field-id-glossary').val();
+                        const word = removeButton.closest('tr').find('.field-word-glossary').text();
+
+                        if (confirm(`Confirma que desea eliminar la palabra: ${word}`)) {
+                            $.ajax({
+                                "url": `/Documento/DeleteGlossary?id=${id}`,
+                                "type": "POST",
+                                "success": function (response) {
+                                    if (response.result === "200") {
+                                        toastr.success(`La palabra ${word} fue eliminada!`);
+                                        getGlossary();
+                                    } else {
+                                        toastr.error(response.message);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            } else {
+                toastr.error(data.message);
+            }
+        });
+      
+    }
 
     function saveDocumentContent(quill_contenidoBody) {
         //const content = $("#contenidoBody .ql-editor").html();
@@ -561,21 +765,19 @@
         });
     }
 
-    function getAreasByDirectorateId(directorateId) {
+    async function getAreasByDirectorateId(directorateId, defaultArea = 0) {
         $("#AreaId").empty();
+        console.log('defaultArea:', defaultArea)
 
         $.ajax({
             url: "/Area/GetAreasByDirectorateId?directorateId=" + directorateId,
             "type": "POST",
-        }).done(function (data) {
+        }).done(async function (data) {
             if (data.result === "200") {
 
-                $.each(data.message, function (index, option) {
-                    $('#AreaId').append($('<option>', {
-                        value: option.Value,
-                        text: option.Text
-                    }));
-                });
+                for (const option of data.message) {
+                    $('#AreaId').append($(`<option value="${option.Value}" ${parseInt(option.Value) === defaultArea ? "selected" : ""}>${option.Text}</option>`));
+                }
             }
             else {
                 toastr.error(data.message);
@@ -583,21 +785,18 @@
         });
     }
 
-    function getDepartmentsByAreaId(areaId) {
+    async function getDepartmentsByAreaId(areaId, defaultDepartment = 0) {
         $("#DepartmentCode").empty();
 
         $.ajax({
             url: "/Departamento/getDepartmentsByAreaId?areaId=" + areaId,
             "type": "POST",
-        }).done(function (data) {
+        }).done(async function (data) {
             if (data.result === "200") {
 
-                $.each(data.message, function (index, option) {
-                    $('#DepartmentCode').append($('<option>', {
-                        value: option.Value,
-                        text: option.Text
-                    }));
-                });
+                for (const option of data.message) {
+                    $('#DepartmentCode').append($(`<option value="${option.Value}" ${parseInt(option.Value) === defaultDepartment ? "selected" : ""}>${option.Text}</option>`));
+                }
             }
             else {
                 toastr.error(data.message);
@@ -605,25 +804,74 @@
         });
     }
 
-    function getProcessesByMacroprocessId(macroprocessId) {
+    async function getProcessesByMacroprocessId(macroprocessId, defaultProcess = 0) {
         $("#ProcessId").empty();
 
         $.ajax({
             url: "/Proceso/getProcessesByMacroprocessId?macroprocessId=" + macroprocessId,
             "type": "POST",
-        }).done(function (data) {
+        }).done(async function (data) {
             if (data.result === "200") {
 
-                $.each(data.message, function (index, option) {
-                    $('#ProcessId').append($('<option>', {
-                        value: option.Value,
-                        text: option.Text
-                    }));
-                });
+                for (const option of data.message) {
+                    $('#ProcessId').append($(`<option value="${option.Value}" ${parseInt(option.Value) === defaultProcess ? "selected" : ""}>${option.Text}</option>`));
+                }
             }
             else {
                 toastr.error(data.message);
             }
+        });
+    }
+
+    async function getDocument(documentHeaderId, quill_contenidoBody, quill_responsabilitiesBody, quill_policyBody) {
+       
+        $.ajax({
+            url: `/Documento/GetDocument?documentHeaderId=${documentHeaderId}`,
+            type: "POST",
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json'
+        }).done(async function (data) {
+            console.log('DATA getDocument:', data)
+           
+            const documentHeader = data.message.documentHeader;
+            const documentDetail = data.message.documentDetail;
+            const documentContent = data.message.documentContent;
+
+            await getAreasByDirectorateId(documentHeader.DirectorateId, documentHeader.AreaId);
+            await getDepartmentsByAreaId(documentHeader.AreaId, documentHeader.DepartmentCode);
+            await getProcessesByMacroprocessId(documentHeader.MacroprocessId, documentHeader.ProcessId);
+
+            $("#DocumentTypeId").val(documentHeader.DocumentTypeId);
+            $("#DocumentCode :selected").text(documentHeader.Code);
+
+            $("#Revision").val(documentHeader.Revision);
+            $("#docDate").val(documentHeader.Date);
+            $("#Logo").val(documentHeader.Image);
+            $("#Status").val(documentHeader.Status);
+
+            $("#Title").val(documentHeader.Title);
+            $("#DirectorateId").val(documentHeader.DirectorateId);
+            $("#AreaId").val(documentHeader.AreaId);
+            $("#DepartmentCode").val(documentHeader.DepartmentCode);
+            $("#MacroprocessId").val(documentHeader.MacroprocessId);
+            $("#ProcessId").val(documentHeader.ProcessId);
+
+            $("#Objective").val(documentHeader.Objective);
+
+            if (documentContent && documentContent.Body)
+                quill_contenidoBody.root.innerHTML = documentContent.Body;
+
+            if (documentDetail) {
+                $("#Scope").text(documentDetail.Scope);
+                quill_responsabilitiesBody.root.innerHTML = documentDetail.Responsabilities;
+                quill_policyBody.root.innerHTML = documentDetail.Policy;
+            }
+
+            $(".btnDetail").show();
+
+            applyChangesAccordingToDocumentType();
+            prepareNextSection();
+            getGlossary();
         });
     }
 
@@ -663,6 +911,8 @@
         if ($("#DocumentTypeId :selected").text().toUpperCase().includes("INSTRUCTIVO")) {
             $("#contentLabel").text("Pasos");
             $("#sectionContent").show();
+            $(".btnDetail").hide();
+            $("#btnDetail").show();
         } 
     }
 
