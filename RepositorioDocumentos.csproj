@@ -138,8 +138,11 @@
     <Compile Include="Controllers\DocumentoCodigoController.cs" />
     <Compile Include="Controllers\DocumentoController.cs" />
     <Compile Include="Controllers\DocumentoTiposController.cs" />
+    <Compile Include="Controllers\GlosarioController.cs" />
+    <Compile Include="Controllers\DirectrizController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MacroprocesoController.cs" />
+    <Compile Include="Controllers\ProcedimientoController.cs" />
     <Compile Include="Controllers\ProcesoController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
@@ -246,6 +249,9 @@
       <DependentUpon>RepositorioDocRC.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\glossary.js" />
+    <Content Include="Scripts\procedure.js" />
+    <Content Include="Scripts\guideline.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
@@ -289,6 +295,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Glossary\" />
+    <Folder Include="Views\Guideline\" />
+    <Folder Include="Views\Procedure\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
