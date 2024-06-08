@@ -64,6 +64,8 @@ function getProcedure() {
         console.log('DATA GetProcedure:', data)
 
         if (data.result === "200") {
+            proceduresCount = 1;
+
             for (const item of data.message) {
                 const itemRow = '<tr>' +
                     `<td class="field-sortindex-procedure text-center">${item.SortIndex}</td>` +
@@ -71,7 +73,7 @@ function getProcedure() {
                     `<td class="field-description-procedure">${item.Description}</td>` +
                     '<td class="text-center">' +
                     `<input type="hidden" class="field-id-procedure" value="${item.Id}">` +
-                    '<a class="btn btn-sm btn-success btn-edit-procedure" href="javascript:void(0)" title="Editar">Editar</a> ' +
+                    '<a class="btn btn-sm btn-success btn-edit-procedure edit-button-width" href="javascript:void(0)" title="Editar">Editar</a> ' +
                     ' <a class="btn btn-sm btn-danger btn-remove-procedure" href="javascript:void(0)" title="Eliminar">Eliminar</a>' +
                     '</td>' +
                     '</tr>';

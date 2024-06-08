@@ -1,0 +1,27 @@
+﻿@page {
+    size: 8.5in 11in; /* Set the page size to standard letter size */
+    margin: 0; /* Set the page margins */
+}
+
+@media print {
+    body {
+        margin: 0 40px 40px 40px;
+        height: 100%;
+    }
+
+    #table-container {
+        height: 100%;
+        width: 100%;
+        border-collapse: collapse;
+        margin: 0;
+    }
+
+    #table-contailer thead {
+        display: table-header-group; /* Ensures the header is repeated on each page */
+    }
+
+    #table-contailer tfoot {
+        display: table-footer-group; /* Ensures the footer is repeated on each page */
+
+    }
+}

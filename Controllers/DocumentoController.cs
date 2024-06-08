@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.Ajax.Utilities;
 using Newtonsoft.Json;
 using RepositorioDocumentos.App_Start;
 using RepositorioDocumentos.Models;
+using static RepositorioDocumentos.ViewModels.DocumentPreviewViewModel;
 
 namespace RepositorioDocumentos.Controllers
 {
@@ -25,10 +27,6 @@ namespace RepositorioDocumentos.Controllers
                 ViewBag.Areas = new List<SelectListItem>();
                 ViewBag.Departamentos = new List<SelectListItem>();
                 ViewBag.Procesos = new List<SelectListItem>();
-
-                //ViewBag.Areas = new AreaController().GetAreas();
-                //ViewBag.Departamentos = new DepartamentoController().GetDepartamentos();
-                //ViewBag.Procesos = new ProcesoController().GetProcessos();
 
                 ViewBag.Macroprocesos = new MacroprocesoController().GetMacroprocesos();
 
@@ -60,10 +58,6 @@ namespace RepositorioDocumentos.Controllers
                 ViewBag.Departamentos = new List<SelectListItem>();
                 ViewBag.Procesos = new List<SelectListItem>();
 
-                //ViewBag.Areas = new AreaController().GetAreas();
-                //ViewBag.Departamentos = new DepartamentoController().GetDepartamentos();
-                //ViewBag.Procesos = new ProcesoController().GetProcessos();
-
                 ViewBag.Macroprocesos = new MacroprocesoController().GetMacroprocesos();
             }
             catch (Exception ex)
@@ -74,6 +68,48 @@ namespace RepositorioDocumentos.Controllers
             }
 
             return View();
+        }
+
+        public ActionResult VistaPreliminar(int? id)
+        {
+            if (Session["role"] == null) return RedirectToAction("Index", "Home");
+
+            if (id <= 0 || id == null) return RedirectToAction("Index", "Documento");
+
+            DocumentContainer documentContainer = new DocumentContainer();
+
+            try
+            {
+                var db = new RepositorioDocRCEntities();
+               
+                var documentHeader = db.DocumentHeaders.FirstOrDefault(h => h.Id == id);
+                var documentDetail = db.DocumentDetails.FirstOrDefault(d => d.DocumentHeaderId == id);
+                var documentContent = db.DocumentContents.FirstOrDefault(d => d.DocumentHeaderId == id);
+
+                var glossary = db.DocumentGlossaries.Where(g => g.DocumentHeaderId == id).ToList();
+                var guidelines = db.DocumentGuidelines.Where(g => g.DocumentHeaderId == id).OrderBy(o => o.SortIndex).ToList();
+                var procedures = db.DocumentProcedures.Where(p => p.DocumentHeaderId == id).OrderBy(o => o.SortIndex).ToList();
+                var references = db.DocumentReferences.Where(r => r.DocumentHeaderId == id).ToList();
+                var changes = db.DocumentChanges.Where(c => c.DocumentHeaderId == id).ToList();
+
+                documentContainer.DocumentHeader = documentHeader;
+                documentContainer.DocumentDetail = documentDetail;
+                documentContainer.DocumentContent = documentContent;
+
+                documentContainer.DocumentGlossary = glossary;
+                documentContainer.DocumentGuidelines = guidelines;
+                documentContainer.DocumentProcedures = procedures;
+                documentContainer.DocumentReferences = references;
+                documentContainer.DocumentChanges = changes;
+            }
+            catch (Exception ex)
+            {
+                Helper.SendException(ex);
+
+                return null;
+            }
+
+            return View(documentContainer);
         }
 
         [HttpPost]
@@ -110,6 +146,11 @@ namespace RepositorioDocumentos.Controllers
                         docHeader.MacroprocessId = documentHeader.MacroprocessId;
                         docHeader.ProcessId = documentHeader.ProcessId;
                         docHeader.Objective = documentHeader.Objective;
+                        
+                        db.Entry(docHeader).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+
+                        _documentHeader = docHeader;
                     }
                     else
                     {
@@ -131,12 +172,11 @@ namespace RepositorioDocumentos.Controllers
                             CreatedDate = DateTime.Now,
                             CreatedBy = int.Parse(Session["userID"].ToString())
                         });
+                        db.SaveChanges();
                     }
-                    
-                    db.SaveChanges();
                 }
 
-                return Json(new { result = "200", message = _documentHeader });
+                return Json(new { result = "200", message = _documentHeader.Id });
             }
             catch (Exception ex)
             {
@@ -244,69 +284,69 @@ namespace RepositorioDocumentos.Controllers
                 using (var db = new RepositorioDocRCEntities())
                 {
                     var documentHeader = db.DocumentHeaders
-                                       .Where(d => d.Id == documentHeaderId)
-                                       .Select(s => new
-                                       {
-                                           s.Id,
-                                           s.DocumentTypeId,
-                                           s.Status,
-                                           s.Image,
-                                           s.Code,
-                                           s.Revision,
-                                           s.Date,
-                                           s.Title,
-                                           s.DirectorateId,
-                                           s.DepartmentCode,
-                                           s.AreaId,
-                                           s.MacroprocessId,
-                                           s.ProcessId,
-                                           s.Objective,
-                                           s.CreatedDate,
-                                           CreatedBy = s.User.Email
-                                       })
-                                       .AsEnumerable()
-                                       .Select(s => new
-                                       {
-                                           s.Id,
-                                           s.DocumentTypeId,
-                                           s.Status,
-                                           s.Image,
-                                           s.Code,
-                                           s.Revision,
-                                           Date = s.Date.ToString("dd/MM/yyyy"), // Format date in memory
-                                           s.Title,
-                                           s.DirectorateId,
-                                           s.DepartmentCode,
-                                           s.AreaId,
-                                           s.MacroprocessId,
-                                           s.ProcessId,
-                                           s.Objective,
-                                           s.CreatedDate,
-                                           s.CreatedBy
-                                       })
-                                       .FirstOrDefault();
+                        .Where(d => d.Id == documentHeaderId)
+                        .Select(s => new
+                        {
+                            s.Id,
+                            s.DocumentTypeId,
+                            s.Status,
+                            s.Image,
+                            s.Code,
+                            s.Revision,
+                            s.Date,
+                            s.Title,
+                            s.DirectorateId,
+                            s.DepartmentCode,
+                            s.AreaId,
+                            s.MacroprocessId,
+                            s.ProcessId,
+                            s.Objective,
+                            s.CreatedDate,
+                            CreatedBy = s.User.Email
+                        })
+                        .AsEnumerable()
+                        .Select(s => new
+                        {
+                            s.Id,
+                            s.DocumentTypeId,
+                            s.Status,
+                            s.Image,
+                            s.Code,
+                            s.Revision,
+                            Date = s.Date.ToString("dd/MM/yyyy"), // Format date in memory
+                            s.Title,
+                            s.DirectorateId,
+                            s.DepartmentCode,
+                            s.AreaId,
+                            s.MacroprocessId,
+                            s.ProcessId,
+                            s.Objective,
+                            s.CreatedDate,
+                            s.CreatedBy
+                        })
+                        .FirstOrDefault();
 
                     var documentDetail = db.DocumentDetails
-                                      .Where(d => d.DocumentHeaderId == documentHeaderId)
-                                      .Select(s => new
-                                      {
-                                          s.Id,
-                                          s.Scope,
-                                          s.Responsabilities,
-                                          s.Policy,
-                                          s.CreatedDate,
-                                          CreatedBy = s.User.Email
-                                      })
-                                      .AsEnumerable()
-                                      .Select(s => new
-                                      {
-                                          s.Scope,
-                                          s.Responsabilities,
-                                          s.Policy,
-                                          CreatedDate = s.CreatedDate.ToString("dd/MM/yyyy"),
-                                          s.CreatedBy
-                                      })
-                                      .FirstOrDefault();
+                        .Where(d => d.DocumentHeaderId == documentHeaderId)
+                        .Select(s => new
+                        {
+                            s.Id,
+                            s.Scope,
+                            s.Responsabilities,
+                            s.Policy,
+                            s.CreatedDate,
+                            CreatedBy = s.User.Email
+                        })
+                        .AsEnumerable()
+                        .Select(s => new
+                        {
+                            s.Scope,
+                            s.Responsabilities,
+                            s.Policy,
+                            CreatedDate = s.CreatedDate.ToString("dd/MM/yyyy"),
+                            s.CreatedBy
+                        })
+                        .FirstOrDefault();
 
                     var documentContent = db.DocumentContents.Where(d => d.DocumentHeaderId == documentHeaderId).Select(s => new { s.Id, s.Body }).FirstOrDefault();
 

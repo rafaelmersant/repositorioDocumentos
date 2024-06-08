@@ -32,6 +32,10 @@ hr {
     height: 100%;
 }
 
+.edit-button-width {
+    min-width: 68px;
+}
+
 .daterangepicker .ranges li {
     color: #73879C
 }
@@ -5237,4 +5241,13 @@ label.error {
 
 .action-column {
     width: 164px;
+}
+
+.btn-preview {
+    position: fixed;
+    bottom: 0;
+    right: 10px;
+    width: 250px;
+   
+    vertical-align: central;
 }

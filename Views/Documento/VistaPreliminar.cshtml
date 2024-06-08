@@ -1,0 +1,263 @@
+﻿@model RepositorioDocumentos.ViewModels.DocumentPreviewViewModel.DocumentContainer
+@{
+    Layout = null;
+
+    var topicNumber = 1;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@Model.DocumentHeader.Title (Vista Preliminar)</title>
+    <style>
+        body {
+            max-width: 7in;
+            margin: 0 auto;
+        }
+        .container {
+            height: 100px; /* Especifica la altura del contenedor aquí */
+            width: 100%;
+            display: flex;
+            align-items: stretch;
+            border: 1px solid #000;
+        }
+
+        .full-height-table {
+            width: 100%;
+            height: 100%;
+            border-collapse: collapse;
+        }
+
+            .full-height-table td {
+                border: 1px solid #000;
+                padding: 8px;
+                text-align: left;
+                vertical-align: top;
+            }
+
+            .full-height-table tr {
+                height: 100%;
+            }
+
+        #docHeaderTable tr td {
+            text-align: left;
+            padding-left: 5px;
+        }
+
+        .text-bold {
+            font-weight: bold;
+            background-color: #f5e9d1;
+        }
+
+        .border-table tr td {
+            border: 1px solid black;
+        }
+    </style>
+    <link rel="stylesheet" href="~/Content/doc-preview.css">
+
+</head>
+<body>
+  
+    <table id="table-container">
+        <thead>
+            <tr><th style="height: 40px"></th></tr>
+            <tr>
+                <th>
+                    <table id="header-section" cellspacing="0" cellpadding="0" style="border: 2px solid black; width: 100%">
+                        <tr>
+                            <td style="width: 120px; text-align: center; border: 1px solid black;"><img src="~/Content/images/RCImageDoc.png" width="90" alt="Logo RC" /></td>
+                            <td>
+                                <div class="container">
+                                    <table width="100%">
+                                        <tr>
+                                            <td style="text-align: center; vertical-align: top; height: 20px; border-bottom: 2px solid black">Documentación</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style="text-align: center;">@Model.DocumentHeader.DocumentType.Description</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </td>
+                            <td style="width: 250px; padding-left: 5px; border: 1px solid black; text-align: left;">
+
+                                <table width="100%" height="100%" cellspacing="5" cellpadding="0">
+                                    <tr>
+                                        <td>Código: @Model.DocumentHeader.Code</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Revisión: @Model.DocumentHeader.Revision</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Fecha: @Model.DocumentHeader.Date.ToString("dd/MM/yyyy")</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Página: 1 de 5</td>
+                                    </tr>
+                                </table>
+
+                            </td>
+                        </tr>
+
+                    </table>
+                </th>
+            </tr>
+            <tr><th style="height: 34px;"></th></tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <td style="text-align: right; color: gray; height: 40px; vertical-align: central; margin-bottom: 10px; padding-right: 10px;">@Model.DocumentHeader.Title</td>
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr>
+                <td>
+                    <div style="text-align: center;">
+                        <table id="docHeaderTable" width="100%" cellspacing="0" cellpadding="0" border="1" style="margin: 0 auto;">
+                            <tr>
+                                <td style="width: 150px;">Título</td>
+                                <td class="text-bold">@Model.DocumentHeader.Title</td>
+                            </tr>
+                            <tr>
+                                <td>Dirección</td>
+                                <td class="text-bold">@Model.DocumentHeader.Directorate.Description</td>
+                            </tr>
+                            <tr>
+                                <td>Departamento</td>
+                                <td class="text-bold">@Model.DocumentHeader.Department.DeptoName</td>
+                            </tr>
+                            <tr>
+                                <td>Area</td>
+                                <td class="text-bold">@Model.DocumentHeader.Area.Description</td>
+                            </tr>
+                            <tr>
+                                <td>Macroproceso</td>
+                                <td class="text-bold">@Model.DocumentHeader.Macroprocess.Description</td>
+                            </tr>
+                            <tr>
+                                <td>Proceso</td>
+                                <td class="text-bold">@Model.DocumentHeader.Process.Description</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div style="text-align: justify">
+                        @if (!string.IsNullOrEmpty(Model.DocumentHeader.Objective))
+                        {
+                            <p style="margin-top: 20px">@topicNumber. <span style="color: blue; font-weight: bold">OBJETIVO</span></p>
+                            <span>
+                                @Model.DocumentHeader.Objective
+                            </span>
+                        }
+
+                        @if (Model.DocumentContent != null)
+                        {
+                            topicNumber += 1;
+                            var content = "CONTENIDO";
+
+                            if (Model.DocumentHeader.DocumentType.Description.ToLower().Contains("instructivo"))
+                            {
+                                content = "PASOS";
+                            }
+
+                            <p style="margin-top: 20px">@topicNumber. <span style="color: blue; font-weight: bold">@content</span></p>
+                            <span>
+                                @Html.Raw(Model.DocumentContent.Body)
+                            </span>
+                        }
+
+                        @if (Model.DocumentDetail != null)
+                        {
+                            if (!string.IsNullOrEmpty(Model.DocumentDetail.Scope))
+                            {
+                                topicNumber += 1;
+
+                                <p style="margin-top: 20px">@topicNumber. <span style="color: blue; font-weight: bold">ALCANCE</span></p>
+                                <span>
+                                    @Model.DocumentDetail.Scope
+                                </span>
+                            }
+
+                            if (!string.IsNullOrEmpty(Model.DocumentDetail.Responsabilities))
+                            {
+                                topicNumber += 1;
+
+                                <p style="margin-top: 20px">@topicNumber. <span style="color: blue; font-weight: bold">RESPONSABILIDADES</span></p>
+                                <span>
+                                    @Html.Raw(Model.DocumentDetail.Responsabilities)
+                                </span>
+                            }
+
+                            if (Model.DocumentGuidelines.Count() > 0)
+                            {
+                                topicNumber += 1;
+
+                                <p style="margin-top: 20px">@topicNumber. <span style="color: blue; font-weight: bold">DIRECTRICES</span></p>
+                                <table id="guidelineTable" class="border-table" cellpadding="4" style="width:100%; border-collapse: collapse">
+                                    @foreach (var item in Model.DocumentGuidelines)
+                                    {
+                                        <tr>
+                                            <td style="text-align: center; width: 60px">@item.SortIndex</td>
+                                            <td style="text-align: justify">@item.Description</td>
+                                        </tr>
+                                    }
+                                </table>
+                            }
+
+                            if (!string.IsNullOrEmpty(Model.DocumentDetail.Policy))
+                            {
+                                topicNumber += 1;
+
+                                <p style="margin-top: 20px">@topicNumber. <span style="color: blue; font-weight: bold">POLITICA</span></p>
+                                <div>
+                                    @Html.Raw(Model.DocumentDetail.Policy.Replace("<ol>", "<ul>").Replace("</ol>", "</ul>"))
+                                </div>
+                            }
+
+                            if (Model.DocumentProcedures.Count() > 0)
+                            {
+                                topicNumber += 1;
+
+                                <p style="margin-top: 20px">@topicNumber. <span style="color: blue; font-weight: bold">PROCEDIMIENTO</span></p>
+                                <table id="procedureTable" class="border-table" cellpadding="4" style="width:100%; border-collapse: collapse">
+                                    <tr>
+                                        <td style="text-align: center; width: 60px"> <strong>Numeral</strong></td>
+                                        <td style="text-align: center; width: 130px"> <strong>Responsable</strong></td>
+                                        <td style="text-align: center;"> <strong>Descripción</strong></td>
+                                    </tr>
+                                    @foreach (var item in Model.DocumentProcedures)
+                                    {
+                                        <tr>
+                                            <td style="text-align: center;">@item.SortIndex</td>
+                                            <td style="text-align: center;">@item.Responsible</td>
+                                            <td style="text-align: justify">@item.Description</td>
+                                        </tr>
+                                    }
+                                </table>
+                            }
+
+                            if (Model.DocumentReferences.Count() > 0)
+                            {
+                                topicNumber += 1;
+
+                                <p style="margin-top: 20px">@topicNumber. <span style="color: blue; font-weight: bold">REFERENCIAS O ANEXOS</span></p>
+
+                                <ul>
+                                    @foreach (var item in Model.DocumentReferences)
+                                    {
+                                        <li>@item.Name</li>
+                                    }
+                                </ul>
+                            }
+                        }
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+</body>
+</html>

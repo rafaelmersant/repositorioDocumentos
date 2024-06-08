@@ -142,8 +142,10 @@
     <Compile Include="Controllers\DirectrizController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MacroprocesoController.cs" />
+    <Compile Include="Controllers\NotificacionCambiosController.cs" />
     <Compile Include="Controllers\ProcedimientoController.cs" />
     <Compile Include="Controllers\ProcesoController.cs" />
+    <Compile Include="Controllers\AnexoReferenciaController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -218,6 +220,7 @@
       <DependentUpon>RepositorioDocRC.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\DocumentPreviewViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -225,6 +228,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\custom.css" />
+    <Content Include="Content\doc-preview.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -249,9 +253,13 @@
       <DependentUpon>RepositorioDocRC.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
-    <Content Include="Scripts\glossary.js" />
-    <Content Include="Scripts\procedure.js" />
-    <Content Include="Scripts\guideline.js" />
+    <Content Include="Scripts\doc-approval.js" />
+    <Content Include="Scripts\doc-change.js" />
+    <Content Include="Scripts\doc-glossary.js" />
+    <Content Include="Scripts\doc-procedure.js" />
+    <Content Include="Scripts\doc-guideline.js" />
+    <Content Include="Scripts\image-drop.min.js" />
+    <Content Include="Scripts\image-resize.min.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
@@ -262,6 +270,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Scripts\doc-references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -292,12 +301,16 @@
     <Content Include="Views\Proceso\Index.cshtml" />
     <Content Include="Views\Documento\Index.cshtml" />
     <Content Include="Views\Documento\Documento.cshtml" />
+    <Content Include="Views\Documento\VistaPreliminar.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="AnexosReferencias\" />
     <Folder Include="App_Data\" />
     <Folder Include="Views\Glossary\" />
     <Folder Include="Views\Guideline\" />
+    <Folder Include="Views\NotificacionCambios\" />
     <Folder Include="Views\Procedure\" />
+    <Folder Include="Views\References\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

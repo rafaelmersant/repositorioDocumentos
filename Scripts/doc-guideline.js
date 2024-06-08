@@ -61,13 +61,15 @@ function getGuideline() {
         console.log('DATA GetGuideline:', data)
 
         if (data.result === "200") {
+            guidelinesCount = 1;
+
             for (const item of data.message) {
                 const itemRow = '<tr>' +
                     `<td class="field-sortindex-guideline text-center">${item.SortIndex}</td>` +
                     `<td class="field-description-guideline">${item.Description}</td>` +
                     '<td class="text-center">' +
                     `<input type="hidden" class="field-id-guideline" value="${item.Id}">` +
-                    '<a class="btn btn-sm btn-success btn-edit-guideline" href="javascript:void(0)" title="Editar">Editar</a> ' +
+                    '<a class="btn btn-sm btn-success btn-edit-guideline edit-button-width" href="javascript:void(0)" title="Editar">Editar</a> ' +
                     ' <a class="btn btn-sm btn-danger btn-remove-guideline" href="javascript:void(0)" title="Eliminar">Eliminar</a>' +
                     '</td>' +
                     '</tr>';
