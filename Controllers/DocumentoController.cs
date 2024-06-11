@@ -195,13 +195,14 @@ namespace RepositorioDocumentos.Controllers
 
                 DocumentContent _documentContent = new DocumentContent();
 
+                documentContent.Body = string.IsNullOrEmpty(documentContent.Body) ? "" : documentContent.Body;
                 using (var db = new RepositorioDocRCEntities())
                 {
                     _documentContent = db.DocumentContents.FirstOrDefault(d => d.DocumentHeaderId == documentContent.DocumentHeaderId);
 
                     if (_documentContent != null)
                     {
-                        _documentContent.Body = documentContent.Body;
+                        _documentContent.Body = documentContent.Body ;
                         db.Entry(_documentContent).State = System.Data.Entity.EntityState.Modified;
                     }
                     else

@@ -70,7 +70,7 @@
 
     $(document).ready(function () {
         $("#Area").addClass("menu-active");
-        $("#areaTable").DataTable();
+        $("#areaTable").DataTable({ pageLength: 100 });
 
         $('.btn-new').click(function () {
             if (!$('.save-btn')[0]) {

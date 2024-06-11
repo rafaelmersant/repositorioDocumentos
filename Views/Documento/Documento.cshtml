@@ -5,7 +5,6 @@
 
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link href="~/Content/toastr.css" rel="stylesheet" type="text/css" />
-<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
 
 <style>
     p {
@@ -18,6 +17,7 @@
         overflow-y: hidden;
         box-sizing: border-box;
     }
+
 </style>
 <div class="container-fluid pb-5">
     <section class="bg-light text-dark border-custom">
@@ -57,14 +57,14 @@
                     <div class="row">
                         <div class="col-12 mb-1">
                             <label for="Revision">Revisión</label>
-                            <input type="text" id="Revision" name="Revision" value="" class="form-control form-control-sm col-12" />
+                            <input type="text" id="Revision" name="Revision" value="" class="form-control form-control-sm col-12" autocomplete="off"/>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-12 mb-1">
                             <label for="docDate">Fecha</label>
-                            <input type="text" id="docDate" name="docDate" value="" class="form-control form-control-sm col-12 datepicker" />
+                            <input type="text" id="docDate" name="docDate" value="" class="form-control form-control-sm col-12 datepicker" autocomplete="off"/>
                         </div>
                     </div>
 
@@ -175,7 +175,7 @@
                 Contenido
             </h6>
         </div>
-        <div id="contenidoBody" style="min-height: 100px"><h4></h4></div>
+        <div id="contenidoBody" class="tinyEditor" style="min-height: 100px"></div>
     </section>
 
     <!--Alcance-->
@@ -195,7 +195,7 @@
                 Responsabilidades
             </h6>
         </div>
-        <div id="responsabilitiesBody" style="min-height: 100px"><h4></h4></div>
+        <div id="responsabilitiesBody" class="tinyEditor" style="min-height: 100px"></div>
     </section>
 
     <button id="btnDetail" class="btn btn-danger col-12 mb-4 btnDetail">Guardar cambios en el detalle</button>
@@ -287,7 +287,7 @@
                 Politica
             </h6>
         </div>
-        <div id="policyBody" style="min-height: 100px"><h4></h4></div>
+        <textarea id="policyBody" class="tinyEditor" style="min-height: 100px"></textarea>
     </section>
 
     <button class="btn btn-danger col-12 mb-4 btnDetail">Guardar cambios en la política</button>
@@ -478,7 +478,7 @@
     <script src="~/Scripts/doc-references.js"></script>
     <script src="~/Scripts/doc-change.js"></script>
     <script src="~/Scripts/doc-approval.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+    <script src="https://cdn.tiny.cloud/1/ooprn6x3slemw47jqbeenlvfu5msrfxpjpktjpllexhn4eqw/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 }
 <script type="text/javascript">
 
@@ -512,44 +512,24 @@
         $(".btnDetail").hide();
         $(".btn-preview").hide();
 
-        var toolbarOptions = [
-            ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-            ['image'],
-            [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-            [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'list': 'check' }],
-            [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
-            [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
-            [{ 'direction': 'rtl' }],                         // text direction
+        tinymce.init({
+            selector: '.tinyEditor',
+            menubar: false,
+            plugins: 'autoresize anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount linkchecker',
+            toolbar: 'undo redo | fontfamily fontsize | bold italic underline strikethrough | table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+            autoresize_bottom_margin: 20, // Optional: Margin at the bottom of the editor
+                autoresize_min_height: 200,  // Optional: Minimum height of the editor
+                autoresize_max_height: 300,  // Optional: Maximum height of the editor
+            setup: async function (editor) {
+                editor.on('init', async function (e) {
+                    const _documentHeaderId = new URLSearchParams(window.location.search).get('id');
 
-            [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-
-            [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-            [{ 'font': [] }],
-            [{ 'align': [] }],
-
-            ['clean'],
-        ];
-
-        var quill_contenidoBody = new Quill('#contenidoBody', {
-            modules: {
-                toolbar: toolbarOptions
-            },
-            theme: 'snow'
-        });
-
-        var quill_responsabilitiesBody = new Quill('#responsabilitiesBody', {
-            modules: {
-                toolbar: toolbarOptions
-            },
-            theme: 'snow'
-        });
-
-        var quill_policyBody = new Quill('#policyBody', {
-            modules: {
-                toolbar: toolbarOptions
-            },
-            theme: 'snow'
+                    if (_documentHeaderId) {
+                        $("#DocumentHeaderId").val(_documentHeaderId);
+                        await getDocument(_documentHeaderId);
+                    }
+                });
+            }
         });
 
         $(".datepicker").datepicker(
@@ -558,13 +538,6 @@
                 //beforeShowDay: $.datepicker.noWeekends
             }
         );
-
-        const _documentHeaderId = new URLSearchParams(window.location.search).get('id');
-
-        if (_documentHeaderId) {
-            $("#DocumentHeaderId").val(_documentHeaderId);
-            await getDocument(_documentHeaderId, quill_contenidoBody, quill_responsabilitiesBody, quill_policyBody);
-        }
 
         $("#btnNext").click(function (evt) {
 
@@ -603,8 +576,14 @@
                     applyChangesAccordingToDocumentType();
                     prepareNextSection();
 
-                    if (!$("#DocumentHeaderId").val())
-                        $("#DocumentHeaderId").val(data.message)
+                    const _documentHeaderId = new URLSearchParams(window.location.search).get('id');
+
+                    if (!_documentHeaderId) {
+                        window.location = `Documento/Documento?id=${data.message}`;
+                    } else {
+                        if (!$("#DocumentHeaderId").val())
+                            $("#DocumentHeaderId").val(data.message)
+                    }
 
                     toastr.success("El documento fue guardado. Favor continuar");
                 } else {
@@ -617,52 +596,46 @@
             evt.preventDefault();
             evt.stopPropagation();
 
-            saveDocumentContent(quill_contenidoBody);
-            saveDocumentDetail(quill_responsabilitiesBody, quill_policyBody);
+            const contenidoBody = tinymce.get("contenidoBody").getContent();
+            const responsabilitiesBody = tinymce.get("responsabilitiesBody").getContent();
+            const policyBody = tinymce.get("policyBody").getContent();
+            saveDocumentContent(contenidoBody);
+            saveDocumentDetail(responsabilitiesBody, policyBody);
         });
 
     });
 
-    function saveDocumentContent(quill_contenidoBody) {
-        const content = quill_contenidoBody.root.innerHTML;
-        const hasText = quill_contenidoBody.getText().trim();
-        const hasImage = quill_contenidoBody.getContents().ops.some(op => op.insert && op.insert.image);
-
-        if (hasText || hasImage) {
-            const documentHeaderId = $("#DocumentHeaderId").val();
-
-            const documentContent = { DocumentHeaderId: documentHeaderId, Body: content };
-
-            $.ajax({
-                url: `/Documento/SaveDocumentContent`,
-                type: "POST",
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                data: JSON.stringify(documentContent),
-            }).done(function (data) {
-                console.log('DATA SaveDocumentContent:', data)
-
-                if (data.result === "200") {
-                    toastr.success("El contenido del documento fue guardado.");
-                } else {
-                    toastr.error(data.message);
-                }
-            });
-        } else {
-            console.log('Do not save the content body');
-        }
-    }
-
-    function saveDocumentDetail(quill_responsabilitiesBody, quill_policyBody) {
-        const scope = $("#Scope").val();
-        let responsabilities = quill_responsabilitiesBody.root.innerHTML;
-        let policy = quill_policyBody.root.innerHTML;
-
-        if (!quill_responsabilitiesBody.getText().trim()) responsabilities = "";
-        if (!quill_policyBody.getText().trim()) policy = "";
+    function saveDocumentContent(contenidoBody) {
+        const body = contenidoBody ? contenidoBody : "";
 
         const documentHeaderId = $("#DocumentHeaderId").val();
-        const documentDetail = { DocumentHeaderId: documentHeaderId, Scope: scope, Responsabilities: responsabilities, Policy: policy };
+        const documentContent = { DocumentHeaderId: documentHeaderId, Body: body };
+
+        $.ajax({
+            url: `/Documento/SaveDocumentContent`,
+            type: "POST",
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: JSON.stringify(documentContent),
+        }).done(function (data) {
+            console.log('DATA SaveDocumentContent:', data)
+
+            if (data.result === "200") {
+                toastr.success("El contenido del documento fue guardado.");
+            } else {
+                toastr.error(data.message);
+            }
+        });
+    }
+
+    function saveDocumentDetail(responsabilitiesBody, policyBody) {
+        const scope = $("#Scope").val();
+
+        const responsabilities = responsabilitiesBody ? responsabilitiesBody : "";
+        const policy = policyBody ? policyBody : "";
+
+        const documentHeaderId = $("#DocumentHeaderId").val();
+        const documentDetail = { DocumentHeaderId: documentHeaderId, Scope: scope, Responsabilities: responsabilitiesBody, Policy: policyBody };
 
         $.ajax({
             url: `/Documento/SaveDocumentDetail`,
@@ -738,7 +711,7 @@
         });
     }
 
-    async function getDocument(documentHeaderId, quill_contenidoBody, quill_responsabilitiesBody, quill_policyBody) {
+    async function getDocument(documentHeaderId) {
 
         $.ajax({
             url: `/Documento/GetDocument?documentHeaderId=${documentHeaderId}`,
@@ -776,12 +749,16 @@
             $("#Objective").val(documentHeader.Objective);
 
             if (documentContent && documentContent.Body)
-                quill_contenidoBody.root.innerHTML = documentContent.Body;
+                tinymce.get("contenidoBody").setContent(documentContent.Body);
 
             if (documentDetail) {
                 $("#Scope").text(documentDetail.Scope);
-                quill_responsabilitiesBody.root.innerHTML = documentDetail.Responsabilities;
-                quill_policyBody.root.innerHTML = documentDetail.Policy;
+
+                if (documentDetail.Responsabilities)
+                    tinymce.get("responsabilitiesBody").setContent(documentDetail.Responsabilities);
+
+                if (documentDetail.Policy)
+                    tinymce.get("policyBody").setContent(documentDetail.Policy);
             }
 
             $(".btnDetail").show();

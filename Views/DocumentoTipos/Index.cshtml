@@ -67,7 +67,7 @@
 
     $(document).ready(function () {
         $("#DocumentTypes").addClass("menu-active");
-        $("#documentTypeTable").DataTable();
+        $("#documentTypeTable").DataTable({ pageLength: 100 });
 
         $('.btn-new').click(function () {
             if (!$('.save-btn')[0]) {
