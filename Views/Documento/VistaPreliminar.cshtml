@@ -218,7 +218,8 @@
 
                                 <p class="topic-doc">@topicNumber. POLITICA</p>
                                 <div>
-                                    @Html.Raw(Model.DocumentDetail.Policy.Replace("<ol>", "<ul>").Replace("</ol>", "</ul>"))
+                                    @*@Html.Raw(Model.DocumentDetail.Policy.Replace("<ol>", "<ul>").Replace("</ol>", "</ul>"))*@
+                                    @Html.Raw(Model.DocumentDetail.Policy)
                                 </div>
                             }
 
