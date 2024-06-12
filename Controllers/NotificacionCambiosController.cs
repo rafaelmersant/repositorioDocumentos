@@ -63,7 +63,8 @@ namespace RepositorioDocumentos.Controllers
                     if (change == null) return Json(new { result = "500", message = "Cambio no encontrado." });
                     if (change.Originator.ToLower() == originator.ToLower()
                         && change.NatureChange.ToLower() == natureChange.ToLower()
-                        && change.Revision == revision) return Json(new { result = "500", message = "Este cambio ya existe." });
+                        && change.Revision == revision
+                        && change.Id != id) return Json(new { result = "500", message = "Este cambio ya existe." });
 
                     change.Date = changeDate;
                     change.Revision = revision;

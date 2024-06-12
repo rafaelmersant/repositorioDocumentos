@@ -70,7 +70,9 @@ namespace RepositorioDocumentos.Controllers
                 {
                     var area = db.Areas.FirstOrDefault(o => o.Id == id);
                     if (area == null) return Json(new { result = "500", message = "Area no encontrada." });
-                    if (area.Description.ToLower() == description.ToLower() && area.DirectorateId == directorateId) return Json(new { result = "500", message = "Esta área ya existe." });
+                    if (area.Description.ToLower() == description.ToLower() 
+                        && area.DirectorateId == directorateId
+                        && area.Id != id) return Json(new { result = "500", message = "Esta área ya existe." });
 
                     area.DirectorateId = directorateId;
                     area.Description = description;

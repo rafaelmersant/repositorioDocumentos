@@ -56,7 +56,9 @@ namespace RepositorioDocumentos.Controllers
                 {
                     var guideline = db.DocumentGuidelines.FirstOrDefault(o => o.Id == id);
                     if (guideline == null) return Json(new { result = "500", message = "directriz no encontrada." });
-                    if (guideline.Description.ToLower() == description.ToLower() && guideline.SortIndex == sortindex) return Json(new { result = "500", message = "Esta directriz ya existe." });
+                    if (guideline.Description.ToLower() == description.ToLower() 
+                        && guideline.SortIndex == sortindex
+                        && guideline.Id != id) return Json(new { result = "500", message = "Esta directriz ya existe." });
 
                     guideline.SortIndex = sortindex;
                     guideline.Description = description;

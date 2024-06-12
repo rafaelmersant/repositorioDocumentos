@@ -60,7 +60,8 @@ namespace RepositorioDocumentos.Controllers
                     if (procedure == null) return Json(new { result = "500", message = "Procedimiento no encontrado." });
                     if (procedure.Description.ToLower() == description.ToLower() 
                         && procedure.Responsible.ToLower() == responsible.ToLower()
-                        && procedure.SortIndex == sortindex) return Json(new { result = "500", message = "Este procedimiento ya existe." });
+                        && procedure.SortIndex == sortindex
+                        && procedure.Id != id) return Json(new { result = "500", message = "Este procedimiento ya existe." });
 
                     procedure.SortIndex = sortindex;
                     procedure.Responsible = responsible;

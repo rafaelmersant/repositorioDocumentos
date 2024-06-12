@@ -70,7 +70,9 @@ namespace RepositorioDocumentos.Controllers
                 {
                     var process = db.Processes.FirstOrDefault(o => o.Id == id);
                     if (process == null) return Json(new { result = "500", message = "Proceso no encontrado." });
-                    if (process.Description.ToLower() == description.ToLower() && process.MacroprocessId == macroprocessId) return Json(new { result = "500", message = "Este proceso ya existe." });
+                    if (process.Description.ToLower() == description.ToLower() 
+                        && process.MacroprocessId == macroprocessId
+                        && process.Id != id) return Json(new { result = "500", message = "Este proceso ya existe." });
 
                     process.MacroprocessId = macroprocessId;
                     process.Description = description;

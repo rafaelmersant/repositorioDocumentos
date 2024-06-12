@@ -68,7 +68,7 @@ namespace RepositorioDocumentos.Controllers
                 {
                     var macroprocess = db.Macroprocesses.FirstOrDefault(o => o.Id == id);
                     if (macroprocess == null) return Json(new { result = "500", message = "Macroproceso no encontrado." });
-                    if (macroprocess.Description.ToLower() == description.ToLower()) return Json(new { result = "500", message = "Este macroproceso ya existe." });
+                    if (macroprocess.Description.ToLower() == description.ToLower() && macroprocess.Id != id) return Json(new { result = "500", message = "Este macroproceso ya existe." });
 
                     macroprocess.Description = description;
                     db.SaveChanges();

@@ -68,7 +68,7 @@ namespace RepositorioDocumentos.Controllers
                 {
                     var directorate = db.Directorates.FirstOrDefault(o => o.Id == id);
                     if (directorate == null) return Json(new { result = "500", message = "Dirección no encontrada." });
-                    if (directorate.Description.ToLower() == description.ToLower()) return Json(new { result = "500", message = "Esta dirección ya existe." });
+                    if (directorate.Description.ToLower() == description.ToLower() && directorate.Id != id) return Json(new { result = "500", message = "Esta dirección ya existe." });
 
                     directorate.Description = description;
                     db.SaveChanges();

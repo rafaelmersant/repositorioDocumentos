@@ -68,7 +68,7 @@ namespace RepositorioDocumentos.Controllers
                 {
                     var documentType = db.DocumentTypes.FirstOrDefault(o => o.Id == id);
                     if (documentType == null) return Json(new { result = "500", message = "Tipo de documento no encontrado." });
-                    if (documentType.Description.ToLower() == description.ToLower()) return Json(new { result = "500", message = "Este tipo de documento ya existe." });
+                    if (documentType.Description.ToLower() == description.ToLower() && documentType.Id != id) return Json(new { result = "500", message = "Este tipo de documento ya existe." });
 
                     documentType.Description = description;
                     db.SaveChanges();

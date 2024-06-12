@@ -219,7 +219,7 @@ namespace RepositorioDocumentos.Controllers
                     db.SaveChanges();
                 }
 
-                return Json(new { result = "200", message = _documentContent });
+                return Json(new { result = "200", message = _documentContent.Id });
             }
             catch (Exception ex)
             {

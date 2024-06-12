@@ -166,7 +166,7 @@
 
                 if (confirm(`Confirma que desea eliminar el código: ${description}`)) {
                     $.ajax({
-                        "url": `/Direccion/DeleteDirectorate?id=${id}`,
+                        "url": `/DocumentoCodigo/DeleteDocumentCode?id=${id}`,
                         "type": "POST",
                         "success": function (response) {
                             if (response.result === "200") {

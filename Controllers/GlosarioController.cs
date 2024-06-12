@@ -56,7 +56,9 @@ namespace RepositorioDocumentos.Controllers
                 {
                     var glossary = db.DocumentGlossaries.FirstOrDefault(o => o.Id == id);
                     if (glossary == null) return Json(new { result = "500", message = "Palabra no encontrada." });
-                    if (glossary.Description.ToLower() == description.ToLower() && glossary.Word.ToLower() == word.ToLower()) return Json(new { result = "500", message = "Esta palabra ya existe." });
+                    if (glossary.Description.ToLower() == description.ToLower() 
+                        && glossary.Word.ToLower() == word.ToLower()
+                        && glossary.Id != id) return Json(new { result = "500", message = "Esta palabra ya existe." });
 
                     glossary.Word = word;
                     glossary.Description = description;

@@ -68,7 +68,7 @@ namespace RepositorioDocumentos.Controllers
                 {
                     var documentCode = db.DocumentCodes.FirstOrDefault(o => o.Id == id);
                     if (documentCode == null) return Json(new { result = "500", message = "Código no encontrado." });
-                    if (documentCode.Code.ToLower() == description.ToLower()) return Json(new { result = "500", message = "Este código ya existe." });
+                    if (documentCode.Code.ToLower() == description.ToLower() && documentCode.Id != id) return Json(new { result = "500", message = "Este código ya existe." });
 
                     documentCode.Code = description;
                     db.SaveChanges();

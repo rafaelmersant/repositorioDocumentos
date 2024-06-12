@@ -80,7 +80,8 @@ namespace RepositorioDocumentos.Controllers
                     if (departament == null) return Json(new { result = "500", message = "Departamento no encontrado." });
                     if (departament.DeptoName.ToLower() == description.ToLower() 
                         && departament.AreaId == areaId
-                        && departament.DeptoOwner == owner) return Json(new { result = "500", message = "Este departamento ya existe." });
+                        && departament.DeptoOwner == owner
+                        && departament.DeptoCode != code) return Json(new { result = "500", message = "Este departamento ya existe." });
 
                     departament.DeptoName = description;
                     departament.AreaId = areaId;
