@@ -4,10 +4,25 @@
 }
 
 @media print {
+
     body {
         margin: 0 40px 40px 40px;
         height: 100%;
+        counter-reset: page;
     }
+
+    .page {
+        page-break-after: always;
+        position: relative;
+    }
+
+   /* #content {
+        counter-increment: page;
+    }
+
+    #content-page::before {
+        content: 'Página ' counter(page) ' de ' counter(pages);
+    }*/
 
     #table-container {
         height: 100%;
@@ -16,12 +31,11 @@
         margin: 0;
     }
 
-    #table-contailer thead {
-        display: table-header-group; /* Ensures the header is repeated on each page */
-    }
+        #table-container thead {
+            display: table-header-group; /* Ensures the header is repeated on each page */
+        }
 
-    #table-contailer tfoot {
-        display: table-footer-group; /* Ensures the footer is repeated on each page */
-
-    }
+        #table-container tfoot {
+            display: table-footer-group; /* Ensures the footer is repeated on each page */
+        }
 }

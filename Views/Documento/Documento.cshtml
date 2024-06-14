@@ -788,11 +788,11 @@
         tinymce.init({
             selector: '.tinyEditor',
             menubar: false,
-            plugins: 'autoresize anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount linkchecker',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount linkchecker',
             toolbar: 'undo redo | fontfamily fontsize | bold italic underline strikethrough | table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-            autoresize_bottom_margin: 20, // Optional: Margin at the bottom of the editor
-            autoresize_min_height: 200,  // Optional: Minimum height of the editor
-            autoresize_max_height: 300,  // Optional: Maximum height of the editor
+            //autoresize_bottom_margin: 20, // Optional: Margin at the bottom of the editor
+            //autoresize_min_height: 200,  // Optional: Minimum height of the editor
+            //autoresize_max_height: 500,  // Optional: Maximum height of the editor
             setup: async function (editor) {
                 editor.on('init', async function (e) {
                     const _documentHeaderId = new URLSearchParams(window.location.search).get('id');
@@ -801,8 +801,27 @@
                         $("#DocumentHeaderId").val(_documentHeaderId);
                         await getDocument(_documentHeaderId);
                     }
+
+                    //if (editor.iframeElement.contentWindow.document.body.scrollHeight < 500) {
+                    //    editor.settings.autoresize_min_height = 150; // Minimum height
+                    //    editor.settings.autoresize_max_height = 500; // Maximum height
+                    //} else {
+                    //    editor.settings.autoresize = false;
+                    //}
                 });
-            }
+            },
+            //init_instance_callback: function (editor) {
+            //    editor.on('NodeChange SetContent', function (e) {
+            //        if (editor.iframeElement.contentWindow.document.body.scrollHeight < 500) {
+            //            editor.settings.autoresize_min_height = 150;
+            //            editor.settings.autoresize_max_height = 500;
+            //            editor.getBody().style.height = '';
+            //            tinymce.activeEditor.execCommand('mceAutoResize');
+            //        } else {
+            //            editor.getBody().style.height = '500px';
+            //        }
+            //    });
+            //}
         });
     }
 

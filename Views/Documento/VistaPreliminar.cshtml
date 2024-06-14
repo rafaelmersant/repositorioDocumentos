@@ -12,16 +12,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@Model.DocumentHeader.Title (Vista Preliminar)</title>
     <style>
+        
         body {
             max-width: 7in;
+            min-width: 7in;
             margin: 0 auto;
         }
+
+        #table-container thead {
+            display: table-header-group; /* Ensures the header is repeated on each page */
+        }
+
+        #table-container tfoot {
+            display: table-footer-group; /* Ensures the footer is repeated on each page */
+        }
+
         .container {
             height: 100px; /* Especifica la altura del contenedor aquí */
             width: 100%;
             display: flex;
             align-items: stretch;
             border: 1px solid #000;
+        }
+
+        #table-container {
+            height: 100%;
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
         }
 
         .full-height-table {
@@ -62,12 +80,12 @@
         }
     </style>
     <link rel="stylesheet" href="~/Content/doc-preview.css">
-
 </head>
-<body>
-  
+
+<body id="container-id">
+
     <table id="table-container">
-        <thead>
+        <thead class="cabecera">
             <tr><th style="height: 40px"></th></tr>
             <tr>
                 <th>
@@ -100,7 +118,7 @@
                                         <td>Fecha: @Model.DocumentHeader.Date.ToString("dd/MM/yyyy")</td>
                                     </tr>
                                     <tr>
-                                        <td>Página: 1 de 5</td>
+                                        <td><div class="page-number-header" id="content-page">Página 0 de 0</div></td>
                                     </tr>
                                 </table>
 
@@ -268,3 +286,25 @@
     </table>
 </body>
 </html>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        function addPageNumbers() {
+            console.log('DOING....')
+            var totalPages = Math.ceil($('#container-id')[0].scrollHeight / (11 * 96)); // 11 inches in pixels at 96dpi
+
+            console.log('PAGINAS 1: ', $('.page-number-header').length);
+            console.log('PAGINAS 2: ', $('#table-container thead').length);
+            console.log('PAGINAS 3: ', $('.cabecera').length);
+
+
+            $('.page-number-header').each(function (index) {
+                console.log('Pagina: ', index + 1, ' de ', totalPages);
+                $(this).html('<div class="page-number">Página ' + (index + 1) + ' de ' + totalPages + '</div>');
+            });
+        }
+
+        window.onbeforeprint = addPageNumbers;
+    });
+</script>
