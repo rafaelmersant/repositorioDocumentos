@@ -146,6 +146,7 @@ namespace RepositorioDocumentos.Controllers
                         docHeader.MacroprocessId = documentHeader.MacroprocessId;
                         docHeader.ProcessId = documentHeader.ProcessId;
                         docHeader.Objective = documentHeader.Objective;
+                        docHeader.Code = documentHeader.Code;
                         
                         db.Entry(docHeader).State = System.Data.Entity.EntityState.Modified;
                         db.SaveChanges();

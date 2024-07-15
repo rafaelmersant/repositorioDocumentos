@@ -483,6 +483,7 @@
     <script src="https://cdn.tiny.cloud/1/ooprn6x3slemw47jqbeenlvfu5msrfxpjpktjpllexhn4eqw/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 }
 <script type="text/javascript">
+    var processing = false;
 
     $(document).ready(async function () {
         //Variables
@@ -501,7 +502,7 @@
         var quill_contenidoBody;
         var quill_responsabilitiesBody;
         var quill_policyBody1;
-
+        
         $("#Documents").addClass("menu-active");
         $("#sectionContent").hide();
         $("#sectionScope").hide();
@@ -703,13 +704,17 @@
 
     async function getDocument(documentHeaderId) {
 
+        if (processing === true) return false;
+
+        processing = true;
+
         $.ajax({
             url: `/Documento/GetDocument?documentHeaderId=${documentHeaderId}`,
             type: "POST",
             contentType: 'application/json; charset=utf-8',
             dataType: 'json'
         }).done(async function (data) {
-            console.log('DATA getDocument:', data)
+            console.log('DATA getDocument:', data, " Time:", new Date());
 
             const documentHeader = data.message.documentHeader;
             const documentDetail = data.message.documentDetail;
@@ -765,6 +770,8 @@
 
             ResizeDescriptionTextarea('Objective');
             ResizeDescriptionTextarea('Scope');
+
+            processing = false;
         });
     }
 
