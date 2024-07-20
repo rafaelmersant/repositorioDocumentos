@@ -24,7 +24,6 @@ namespace RepositorioDocumentos.Models
             this.DocumentGlossaries = new HashSet<DocumentGlossary>();
             this.DocumentGuidelines = new HashSet<DocumentGuideline>();
             this.DocumentProcedures = new HashSet<DocumentProcedure>();
-            this.DocumentReferences = new HashSet<DocumentReference>();
             this.DocumentTypes = new HashSet<DocumentType>();
             this.Macroprocesses = new HashSet<Macroprocess>();
             this.Processes = new HashSet<Process>();
@@ -33,6 +32,7 @@ namespace RepositorioDocumentos.Models
             this.DocumentCodes = new HashSet<DocumentCode>();
             this.DocumentHeaders = new HashSet<DocumentHeader>();
             this.DocumentDetails = new HashSet<DocumentDetail>();
+            this.DocumentReferences = new HashSet<DocumentReference>();
         }
     
         public int Id { get; set; }
@@ -58,8 +58,6 @@ namespace RepositorioDocumentos.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DocumentProcedure> DocumentProcedures { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DocumentReference> DocumentReferences { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DocumentType> DocumentTypes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Macroprocess> Macroprocesses { get; set; }
@@ -75,5 +73,7 @@ namespace RepositorioDocumentos.Models
         public virtual ICollection<DocumentHeader> DocumentHeaders { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DocumentDetail> DocumentDetails { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DocumentReference> DocumentReferences { get; set; }
     }
 }

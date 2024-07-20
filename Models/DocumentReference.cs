@@ -16,12 +16,13 @@ namespace RepositorioDocumentos.Models
     {
         public int Id { get; set; }
         public int DocumentHeaderId { get; set; }
+        public string ReferenceType { get; set; }
         public string Name { get; set; }
         public string Url { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
     
-        public virtual User User { get; set; }
         public virtual DocumentHeader DocumentHeader { get; set; }
+        public virtual User User { get; set; }
     }
 }

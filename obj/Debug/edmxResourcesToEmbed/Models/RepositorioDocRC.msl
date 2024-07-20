@@ -96,18 +96,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="DocumentReferences">
-      <EntityTypeMapping TypeName="RepositorioDocRCModel.DocumentReference">
-        <MappingFragment StoreEntitySet="DocumentReference">
-          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="Url" ColumnName="Url" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="DocumentHeaderId" ColumnName="DocumentHeaderId" />
-          <ScalarProperty Name="Id" ColumnName="Id" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="DocumentTypes">
       <EntityTypeMapping TypeName="RepositorioDocRCModel.DocumentType">
         <MappingFragment StoreEntitySet="DocumentType">
@@ -217,6 +205,19 @@
           <ScalarProperty Name="Policy" ColumnName="Policy" />
           <ScalarProperty Name="Responsabilities" ColumnName="Responsabilities" />
           <ScalarProperty Name="Scope" ColumnName="Scope" />
+          <ScalarProperty Name="DocumentHeaderId" ColumnName="DocumentHeaderId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DocumentReferences">
+      <EntityTypeMapping TypeName="RepositorioDocRCModel.DocumentReference">
+        <MappingFragment StoreEntitySet="DocumentReference">
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="Url" ColumnName="Url" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ReferenceType" ColumnName="ReferenceType" />
           <ScalarProperty Name="DocumentHeaderId" ColumnName="DocumentHeaderId" />
           <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>

@@ -33,7 +33,6 @@ namespace RepositorioDocumentos.Models
         public virtual DbSet<DocumentGlossary> DocumentGlossaries { get; set; }
         public virtual DbSet<DocumentGuideline> DocumentGuidelines { get; set; }
         public virtual DbSet<DocumentProcedure> DocumentProcedures { get; set; }
-        public virtual DbSet<DocumentReference> DocumentReferences { get; set; }
         public virtual DbSet<DocumentType> DocumentTypes { get; set; }
         public virtual DbSet<Macroprocess> Macroprocesses { get; set; }
         public virtual DbSet<Process> Processes { get; set; }
@@ -43,5 +42,6 @@ namespace RepositorioDocumentos.Models
         public virtual DbSet<DocumentCode> DocumentCodes { get; set; }
         public virtual DbSet<DocumentHeader> DocumentHeaders { get; set; }
         public virtual DbSet<DocumentDetail> DocumentDetails { get; set; }
+        public virtual DbSet<DocumentReference> DocumentReferences { get; set; }
     }
 }

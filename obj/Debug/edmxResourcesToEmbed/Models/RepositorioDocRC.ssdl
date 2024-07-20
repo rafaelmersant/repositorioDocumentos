@@ -150,6 +150,7 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="DocumentHeaderId" Type="int" Nullable="false" />
+    <Property Name="ReferenceType" Type="varchar" MaxLength="10" Nullable="false" />
     <Property Name="Name" Type="varchar" MaxLength="200" Nullable="false" />
     <Property Name="Url" Type="varchar" MaxLength="400" Nullable="false" />
     <Property Name="CreatedDate" Type="datetime" Nullable="false" />

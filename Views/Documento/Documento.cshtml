@@ -349,13 +349,21 @@
 
                 <div class="form-row">
                     <div class="form-group ml-2 col-lg-3 col-md-3 col-sm-12">
-                        <label for="FileNameDocText">Nombre de archivo</label>
+                        <label for="ReferenceType">Tipo de Referencia/Anexo</label>
                         <br />
-                        <input type="text" id="FileNameDocText" name="FileNameDocText" class="form-control form-control-sm d-inline" readonly />
-                        <span onclick="document.getElementById('fileUploadDoc').click(); return false;" class="fa fa-search d-inline h6" style="cursor: pointer"></span>
+                        <select class="form-control form-control-sm" id="ReferenceType">
+                            <option value="Archivo">Archivo</option>
+                            <option value="Link">Hipervinculo</option>
+                        </select>
                     </div>
                     <div class="form-group ml-2 col-lg-3 col-md-3 col-sm-12">
-                        <label for="FileDescription">Descripción</label>
+                        <label for="FileNameDocText" id="FileNameDocTextLabel">Nombre de archivo</label>
+                        <br />
+                        <input type="text" id="FileNameDocText" name="FileNameDocText" class="form-control form-control-sm d-inline" readonly />
+                        <span id="SearchFileToUpload" onclick="document.getElementById('fileUploadDoc').click(); return false;" class="fa fa-search d-inline h6" style="cursor: pointer"></span>
+                    </div>
+                    <div class="form-group ml-2 col-lg-3 col-md-3 col-sm-12">
+                        <label for="FileDescription">Descripción/Título</label>
                         <input type="text" id="FileDescription" name="FileDescription" maxlength="200" class="form-control form-control-sm" autocomplete="off" />
                     </div>
                     <div class="form-group ml-2 col-lg-2 col-md-2 col-sm-12" style="padding-top: 22px">
@@ -524,6 +532,22 @@
                 //beforeShowDay: $.datepicker.noWeekends
             }
         );
+
+        $("#ReferenceType").change(function (evt) {
+            console.log("this,", evt.currentTarget.value)
+
+            if (evt.currentTarget.value === "Link") {
+                $("#FileNameDocTextLabel").text("Hipervinculo del documento")
+                $("#FileNameDocText").attr("readonly", false);
+                $("#SearchFileToUpload").removeClass("fa-search");
+                $("#SearchFileToUpload").prop("disabled", true);
+            } else {
+                $("#FileNameDocTextLabel").text("Nombre de archivo")
+                $("#FileNameDocText").attr("readonly", true);
+                $("#SearchFileToUpload").addClass("fa-search");
+                $("#SearchFileToUpload").prop("disabled", false);
+            }
+        })
 
         const _currentEditor = new URLSearchParams(window.location.search).get('editor');
         if (_currentEditor)
