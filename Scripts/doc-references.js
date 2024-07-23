@@ -1,6 +1,6 @@
 ﻿$("#fileUploadDoc").change(function (evt) {
     const selectedFile = this.files[0];
-    console.log('selected file:', selectedFile)
+
     if (selectedFile) {
         $("#FileNameDocText").val(selectedFile.name);
     }
@@ -101,7 +101,6 @@ function getUploadedFiles() {
                 $("#uploaded-files").html(`<span class="mt-1 mb-1"> <strong>Anexos agregados:</strong> </span><br/>`);
                 $("#uploaded-files").append(docs);
 
-                console.log('docs:', docs )
                 if (!docs.length)
                     $("#uploaded-files").html("");
             }

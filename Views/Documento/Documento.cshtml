@@ -492,6 +492,7 @@
 }
 <script type="text/javascript">
     var processing = false;
+    var processingProcedures = false;
 
     $(document).ready(async function () {
         //Variables
@@ -510,6 +511,7 @@
         var quill_contenidoBody;
         var quill_responsabilitiesBody;
         var quill_policyBody1;
+        var quill_descriptionProcedure;
         
         $("#Documents").addClass("menu-active");
         $("#sectionContent").hide();
@@ -891,6 +893,13 @@
         });
 
         quill_policyBody = new Quill('#policyBody', {
+            modules: {
+                toolbar: toolbarOptions
+            },
+            theme: 'snow'
+        });
+
+        quill_descriptionProcedure = new Quill('#description-procedure', {
             modules: {
                 toolbar: toolbarOptions
             },
