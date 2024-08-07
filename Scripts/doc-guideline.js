@@ -4,7 +4,7 @@ $('.btn-new-guideline').click(function () {
     if (!$('.save-guideline-btn')[0]) {
         const newRowHtml = '<tr>' +
             `<td class="field-sortindex-guideline-new"><input type="text" maxlength="3" value="${guidelinesCount}" class="form-control form-control-sm new-sortindex-guideline"></td>` +
-            '<td class="field-description-guideline-new"><textarea id="description-guideline" class="auto-resizing-textarea form-control form-control-sm col-12 new-description-guideline" placeholder="Escribir descripci&oacute;n"></textarea></td>' +
+            '<td class="field-description-guideline-new"><div id="description-guideline" class="col-12 new-description-guideline" placeholder="Escribir descripci&oacute;n"></div></td>' +
             '<td class="text-center">' +
             '<button class="btn btn-sm btn-success save-guideline-btn">Guardar</button>' +
             '<button class="btn btn-sm btn-danger cancel-guideline-btn">Cancelar</button>' +
@@ -13,13 +13,20 @@ $('.btn-new-guideline').click(function () {
 
         $('#guidelineTable tbody').prepend(newRowHtml);
 
-        descriptionGuidelineTextarea();
+        tinymce.init({
+            selector: '#description-guideline',
+            menubar: false,
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount linkchecker',
+            toolbar: 'undo redo | fontfamily fontsize | bold italic underline strikethrough | table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+        });
     }
 });
 
-$(document).on('click', '.save-guideline-btn', function () {
+$(document).on('click', '.save-guideline-btn', async function () {
     var sortindex = $(this).closest('tr').find('.new-sortindex-guideline').val();
-    var description = $(this).closest('tr').find('.new-description-guideline').val();
+    //var description = $(this).closest('tr').find('.new-description-guideline').val();
+    var description = await getGuidelineBody();
+
     const documentHeaderId = $("#DocumentHeaderId").val();
 
     if (!sortindex || !description) {
@@ -27,10 +34,15 @@ $(document).on('click', '.save-guideline-btn', function () {
         return false;
     }
 
+    const parameters = { documentHeaderId, sortindex, description };
+
     $.ajax({
-        "url": `/Directriz/AddGuideline?documentHeaderId=${documentHeaderId}&sortindex=${sortindex}&description=${description}`,
+        "url": `/Directriz/AddGuideline`,
         "type": "POST",
-        "success": function (response) {
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        data: JSON.stringify(parameters),
+        "success": async function (response) {
             if (response.result === "200") {
                 toastr.success(`El registro fue agregado!`);
                 $('.field-sortindex-guideline-new').text(sortindex);
@@ -48,16 +60,19 @@ $(document).on('click', '.cancel-guideline-btn', function () {
     $(this).closest('tr').remove();
 });
 
-function getGuideline() {
+async function getGuideline() {
     $("#guideline-tbody").empty();
     const documentHeaderId = $("#DocumentHeaderId").val();
+
+    if (processingGuidelines === true) return false;
+    processingGuidelines = true;
 
     $.ajax({
         url: `/Directriz/GetGuideline?documentHeaderId=${documentHeaderId}`,
         type: "POST",
         contentType: 'application/json; charset=utf-8',
         dataType: 'json'
-    }).done(function (data) {
+    }).done(async function (data) {
         console.log('DATA GetGuideline:', data)
 
         if (data.result === "200") {
@@ -66,7 +81,7 @@ function getGuideline() {
             for (const item of data.message) {
                 const itemRow = '<tr>' +
                     `<td class="field-sortindex-guideline text-center">${item.SortIndex}</td>` +
-                    `<td class="field-description-guideline">${item.Description}</td>` +
+                    `<td class="field-description-guideline">${item.Description}<input class="field-description-guideline-raw" type='hidden' value='${item.Description}'></td>` +
                     '<td class="text-center">' +
                     `<input type="hidden" class="field-id-guideline" value="${item.Id}">` +
                     '<a class="btn btn-sm btn-success btn-edit-guideline edit-button-width" href="javascript:void(0)" title="Editar">Editar</a> ' +
@@ -79,9 +94,9 @@ function getGuideline() {
                 guidelinesCount += 1;
             }
 
-            $('.btn-edit-guideline').click(function () {
+            $('.btn-edit-guideline').click(async function () {
                 var editButton = $(this);
-
+                console.log('CHECKED HERE::::::', editButton.prop('title'))
                 if (editButton.prop('title') === "Editar") {
                     editButton.prop('title', 'Guardar');
                     editButton.html("Guardar");
@@ -89,30 +104,43 @@ function getGuideline() {
                     editButton.closest('tr').find('.btn-remove-guideline').prop("title", "Cancelar");
 
                     const sortindex = editButton.closest('tr').find('.field-sortindex-guideline').text();
-                    const description = editButton.closest('tr').find('.field-description-guideline').text();
+                    //const description = editButton.closest('tr').find('.field-description-guideline').text();
+                    const descriptionRaw = editButton.closest('tr').find('.field-description-guideline-raw').val();
 
                     sortindexGuidelineEditing = sortindex;
-                    descriptionGuidelineEditing = description;
+                    descriptionGuidelineEditing = descriptionRaw;
 
                     editButton.closest('tr').find('.field-sortindex-guideline').html(`<input type="text" maxlength="3"  class="form-control form-control-sm edit-sortindex-guideline" value="${sortindex}">`);
-                    editButton.closest('tr').find('.field-description-guideline').html(`<textarea id="description-guideline" class="form-control form-control-sm col-12 auto-resizing-textarea edit-description-guideline">${description}</textarea>`);
+                    //editButton.closest('tr').find('.field-description-guideline').html(`<textarea id="description-guideline" class="form-control form-control-sm col-12 auto-resizing-textarea edit-description-guideline">${description}</textarea>`);
+                    editButton.closest('tr').find('.field-description-guideline').html(`<div id="description-guideline" class="col-12 edit-description-guideline">${descriptionRaw}</div><input class="field-description-guideline-raw" type='hidden' value='${descriptionRaw}'>`);
 
-                    descriptionGuidelineTextarea();
+                    tinymce.init({
+                        selector: '#description-guideline',
+                        menubar: false,
+                        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount linkchecker',
+                        toolbar: 'undo redo | fontfamily fontsize | bold italic underline strikethrough | table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+                    });
 
                 } else {
                     const id = editButton.closest('tr').find('.field-id-guideline').val();
                     const sortindex = editButton.closest('tr').find('.edit-sortindex-guideline').val();
-                    const description = editButton.closest('tr').find('.edit-description-guideline').val();
+                    //const description = editButton.closest('tr').find('.edit-description-guideline').val();
+                    const description = await getGuidelineBody(); //editButton.closest('tr').find('.edit-description-procedure').val();
 
                     if (!sortindex || !description) {
                         toastr.error("Debe completar todos los campos.");
                         return false;
                     }
 
+                    const parameters = { id, sortindex, description };
+
                     $.ajax({
-                        "url": `/Directriz/UpdateGuideline?id=${id}&sortindex=${sortindex}&description=${description}`,
+                        "url": `/Directriz/UpdateGuideline`,
                         "type": "POST",
-                        "success": function (response) {
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        data: JSON.stringify(parameters),
+                        "success": async function (response) {
                             if (response.result === "200") {
                                 toastr.success(`El registro #${id} fue actualizado!`);
                                 editButton.prop('title', 'Editar');
@@ -122,6 +150,8 @@ function getGuideline() {
                                 editButton.html("Editar");
                                 editButton.closest('tr').find('.btn-remove-guideline').html("Eliminar");
                                 editButton.closest('tr').find('.btn-remove-guideline').prop("title", "Eliminar");
+
+                                getGuideline();
                             } else {
                                 toastr.error(response.message);
                             }
@@ -130,15 +160,18 @@ function getGuideline() {
                 }
             });
 
-            $('.btn-remove-guideline').click(function () {
+            $('.btn-remove-guideline').click(async function () {
                 var removeButton = $(this);
 
                 if (removeButton.html() === "Cancelar") {
                     removeButton.prop('title', 'Eliminar');
                     removeButton.html("Eliminar");
 
+                    const __descriptionRaw = `<input class="field-description-procedure-raw" type='hidden' value='${descriptionGuidelineEditing}'>`;
+
                     removeButton.closest('tr').find('.field-sortindex-guideline').text(sortindexGuidelineEditing);
-                    removeButton.closest('tr').find('.field-description-guideline').text(descriptionGuidelineEditing);
+                    //removeButton.closest('tr').find('.field-description-guideline').text(descriptionGuidelineEditing);
+                    removeButton.closest('tr').find('.field-description-guideline').html(`${descriptionGuidelineEditing}${__descriptionRaw}`);
 
                     removeButton.closest('tr').find('.btn-edit-guideline').html("Editar");
                     removeButton.closest('tr').find('.btn-edit-guideline').prop("title", "Editar");
@@ -165,6 +198,8 @@ function getGuideline() {
         } else {
             toastr.error(data.message);
         }
+
+        processingGuidelines = false;
     });
 }
 
@@ -183,4 +218,26 @@ function descriptionGuidelineTextarea() {
     $textarea.on('input', function () {
         resizeTextarea($(this));
     });
+}
+
+//Guideline BODY
+async function getGuidelineBody() {
+    const currentEditor = $("#CurrentEditor").val();
+    let value = "";
+
+    if (currentEditor === "Tiny")
+        value = tinymce.get("description-guideline").getContent();
+    else
+        value = quill_descriptionGuideline.root.innerHTML;
+
+    return value ? value : "";
+}
+
+async function setGuidelineBody(value) {
+    const currentEditor = $("#CurrentEditor").val();
+
+    if (currentEditor === "Tiny")
+        tinymce.get("description-guideline").setContent(value);
+    else
+        quill_descriptionGuideline.root.innerHTML = value;
 }

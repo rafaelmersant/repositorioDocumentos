@@ -493,6 +493,7 @@
 <script type="text/javascript">
     var processing = false;
     var processingProcedures = false;
+    var processingGuidelines = false;
 
     $(document).ready(async function () {
         //Variables
@@ -510,8 +511,9 @@
         var natureChangeChangeEditing = "";
         var quill_contenidoBody;
         var quill_responsabilitiesBody;
-        var quill_policyBody1;
+        var quill_policyBody;
         var quill_descriptionProcedure;
+        var quill_descriptionGuideline;
         
         $("#Documents").addClass("menu-active");
         $("#sectionContent").hide();
@@ -754,7 +756,7 @@
 
             const documentCodeValue = $('#DocumentCode option').filter(function () { return $(this).html() == documentHeader.Code; }).val();
             $("#DocumentCode").val(documentCodeValue);
-
+          
             $("#Revision").val(documentHeader.Revision);
             $("#docDate").val(documentHeader.Date);
             $("#Logo").val(documentHeader.Image);
@@ -829,7 +831,7 @@
             setup: async function (editor) {
                 editor.on('init', async function (e) {
                     const _documentHeaderId = new URLSearchParams(window.location.search).get('id');
-
+                    console.log('DOCU:::::', _documentHeaderId)
                     if (_documentHeaderId) {
                         $("#DocumentHeaderId").val(_documentHeaderId);
                         await getDocument(_documentHeaderId);
@@ -900,6 +902,13 @@
         });
 
         quill_descriptionProcedure = new Quill('#description-procedure', {
+            modules: {
+                toolbar: toolbarOptions
+            },
+            theme: 'snow'
+        });
+
+        quill_descriptionGuideline = new Quill('#description-guideline', {
             modules: {
                 toolbar: toolbarOptions
             },
@@ -1058,5 +1067,148 @@
 
         return "";
     }
+
+    //async function getGuideline() {
+    //    $("#guideline-tbody").empty();
+    //    const documentHeaderId = $("#DocumentHeaderId").val();
+
+    //    if (processingGuidelines === true) return false;
+    //    processingGuidelines = true;
+
+    //    $.ajax({
+    //        url: `/Directriz/GetGuideline?documentHeaderId=${documentHeaderId}`,
+    //        type: "POST",
+    //        contentType: 'application/json; charset=utf-8',
+    //        dataType: 'json'
+    //    }).done(async function (data) {
+    //        console.log('DATA GetGuideline:', data)
+
+    //        if (data.result === "200") {
+    //            guidelinesCount = 1;
+
+    //            for (const item of data.message) {
+    //                const itemRow = '<tr>' +
+    //                    `<td class="field-sortindex-guideline text-center">${item.SortIndex}</td>` +
+    //                    `<td class="field-description-guideline">${item.Description}<input class="field-description-guideline-raw" type='hidden' value='${item.Description}'></td>` +
+    //                    '<td class="text-center">' +
+    //                    `<input type="hidden" class="field-id-guideline" value="${item.Id}">` +
+    //                    '<a class="btn btn-sm btn-success btn-edit-guideline edit-button-width" href="javascript:void(0)" title="Editar">Editar</a> ' +
+    //                    ' <a class="btn btn-sm btn-danger btn-remove-guideline" href="javascript:void(0)" title="Eliminar">Eliminar</a>' +
+    //                    '</td>' +
+    //                    '</tr>';
+
+    //                $('#guidelineTable tbody').append(itemRow);
+
+    //                guidelinesCount += 1;
+    //            }
+
+    //            $('.btn-edit-guideline').click(async function () {
+    //                var editButton = $(this);
+
+    //                if (editButton.prop('title') === "Editar") {
+    //                    editButton.prop('title', 'Guardar');
+    //                    editButton.html("Guardar");
+    //                    editButton.closest('tr').find('.btn-remove-guideline').html("Cancelar");
+    //                    editButton.closest('tr').find('.btn-remove-guideline').prop("title", "Cancelar");
+
+    //                    const sortindex = editButton.closest('tr').find('.field-sortindex-guideline').text();
+    //                    //const description = editButton.closest('tr').find('.field-description-guideline').text();
+    //                    const descriptionRaw = editButton.closest('tr').find('.field-description-guideline-raw').val();
+
+    //                    sortindexGuidelineEditing = sortindex;
+    //                    descriptionGuidelineEditing = descriptionRaw;
+
+    //                    editButton.closest('tr').find('.field-sortindex-guideline').html(`<input type="text" maxlength="3"  class="form-control form-control-sm edit-sortindex-guideline" value="${sortindex}">`);
+    //                    //editButton.closest('tr').find('.field-description-guideline').html(`<textarea id="description-guideline" class="form-control form-control-sm col-12 auto-resizing-textarea edit-description-guideline">${description}</textarea>`);
+    //                    editButton.closest('tr').find('.field-description-guideline').html(`<div id="description-guideline" class="col-12 edit-description-guideline">${descriptionRaw}</div><input class="field-description-guideline-raw" type='hidden' value='${descriptionRaw}'>`);
+
+    //                    tinymce.init({
+    //                        selector: '#description-guideline',
+    //                        menubar: false,
+    //                        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount linkchecker',
+    //                        toolbar: 'undo redo | fontfamily fontsize | bold italic underline strikethrough | table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+    //                    });
+
+    //                } else {
+    //                    const id = editButton.closest('tr').find('.field-id-guideline').val();
+    //                    const sortindex = editButton.closest('tr').find('.edit-sortindex-guideline').val();
+    //                    //const description = editButton.closest('tr').find('.edit-description-guideline').val();
+    //                    const description = await getGuidelineBody(); //editButton.closest('tr').find('.edit-description-procedure').val();
+
+    //                    if (!sortindex || !description) {
+    //                        toastr.error("Debe completar todos los campos.");
+    //                        return false;
+    //                    }
+
+    //                    const parameters = { documentHeaderId, sortindex, description };
+
+    //                    $.ajax({
+    //                        "url": `/Directriz/UpdateGuideline?id=${id}&sortindex=${sortindex}&description=${description}`,
+    //                        "type": "POST",
+    //                        contentType: 'application/json; charset=utf-8',
+    //                        dataType: 'json',
+    //                        data: JSON.stringify(parameters),
+    //                        "success": async function (response) {
+    //                            if (response.result === "200") {
+    //                                toastr.success(`El registro #${id} fue actualizado!`);
+    //                                editButton.prop('title', 'Editar');
+    //                                editButton.closest('tr').find('.field-sortindex-guideline').text(sortindex);
+    //                                editButton.closest('tr').find('.field-description-guideline').text(description);
+
+    //                                editButton.html("Editar");
+    //                                editButton.closest('tr').find('.btn-remove-guideline').html("Eliminar");
+    //                                editButton.closest('tr').find('.btn-remove-guideline').prop("title", "Eliminar");
+
+    //                                getGuideline();
+    //                            } else {
+    //                                toastr.error(response.message);
+    //                            }
+    //                        }
+    //                    });
+    //                }
+    //            });
+
+    //            $('.btn-remove-guideline').click(async function () {
+    //                var removeButton = $(this);
+
+    //                if (removeButton.html() === "Cancelar") {
+    //                    removeButton.prop('title', 'Eliminar');
+    //                    removeButton.html("Eliminar");
+
+    //                    const __descriptionRaw = `<input class="field-description-procedure-raw" type='hidden' value='${descriptionGuidelineEditing}'>`;
+
+    //                    removeButton.closest('tr').find('.field-sortindex-guideline').text(sortindexGuidelineEditing);
+    //                    //removeButton.closest('tr').find('.field-description-guideline').text(descriptionGuidelineEditing);
+    //                    removeButton.closest('tr').find('.field-description-guideline').html(`${descriptionGuidelineEditing}${__descriptionRaw}`);
+
+    //                    removeButton.closest('tr').find('.btn-edit-guideline').html("Editar");
+    //                    removeButton.closest('tr').find('.btn-edit-guideline').prop("title", "Editar");
+    //                } else {
+    //                    const id = removeButton.closest('tr').find('.field-id-guideline').val();
+    //                    const sortindex = removeButton.closest('tr').find('.field-sortindex-guideline').text();
+
+    //                    if (confirm(`Confirma que desea eliminar el registro #${sortindex}`)) {
+    //                        $.ajax({
+    //                            "url": `/Directriz/DeleteGuideline?id=${id}`,
+    //                            "type": "POST",
+    //                            "success": function (response) {
+    //                                if (response.result === "200") {
+    //                                    toastr.success(`El registro #${sortindex} fue eliminado!`);
+    //                                    getGuideline();
+    //                                } else {
+    //                                    toastr.error(response.message);
+    //                                }
+    //                            }
+    //                        });
+    //                    }
+    //                }
+    //            });
+    //        } else {
+    //            toastr.error(data.message);
+    //        }
+
+    //        processingGuidelines = false;
+    //    });
+    //}
 
 </script>

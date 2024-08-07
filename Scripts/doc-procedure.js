@@ -63,7 +63,7 @@ $(document).on('click', '.cancel-procedure-btn', function () {
     $(this).closest('tr').remove();
 });
 
-function getProcedure() {
+async function getProcedure() {
     $("#procedure-tbody").empty();
     const documentHeaderId = $("#DocumentHeaderId").val();
 

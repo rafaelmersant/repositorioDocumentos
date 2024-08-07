@@ -17,6 +17,10 @@ namespace RepositorioDocumentos.Controllers
 
             try
             {
+                ViewBag.Directorates = new DireccionController().GetDirecciones();
+                ViewBag.Areas = new AreaController().GetAreas();
+                ViewBag.Departments = new DepartamentoController().GetDepartamentos();
+
                 var db = new RepositorioDocRCEntities();
 
                 var tipos = db.DocumentCodes.OrderBy(o => o.Code).ToList();
