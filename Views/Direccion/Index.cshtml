@@ -27,7 +27,9 @@
                         <th>
                             Descripción
                         </th>
-
+                        <th>
+                            Referencia
+                        </th>
                         <th></th>
                     </tr>
                 </thead>
@@ -37,6 +39,7 @@
                         <tr>
                             <td class="text-center field-id">@item.Id</td>
                             <td class="field-description">@item.Description</td>
+                            <td class="field-reference">@item.Reference</td>
 
                             <td align="center">
                                 <a class="btn btn-sm btn-success edit-btn edit-button-width" href="javascript:void(0)" title="Editar">
@@ -74,6 +77,7 @@
                 const newRowHtml = '<tr>' +
                     '<td class="text-center">##</td>' +
                     '<td class="field-description-new"><input type="text" maxlength="50" min="3" class="form-control form-control-sm new-description" placeholder="Escribir descripción"></td>' +
+                    '<td class="field-reference-new"><input type="text" maxlength="3" min="3" class="form-control form-control-sm new-reference"></td>' +
                     '<td class="text-center">' +
                     '<button class="btn btn-sm btn-success save-btn">Guardar</button>' +
                     '<button class="btn btn-sm btn-danger cancel-btn">Cancelar</button>' +
@@ -86,19 +90,24 @@
 
         $(document).on('click', '.save-btn', function () {
             var description = $(this).closest('tr').find('.new-description').val();
+            var reference = $(this).closest('tr').find('.new-reference').val();
 
             if (!description) {
                 toastr.error("El campo descripción no puede estar vacio.");
                 return false;
             }
 
+            const parameters = { description, reference };
+
             $.ajax({
-                "url": `/Direccion/AddDirectorate?description=${description}`,
-                "type": "POST",
+                "url": `/Direccion/AddDirectorate`,
+                type: "POST",
+                data: parameters,
                 "success": function (response) {
                     if (response.result === "200") {
                         toastr.success(`El registro fue agregado!`);
                         $('.field-description-new').text(description);
+                        $('.field-reference-new').text(reference.toUpperCase());
                         setTimeout(function () {
                             window.location.reload(true);
                         }, 1000);
@@ -123,26 +132,32 @@
                 editButton.closest('tr').find('.btn-remove').prop("title", "Cancelar");
 
                 const description = editButton.closest('tr').find('.field-description').text();
+                const reference = editButton.closest('tr').find('.field-reference').text();
 
                 editButton.closest('tr').find('.field-description').html('<input type="text" maxlength="50" min="3" class="form-control form-control-sm edit-description" value="' + description + '">');
+                editButton.closest('tr').find('.field-reference').html('<input type="text" maxlength="3" min="3" class="form-control form-control-sm edit-reference" value="' + reference + '">');
 
             } else {
                 const id = editButton.closest('tr').find('.field-id').text();
                 const description = editButton.closest('tr').find('.edit-description').val();
+                const reference = editButton.closest('tr').find('.edit-reference').val();
 
                 if (!description) {
                     toastr.error("El campo descripción no puede estar vacio.");
                     return false;
                 }
 
+                const parameters = {id, description, reference };
                 $.ajax({
-                    "url": `/Direccion/UpdateDirectorate?id=${id}&description=${description}`,
-                    "type": "POST",
+                    "url": `/Direccion/UpdateDirectorate`,
+                    type: "POST",
+                    data: parameters,
                     "success": function (response) {
                         if (response.result === "200") {
                             toastr.success(`El registro #${id} fue actualizado!`);
                             editButton.prop('title', 'Editar');
                             editButton.closest('tr').find('.field-description').text(description);
+                            editButton.closest('tr').find('.field-reference').text(reference.toUpperCase());
     
                             editButton.html("Editar");
                             editButton.closest('tr').find('.btn-remove').html("Eliminar");

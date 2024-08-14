@@ -24,6 +24,7 @@ namespace RepositorioDocumentos.Models
         public string DeptoName { get; set; }
         public string DeptoOwner { get; set; }
         public short AreaId { get; set; }
+        public string Reference { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
     

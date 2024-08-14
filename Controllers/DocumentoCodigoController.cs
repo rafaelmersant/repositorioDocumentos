@@ -17,9 +17,8 @@ namespace RepositorioDocumentos.Controllers
 
             try
             {
-                ViewBag.Directorates = new DireccionController().GetDirecciones();
-                ViewBag.Areas = new AreaController().GetAreas();
-                ViewBag.Departments = new DepartamentoController().GetDepartamentos();
+                ViewBag.Direcciones = new DireccionController().GetDireccionesReference();
+                ViewBag.DocumentosTipos = new DocumentoTiposController().GetDocumentoTiposReference();
 
                 var db = new RepositorioDocRCEntities();
 

@@ -25,6 +25,9 @@
                             Id
                         </th>
                         <th>
+                            Referencia
+                        </th>
+                        <th>
                             Código
                         </th>
 
@@ -36,12 +39,13 @@
                     {
                         <tr>
                             <td class="text-center field-id">@item.Id</td>
+                            <td class="field-pattern"></td>
                             <td class="field-description">@item.Code</td>
 
                             <td align="center">
-                                <a class="btn btn-sm btn-success edit-btn edit-button-width" href="javascript:void(0)" title="Editar">
+                                @*<a class="btn btn-sm btn-success edit-btn edit-button-width" href="javascript:void(0)" title="Editar">
                                     Editar
-                                </a>
+                                </a>*@
                                 <a class="btn btn-sm btn-danger btn-remove" href="javascript:void(0)" title="Eliminar">
                                     Eliminar
                                 </a>
@@ -71,9 +75,25 @@
 
         $('.btn-new').click(function () {
             if (!$('.save-btn')[0]) {
+                //Direcciones
+                let _directorates = @Html.Raw(Json.Encode(ViewBag.Direcciones));
+                let directorates = [];
+
+                for (const directorate of _directorates) {
+                    directorates.push(`<option value="${directorate.Value}">${directorate.Text}</option>`)
+                }
+
+                const departments = [];  
+                const docTypes = [];
+
                 const newRowHtml = '<tr>' +
                     '<td class="text-center">##</td>' +
-                    '<td class="field-description-new"><input type="text" maxlength="20" min="3" class="form-control form-control-sm new-description" placeholder="Escribir código"></td>' +
+                    `<td class="field-pattern-new">` +
+                    `<select class="form-control form-control-sm new-pattern-dir" id="pattern-dir"> ${directorates} </select>` +
+                    `<select class="form-control form-control-sm new-pattern-depto" id="pattern-depto"> ${departments} </select>` +
+                    `<select class="form-control form-control-sm new-pattern-doc" id="pattern-doc"> ${docTypes} </select>` +
+                    `</td>` +
+                    '<td class="field-description-new" style="vertical-align: middle;"><input type="text" maxlength="20" min="3" class="form-control form-control-sm new-description" placeholder="Escribir código"></td>' +
                     '<td class="text-center">' +
                     '<button class="btn btn-sm btn-success save-btn">Guardar</button>' +
                     '<button class="btn btn-sm btn-danger cancel-btn">Cancelar</button>' +
@@ -81,6 +101,57 @@
                     '</tr>';
 
                 $('#documentCodeTable tbody').prepend(newRowHtml);
+
+                $("#pattern-dir").on('change', function (evt) {
+                   
+                    $.ajax({
+                        "url": `/Departamento/getDepartmentsByDirectorateIdReference?directorateReference=${evt.currentTarget.value}`,
+                        "type": "POST",
+                        "success": function (response) {
+                            if (response.result === "200") {
+                                //Re-render departments
+                                $("#pattern-depto").empty();
+                                $("#pattern-doc").empty();
+                                
+                                for (const option of response.message) {
+                                    $('#pattern-depto').append($(`<option value="${option.Value}">${option.Text}</option>`));
+                                }
+
+                                renderDocumentCode($('#pattern-dir').val(), $('#pattern-depto').val(), $('#pattern-doc').val());
+                                console.log(response);
+                            } else {
+                                toastr.error(response.message);
+                            }
+                        }
+                    });
+                });
+
+                $("#pattern-depto").on('change', function (evt) {
+
+                    if ($("#pattern-doc").length === 1) {
+                        $.ajax({
+                            "url": `/DocumentoTipos/getDocumentTypesReference`,
+                            "type": "POST",
+                            "success": function (response) {
+                                if (response.result === "200") {
+                                    //Re-render docTypes
+                                    for (const option of response.message) {
+                                        $('#pattern-doc').append($(`<option value="${option.Value}">${option.Text}</option>`));
+                                    }
+
+                                    renderDocumentCode($('#pattern-dir').val(), $('#pattern-depto').val(), $('#pattern-doc').val());
+                                    console.log(response);
+                                } else {
+                                    toastr.error(response.message);
+                                }
+                            }
+                        });
+                    }
+                });
+
+                $("#pattern-doc").on('change', function (evt) {
+                    renderDocumentCode($('#pattern-dir').val(), $('#pattern-depto').val(), evt.currentTarget.value);
+                });
             }
         });
 
@@ -143,7 +214,7 @@
                             toastr.success(`El registro #${id} fue actualizado!`);
                             editButton.prop('title', 'Editar');
                             editButton.closest('tr').find('.field-description').text(description);
-                          
+
                             editButton.html("Editar");
                             editButton.closest('tr').find('.btn-remove').html("Eliminar");
                             editButton.closest('tr').find('.btn-remove').prop("title", "Eliminar");
@@ -225,5 +296,13 @@
             return this.nodeValue.replace('Search', 'Buscar');
         });
     });
+
+    function renderDocumentCode(directorate, department, documentType) {
+        const _directorate = directorate && directorate !== "null" ? `-${directorate.trim()}` : "";
+        const _department = department && department !== "null" ? `-${department.trim()}` : "";
+        const _documentType = documentType && documentType !== "null" ? `-${documentType.trim()}` : "";
+
+        $(".new-description").val(`RC${_directorate}${_department}${_documentType}-`);
+    }
 
 </script>

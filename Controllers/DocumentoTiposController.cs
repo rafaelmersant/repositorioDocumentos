@@ -32,7 +32,7 @@ namespace RepositorioDocumentos.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddDocumentType(string description)
+        public JsonResult AddDocumentType(string description, string reference)
         {
             try
             {
@@ -40,10 +40,21 @@ namespace RepositorioDocumentos.Controllers
 
                 using (var db = new RepositorioDocRCEntities())
                 {
+                    string _reference = string.IsNullOrEmpty(reference) ? "" : reference.ToUpper();
+
                     var documentType = db.DocumentTypes.FirstOrDefault(o => o.Description.ToLower() == description.ToLower());
                     if (documentType != null) return Json(new { result = "500", message = "Este tipo de documento ya existe." });
 
-                    db.DocumentTypes.Add(new DocumentType { Description = description, CreatedDate = DateTime.Now, CreatedBy = int.Parse(Session["userID"].ToString()) });
+                    var _reference_ = db.DocumentTypes.FirstOrDefault(o => o.Reference.ToLower() == _reference.ToLower());
+                    if (_reference_ != null && !string.IsNullOrEmpty(_reference)) return Json(new { result = "500", message = "Esta referencia ya existe." });
+
+                    db.DocumentTypes.Add(new DocumentType
+                    {
+                        Description = description,
+                        Reference = _reference,
+                        CreatedDate = DateTime.Now,
+                        CreatedBy = int.Parse(Session["userID"].ToString())
+                    });
                     db.SaveChanges();
                 }
 
@@ -58,7 +69,7 @@ namespace RepositorioDocumentos.Controllers
         }
 
         [HttpPost]
-        public JsonResult UpdateDocumentType(int id, string description)
+        public JsonResult UpdateDocumentType(int id, string description, string reference)
         {
             try
             {
@@ -66,11 +77,17 @@ namespace RepositorioDocumentos.Controllers
 
                 using (var db = new RepositorioDocRCEntities())
                 {
+                    string _reference = string.IsNullOrEmpty(reference) ? "" : reference.ToUpper();
+
                     var documentType = db.DocumentTypes.FirstOrDefault(o => o.Id == id);
                     if (documentType == null) return Json(new { result = "500", message = "Tipo de documento no encontrado." });
                     if (documentType.Description.ToLower() == description.ToLower() && documentType.Id != id) return Json(new { result = "500", message = "Este tipo de documento ya existe." });
 
+                    var _reference_ = db.DocumentTypes.FirstOrDefault(o => o.Reference.ToLower() == _reference.ToLower());
+                    if (_reference_ != null && !string.IsNullOrEmpty(_reference)) return Json(new { result = "500", message = "Esta referencia ya existe." });
+
                     documentType.Description = description;
+                    documentType.Reference = _reference;
                     db.SaveChanges();
                 }
 
@@ -110,6 +127,44 @@ namespace RepositorioDocumentos.Controllers
             }
         }
 
+        [HttpPost]
+        public JsonResult getDocumentTypes()
+        {
+            try
+            {
+                if (Session["userID"] == null) throw new Exception("505: Por favor intente logearse de nuevo en el sistema. (La Sesión expiró)");
+
+                var docTypes = GetDocumentoTipos();
+
+                return Json(new { result = "200", message = docTypes });
+            }
+            catch (Exception ex)
+            {
+                Helper.SendException(ex);
+
+                return Json(new { result = "500", message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult getDocumentTypesReference()
+        {
+            try
+            {
+                if (Session["userID"] == null) throw new Exception("505: Por favor intente logearse de nuevo en el sistema. (La Sesión expiró)");
+
+                var docTypes = GetDocumentoTiposReference();
+
+                return Json(new { result = "200", message = docTypes });
+            }
+            catch (Exception ex)
+            {
+                Helper.SendException(ex);
+
+                return Json(new { result = "500", message = ex.Message });
+            }
+        }
+
         public List<SelectListItem> GetDocumentoTipos()
         {
             List<SelectListItem> documentTypes = new List<SelectListItem>();
@@ -121,6 +176,26 @@ namespace RepositorioDocumentos.Controllers
                 var _documentTypes = db.DocumentTypes.ToArray();
                 foreach (var item in _documentTypes)
                     documentTypes.Add(new SelectListItem { Text = item.Description, Value = item.Id.ToString() });
+            }
+            catch (Exception ex)
+            {
+                Helper.SendException(ex);
+            }
+
+            return documentTypes;
+        }
+
+        public List<SelectListItem> GetDocumentoTiposReference()
+        {
+            List<SelectListItem> documentTypes = new List<SelectListItem>();
+
+            try
+            {
+                var db = new RepositorioDocRCEntities();
+                documentTypes.Add(new SelectListItem { Text = "Seleccionar Tipo de Doc.", Value = "" });
+                var _documentTypes = db.DocumentTypes.ToArray();
+                foreach (var item in _documentTypes)
+                    documentTypes.Add(new SelectListItem { Text = item.Description, Value = item.Reference });
             }
             catch (Exception ex)
             {

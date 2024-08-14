@@ -17,22 +17,22 @@ namespace RepositorioDocumentos.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
-            this.Directorates = new HashSet<Directorate>();
             this.DocumentApprovals = new HashSet<DocumentApproval>();
             this.DocumentChanges = new HashSet<DocumentChange>();
             this.DocumentContents = new HashSet<DocumentContent>();
             this.DocumentGlossaries = new HashSet<DocumentGlossary>();
             this.DocumentGuidelines = new HashSet<DocumentGuideline>();
             this.DocumentProcedures = new HashSet<DocumentProcedure>();
-            this.DocumentTypes = new HashSet<DocumentType>();
             this.Macroprocesses = new HashSet<Macroprocess>();
             this.Processes = new HashSet<Process>();
             this.Areas = new HashSet<Area>();
-            this.Departments = new HashSet<Department>();
             this.DocumentCodes = new HashSet<DocumentCode>();
             this.DocumentHeaders = new HashSet<DocumentHeader>();
             this.DocumentDetails = new HashSet<DocumentDetail>();
             this.DocumentReferences = new HashSet<DocumentReference>();
+            this.Departments = new HashSet<Department>();
+            this.Directorates = new HashSet<Directorate>();
+            this.DocumentTypes = new HashSet<DocumentType>();
         }
     
         public int Id { get; set; }
@@ -43,8 +43,6 @@ namespace RepositorioDocumentos.Models
         public string Email { get; set; }
         public System.DateTime CreatedDate { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Directorate> Directorates { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DocumentApproval> DocumentApprovals { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -58,15 +56,11 @@ namespace RepositorioDocumentos.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DocumentProcedure> DocumentProcedures { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DocumentType> DocumentTypes { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Macroprocess> Macroprocesses { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Process> Processes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Area> Areas { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Department> Departments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DocumentCode> DocumentCodes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -75,5 +69,11 @@ namespace RepositorioDocumentos.Models
         public virtual ICollection<DocumentDetail> DocumentDetails { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DocumentReference> DocumentReferences { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Department> Departments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Directorate> Directorates { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DocumentType> DocumentTypes { get; set; }
     }
 }

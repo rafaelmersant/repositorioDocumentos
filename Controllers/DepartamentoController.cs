@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.Xml;
 using System.Web;
 using System.Web.Mvc;
 using RepositorioDocumentos.App_Start;
@@ -34,7 +35,7 @@ namespace RepositorioDocumentos.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddDepartment(int code, short areaId, string description, string owner)
+        public JsonResult AddDepartment(int code, short areaId, string description, string reference, string owner)
         {
             try
             {
@@ -42,14 +43,20 @@ namespace RepositorioDocumentos.Controllers
 
                 using (var db = new RepositorioDocRCEntities())
                 {
+                    string _reference = string.IsNullOrEmpty(reference) ? "" : reference.ToUpper();
+
                     var department = db.Departments.FirstOrDefault(o => o.DeptoName.ToLower() == description.ToLower() && o.DeptoCode == code);
                     if (department != null) return Json(new { result = "500", message = "Este departamento ya existe." });
+
+                    var _reference_ = db.Departments.FirstOrDefault(o => o.Reference.ToLower() == _reference.ToLower());
+                    if (_reference_ != null && !string.IsNullOrEmpty(_reference)) return Json(new { result = "500", message = "Esta referencia ya existe." });
 
                     db.Departments.Add(new Department
                     {
                         DeptoCode = code,
                         DeptoName = description,
                         DeptoOwner = owner,
+                        Reference = _reference,
                         AreaId = areaId,
                         CreatedDate = DateTime.Now,
                         CreatedBy = int.Parse(Session["userID"].ToString())
@@ -68,7 +75,7 @@ namespace RepositorioDocumentos.Controllers
         }
 
         [HttpPost]
-        public JsonResult UpdateDepartment(int code, short areaId, string description, string owner)
+        public JsonResult UpdateDepartment(int code, short areaId, string description, string reference, string owner)
         {
             try
             {
@@ -76,16 +83,22 @@ namespace RepositorioDocumentos.Controllers
 
                 using (var db = new RepositorioDocRCEntities())
                 {
-                    var departament = db.Departments.FirstOrDefault(o => o.DeptoCode == code);
-                    if (departament == null) return Json(new { result = "500", message = "Departamento no encontrado." });
-                    if (departament.DeptoName.ToLower() == description.ToLower() 
-                        && departament.AreaId == areaId
-                        && departament.DeptoOwner == owner
-                        && departament.DeptoCode != code) return Json(new { result = "500", message = "Este departamento ya existe." });
+                    string _reference = string.IsNullOrEmpty(reference) ? "" : reference.ToUpper();
 
-                    departament.DeptoName = description;
-                    departament.AreaId = areaId;
-                    departament.DeptoOwner = owner;
+                    var department = db.Departments.FirstOrDefault(o => o.DeptoCode == code);
+                    if (department == null) return Json(new { result = "500", message = "Departamento no encontrado." });
+                    if (department.DeptoName.ToLower() == description.ToLower() 
+                        && department.AreaId == areaId
+                        && department.DeptoOwner == owner
+                        && department.DeptoCode != code) return Json(new { result = "500", message = "Este departamento ya existe." });
+
+                    var _reference_ = db.Departments.FirstOrDefault(o => o.Reference.ToLower() == _reference.ToLower());
+                    if (_reference_ != null && !string.IsNullOrEmpty(_reference)) return Json(new { result = "500", message = "Esta referencia ya existe." });
+
+                    department.DeptoName = description;
+                    department.Reference = _reference;
+                    department.AreaId = areaId;
+                    department.DeptoOwner = owner;
                     db.SaveChanges();
                 }
 
@@ -144,6 +157,47 @@ namespace RepositorioDocumentos.Controllers
             }
         }
 
+        [HttpPost]
+        public JsonResult getDepartmentsByDirectorateId(int directorateId)
+        {
+            try
+            {
+                if (Session["userID"] == null) throw new Exception("505: Por favor intente logearse de nuevo en el sistema. (La Sesión expiró)");
+
+                var departments = GetDepartamentosByDirectorate(directorateId);
+
+                return Json(new { result = "200", message = departments });
+            }
+            catch (Exception ex)
+            {
+                Helper.SendException(ex, $"directorateId: {directorateId}");
+
+                return Json(new { result = "500", message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult getDepartmentsByDirectorateIdReference(string directorateReference)
+        {
+            try
+            {
+                if (Session["userID"] == null) throw new Exception("505: Por favor intente logearse de nuevo en el sistema. (La Sesión expiró)");
+                using (var db = new RepositorioDocRCEntities())
+                {
+                    var directorate = db.Directorates.FirstOrDefault(d => d.Reference == directorateReference);
+                    var departments = GetDepartamentosByDirectorateReference(directorate.Id);
+                    return Json(new { result = "200", message = departments });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Helper.SendException(ex, $"directorateReference: {directorateReference}");
+
+                return Json(new { result = "500", message = ex.Message });
+            }
+        }
+
         public List<SelectListItem> GetDepartamentos(int areaId = 0)
         {
             List<SelectListItem> departamentos = new List<SelectListItem>();
@@ -165,5 +219,71 @@ namespace RepositorioDocumentos.Controllers
 
             return departamentos;
         }
+
+        public List<SelectListItem> GetDepartamentosByDirectorate(int directorateId = 0)
+        {
+            List<SelectListItem> departamentos = new List<SelectListItem>();
+
+            try
+            {
+                var db = new RepositorioDocRCEntities();
+                departamentos.Add(new SelectListItem { Text = "Seleccionar Departamento", Value = "" });
+                var _departamentos = db.Departments.ToArray();
+                if (directorateId > 0) _departamentos = _departamentos.Where(d => d.Area.DirectorateId == directorateId).ToArray();
+
+                foreach (var item in _departamentos)
+                    departamentos.Add(new SelectListItem { Text = item.DeptoName, Value = item.DeptoCode.ToString() });
+            }
+            catch (Exception ex)
+            {
+                Helper.SendException(ex);
+            }
+
+            return departamentos;
+        }
+
+        public List<SelectListItem> GetDepartamentosByDirectorateReference(int directorateId = 0)
+        {
+            List<SelectListItem> departamentos = new List<SelectListItem>();
+
+            try
+            {
+                var db = new RepositorioDocRCEntities();
+                departamentos.Add(new SelectListItem { Text = "Seleccionar Departamento", Value = "" });
+                var _departamentos = db.Departments.ToArray();
+                if (directorateId > 0) _departamentos = _departamentos.Where(d => d.Area.DirectorateId == directorateId).ToArray();
+
+                foreach (var item in _departamentos)
+                    departamentos.Add(new SelectListItem { Text = item.DeptoName, Value = item.Reference });
+            }
+            catch (Exception ex)
+            {
+                Helper.SendException(ex);
+            }
+
+            return departamentos;
+        }
+
+        //public List<SelectListItem> GetEmployees()
+        //{
+        //    List<SelectListItem> employees = new List<SelectListItem>();
+
+        //    try
+        //    {
+        //        var db = new RepositorioDocRCEntities();
+        //        employees.Add(new SelectListItem { Text = "Seleccionar...", Value = "" });
+        //        var _employees = db.getempl Departments.ToArray();
+        //        if (directorateId > 0) _departamentos = _departamentos.Where(d => d.Area.DirectorateId == directorateId).ToArray();
+
+        //        foreach (var item in _departamentos)
+        //            departamentos.Add(new SelectListItem { Text = item.DeptoName, Value = item.Reference });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Helper.SendException(ex);
+        //    }
+
+        //    return departamentos;
+        //}
     }
 }

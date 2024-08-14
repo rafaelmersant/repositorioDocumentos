@@ -31,6 +31,9 @@
                             Departamento
                         </th>
                         <th>
+                            Referencia
+                        </th>
+                        <th>
                             Encargado
                         </th>
                         <th></th>
@@ -43,6 +46,7 @@
                         <td class="text-center field-code">@item.DeptoCode</td>
                         <td class="field-area">@item.Area.Description</td>
                         <td class="field-description">@item.DeptoName</td>
+                        <td class="field-reference">@item.Reference</td>
                         <td class="field-owner">@item.DeptoOwner</td>
 
                         <td align="center">
@@ -89,7 +93,8 @@
                 const newRowHtml = `<tr>` +
                     `<td class="text-center field-code-new"><input type="text" class="form-control form-control-sm new-code" placeholder="Código"></td>` +
                     `<td class="field-area-new"><select class="form-control form-control-sm new-area" id="area"> ${areas} </select></td>` +
-                    `<td class="field-description-new"><input type="text" class="form-control form-control-sm new-description" placeholder="Departamento"></td>` +
+                    `<td class="field-description-new"><input type="text" maxlength="100" min="3" class="form-control form-control-sm new-description" placeholder="Departamento"></td>` +
+                    `<td class="field-reference-new"><input type="text" maxlength="3" min="3" class="form-control form-control-sm new-reference"></td>` +
                     `<td class="field-owner-new"><input type="text" class="form-control form-control-sm new-owner" placeholder="Encargado"></td>` +
                     `<td class="text-center">` +
                     `<button class="btn btn-sm btn-success save-btn">Guardar</button>` +
@@ -106,6 +111,7 @@
             const areaText = $(this).closest('tr').find('.new-area :selected').text();
             const areaId = $(this).closest('tr').find('.new-area').val();
             const description = $(this).closest('tr').find('.new-description').val();
+            const reference = $(this).closest('tr').find('.new-reference').val();
             const owner = $(this).closest('tr').find('.new-owner').val();
 
             if (!code || !area || !description || !owner) {
@@ -113,15 +119,19 @@
                 return false;
             }
 
+            const parameters = { code, areaId, description, reference, owner };
+
             $.ajax({
-                "url": `/Departamento/AddDepartment?code=${code}&areaId=${areaId}&description=${description}&owner=${owner}`,
-                "type": "POST",
+                "url": `/Departamento/AddDepartment`,
+                type: "POST",
+                data: parameters,
                 "success": function (response) {
                     if (response.result === "200") {
                         toastr.success(`El registro fue agregado!`);
                         $('.field-code-new').text(code);
                         $('.field-area-new').html(areaText);
                         $('.field-description-new').text(description);
+                        $('.field-reference-new').text(reference.toUpperCase());
                         $('.field-owner-new').text(owner);
                         setTimeout(function () {
                             window.location.reload(true);
@@ -148,6 +158,7 @@
 
                 const __area = editButton.closest('tr').find('.field-area').text();
                 const description = editButton.closest('tr').find('.field-description').text();
+                const reference = editButton.closest('tr').find('.field-reference').text();
                 const owner = editButton.closest('tr').find('.field-owner').text();
 
                 //Areas
@@ -159,7 +170,8 @@
                 }
 
                 editButton.closest('tr').find('.field-area').html(`<select class="form-control form-control-sm edit-area" id="areas"> ${areas} </select>`);
-                editButton.closest('tr').find('.field-description').html('<input type="text" class="form-control form-control-sm edit-description" value="' + description + '">');
+                editButton.closest('tr').find('.field-description').html('<input type="text" maxlength="100" min="3" class="form-control form-control-sm edit-description" value="' + description + '">');
+                editButton.closest('tr').find('.field-reference').html('<input type="text" maxlength="3" min="3" class="form-control form-control-sm edit-reference" value="' + reference + '">');
                 editButton.closest('tr').find('.field-owner').html('<input type="text" class="form-control form-control-sm edit-owner" value="' + owner + '">');
 
             } else {
@@ -167,6 +179,7 @@
                 const areaText = editButton.closest('tr').find('.edit-area :selected').text();
                 const areaId = editButton.closest('tr').find('.edit-area').val();
                 const description = editButton.closest('tr').find('.edit-description').val();
+                const reference = editButton.closest('tr').find('.edit-reference').val();
                 const owner = editButton.closest('tr').find('.edit-owner').val();
 
                 if (!areaId || !description || !owner) {
@@ -174,15 +187,19 @@
                     return false;
                 }
 
+                const parameters = { code, areaId, description, reference, owner };
+
                 $.ajax({
-                    "url": `/Departamento/UpdateDepartment?code=${code}&areaId=${areaId}&description=${description}&owner=${owner}`,
+                    "url": `/Departamento/UpdateDepartment`,
                     "type": "POST",
+                    "data": parameters,
                     "success": function (response) {
                         if (response.result === "200") {
                             toastr.success(`El departamento #${code} ${description} fue actualizado!`);
                             editButton.prop('title', 'Editar');
                             editButton.closest('tr').find('.field-area').html(areaText);
                             editButton.closest('tr').find('.field-description').text(description);
+                            editButton.closest('tr').find('.field-reference').text(reference.toUpperCase());
                             editButton.closest('tr').find('.field-owner').text(owner);
 
                             editButton.html("Editar");

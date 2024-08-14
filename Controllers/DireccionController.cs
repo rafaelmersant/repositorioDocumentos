@@ -32,7 +32,7 @@ namespace RepositorioDocumentos.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddDirectorate(string description)
+        public JsonResult AddDirectorate(string description, string reference)
         {
             try
             {
@@ -40,10 +40,21 @@ namespace RepositorioDocumentos.Controllers
 
                 using (var db = new RepositorioDocRCEntities())
                 {
+                    string _reference = string.IsNullOrEmpty(reference) ? "" : reference.ToUpper();
+
                     var directorate = db.Directorates.FirstOrDefault(o => o.Description.ToLower() == description.ToLower());
                     if (directorate != null) return Json(new { result = "500", message = "Esta dirección ya existe." });
 
-                    db.Directorates.Add(new Directorate { Description = description, CreatedDate = DateTime.Now, CreatedBy = int.Parse(Session["userID"].ToString()) });
+                    var _reference_ = db.Directorates.FirstOrDefault(o => o.Reference.ToLower() == _reference.ToLower());
+                    if (_reference_ != null && !string.IsNullOrEmpty(_reference)) return Json(new { result = "500", message = "Esta referencia ya existe." });
+
+                    db.Directorates.Add(new Directorate
+                    {
+                        Description = description,
+                        Reference = reference,
+                        CreatedDate = DateTime.Now,
+                        CreatedBy = int.Parse(Session["userID"].ToString())
+                    });
                     db.SaveChanges();
                 }
 
@@ -58,7 +69,7 @@ namespace RepositorioDocumentos.Controllers
         }
 
         [HttpPost]
-        public JsonResult UpdateDirectorate(int id, string description)
+        public JsonResult UpdateDirectorate(int id, string description, string reference)
         {
             try
             {
@@ -66,11 +77,20 @@ namespace RepositorioDocumentos.Controllers
 
                 using (var db = new RepositorioDocRCEntities())
                 {
+                    string _reference = string.IsNullOrEmpty(reference) ? "" : reference.ToUpper();
+
                     var directorate = db.Directorates.FirstOrDefault(o => o.Id == id);
                     if (directorate == null) return Json(new { result = "500", message = "Dirección no encontrada." });
                     if (directorate.Description.ToLower() == description.ToLower() && directorate.Id != id) return Json(new { result = "500", message = "Esta dirección ya existe." });
 
+                    if (!string.IsNullOrEmpty(_reference))
+                    {
+                        var _reference_ = db.Directorates.FirstOrDefault(o => o.Reference.ToUpper() == _reference);
+                        if (_reference_ != null && !string.IsNullOrEmpty(_reference)) return Json(new { result = "500", message = "Esta referencia ya existe." });
+                    }
+
                     directorate.Description = description;
+                    directorate.Reference = _reference;
                     db.SaveChanges();
                 }
 
@@ -121,6 +141,26 @@ namespace RepositorioDocumentos.Controllers
                 var _direcciones = db.Directorates.ToArray();
                 foreach (var item in _direcciones)
                     direcciones.Add(new SelectListItem { Text = item.Description, Value = item.Id.ToString() });
+            }
+            catch (Exception ex)
+            {
+                Helper.SendException(ex);
+            }
+
+            return direcciones;
+        }
+
+        public List<SelectListItem> GetDireccionesReference()
+        {
+            List<SelectListItem> direcciones = new List<SelectListItem>();
+
+            try
+            {
+                var db = new RepositorioDocRCEntities();
+                direcciones.Add(new SelectListItem { Text = "Seleccionar Dirección", Value = "" });
+                var _direcciones = db.Directorates.ToArray();
+                foreach (var item in _direcciones)
+                    direcciones.Add(new SelectListItem { Text = item.Description, Value = item.Reference });
             }
             catch (Exception ex)
             {
