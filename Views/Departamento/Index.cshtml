@@ -46,8 +46,8 @@
                         <td class="text-center field-code">@item.DeptoCode</td>
                         <td class="field-area">@item.Area.Description</td>
                         <td class="field-description">@item.DeptoName</td>
-                        <td class="field-reference">@item.Reference</td>
-                        <td class="field-owner">@item.DeptoOwner</td>
+                        <td class="field-reference">@(item.Reference?.Trim())</td>
+                        <td class="field-owner">@item.DeptoOwner.Trim()</td>
 
                         <td align="center">
                             <a class="btn btn-sm btn-success edit-btn edit-button-width" href="javascript:void(0)" title="Editar">
@@ -90,12 +90,20 @@
                     areas.push(`<option value="${area.Value}">${area.Text}</option>`)
                 }
 
+                 //Employees
+                let _employees = @Html.Raw(Json.Encode(ViewBag.Employees));
+                let employees = [];
+
+                for (const employee of _employees) {
+                    employees.push(`<option value="${employee.Value}">${employee.Text}</option>`)
+                }
+
                 const newRowHtml = `<tr>` +
                     `<td class="text-center field-code-new"><input type="text" class="form-control form-control-sm new-code" placeholder="Código"></td>` +
                     `<td class="field-area-new"><select class="form-control form-control-sm new-area" id="area"> ${areas} </select></td>` +
                     `<td class="field-description-new"><input type="text" maxlength="100" min="3" class="form-control form-control-sm new-description" placeholder="Departamento"></td>` +
                     `<td class="field-reference-new"><input type="text" maxlength="3" min="3" class="form-control form-control-sm new-reference"></td>` +
-                    `<td class="field-owner-new"><input type="text" class="form-control form-control-sm new-owner" placeholder="Encargado"></td>` +
+                    `<td class="field-owner-new"><select class="form-control form-control-sm new-owner" id="owner"> ${employees} </select></td>` +
                     `<td class="text-center">` +
                     `<button class="btn btn-sm btn-success save-btn">Guardar</button>` +
                     `<button class="btn btn-sm btn-danger cancel-btn">Cancelar</button>` +
@@ -147,7 +155,7 @@
             $(this).closest('tr').remove();
         });
 
-        $('.edit-btn').click(function () {
+        $('#departmentTable').on('click', '.edit-btn', function () {
             var editButton = $(this);
 
             if (editButton.prop('title') === "Editar") {
@@ -169,10 +177,18 @@
                     areas.push(`<option value="${area.Value}" ${__area === area.Text? "selected" : ""}>${area.Text}</option>`)
                 }
 
+                //Employees
+                let _employees = @Html.Raw(Json.Encode(ViewBag.Employees));
+                let employees = [];
+
+                for (const employee of _employees) {
+                    employees.push(`<option value="${employee.Value}" ${owner === employee.Text ? "selected" : ""}>${employee.Text}</option>`)
+                }
+
                 editButton.closest('tr').find('.field-area').html(`<select class="form-control form-control-sm edit-area" id="areas"> ${areas} </select>`);
                 editButton.closest('tr').find('.field-description').html('<input type="text" maxlength="100" min="3" class="form-control form-control-sm edit-description" value="' + description + '">');
                 editButton.closest('tr').find('.field-reference').html('<input type="text" maxlength="3" min="3" class="form-control form-control-sm edit-reference" value="' + reference + '">');
-                editButton.closest('tr').find('.field-owner').html('<input type="text" class="form-control form-control-sm edit-owner" value="' + owner + '">');
+                editButton.closest('tr').find('.field-owner').html(`<select class="form-control form-control-sm edit-owner" id="owner"> ${employees} </select>`);
 
             } else {
                 const code = editButton.closest('tr').find('.field-code').text();
@@ -180,7 +196,7 @@
                 const areaId = editButton.closest('tr').find('.edit-area').val();
                 const description = editButton.closest('tr').find('.edit-description').val();
                 const reference = editButton.closest('tr').find('.edit-reference').val();
-                const owner = editButton.closest('tr').find('.edit-owner').val();
+                const owner = editButton.closest('tr').find('.edit-owner :selected').text();
 
                 if (!areaId || !description || !owner) {
                     toastr.error("Debe completar todos los campos para guardar el registro.");
@@ -200,7 +216,7 @@
                             editButton.closest('tr').find('.field-area').html(areaText);
                             editButton.closest('tr').find('.field-description').text(description);
                             editButton.closest('tr').find('.field-reference').text(reference.toUpperCase());
-                            editButton.closest('tr').find('.field-owner').text(owner);
+                            editButton.closest('tr').find('.field-owner').html(owner);
 
                             editButton.html("Editar");
                             editButton.closest('tr').find('.btn-remove').html("Eliminar");
@@ -213,7 +229,7 @@
             }
         });
 
-        $('.btn-remove').click(function () {
+        $('#departmentTable').on('click', '.btn-remove', function () {
             var removeButton = $(this);
 
             if (removeButton.html() === "Cancelar") {

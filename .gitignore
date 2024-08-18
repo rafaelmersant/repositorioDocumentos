@@ -13,6 +13,7 @@
 AnexosReferencias/
 bin/*.*
 obj/*.*
+*.config
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

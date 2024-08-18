@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Data;
 using System.Linq;
 using System.Security.Cryptography.Xml;
 using System.Web;
 using System.Web.Mvc;
 using RepositorioDocumentos.App_Start;
 using RepositorioDocumentos.Models;
+using System.Data.Entity.Infrastructure;
 
 namespace RepositorioDocumentos.Controllers
 {
@@ -19,6 +22,7 @@ namespace RepositorioDocumentos.Controllers
             try
             {
                 ViewBag.Areas = new AreaController().GetAreas();
+                ViewBag.Employees = GetEmployees();
 
                 var db = new RepositorioDocRCEntities();
 
@@ -264,26 +268,44 @@ namespace RepositorioDocumentos.Controllers
             return departamentos;
         }
 
-        //public List<SelectListItem> GetEmployees()
-        //{
-        //    List<SelectListItem> employees = new List<SelectListItem>();
+        public List<SelectListItem> GetEmployees()
+        {
+            List<SelectListItem> employees = new List<SelectListItem>();
 
-        //    try
-        //    {
-        //        var db = new RepositorioDocRCEntities();
-        //        employees.Add(new SelectListItem { Text = "Seleccionar...", Value = "" });
-        //        var _employees = db.getempl Departments.ToArray();
-        //        if (directorateId > 0) _departamentos = _departamentos.Where(d => d.Area.DirectorateId == directorateId).ToArray();
+            try
+            {
+                string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["RepoDB"].ConnectionString;
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
 
-        //        foreach (var item in _departamentos)
-        //            departamentos.Add(new SelectListItem { Text = item.DeptoName, Value = item.Reference });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Helper.SendException(ex);
-        //    }
+                    using (SqlCommand command = new SqlCommand("GetEmployees", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
 
-        //    return departamentos;
-        //}
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            employees.Add(new SelectListItem { Text = "Seleccionar...", Value = "" });
+
+                            while (reader.Read())
+                            {
+                                employees.Add(new SelectListItem
+                                {
+                                    Text = reader.GetString(reader.GetOrdinal("EmployeeName")),
+                                    Value = reader.GetString(reader.GetOrdinal("EmployeeName"))
+                                    //Value = reader.GetInt32(reader.GetOrdinal("EmployeeId")).ToString()
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Helper.SendException(ex);
+            }
+
+            return employees;
+        }
     }
 }
