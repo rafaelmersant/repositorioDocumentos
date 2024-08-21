@@ -44,8 +44,11 @@
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DocumentHeaderId" Type="int" Nullable="false" />
           <Property Name="ProducedBy" Type="int" Nullable="false" />
+          <Property Name="ProducedByName" Type="varchar" MaxLength="100" />
           <Property Name="ManagerArea" Type="int" Nullable="false" />
+          <Property Name="ManagerAreaName" Type="varchar" MaxLength="100" />
           <Property Name="DirectorArea" Type="int" Nullable="false" />
+          <Property Name="DirectorAreaName" Type="varchar" MaxLength="100" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="CreatedBy" Type="int" Nullable="false" />
         </EntityType>
@@ -608,7 +611,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        
         <EntityContainer Name="RepositorioDocRCModelStoreContainer">
           <EntitySet Name="Area" EntityType="Self.Area" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
@@ -767,7 +769,6 @@
       <Schema Namespace="RepositorioDocRCModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="RepositorioDocRCEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="LoginHistories" EntityType="RepositorioDocRCModel.LoginHistory" />
-          <EntitySet Name="DocumentApprovals" EntityType="RepositorioDocRCModel.DocumentApproval" />
           <EntitySet Name="DocumentChanges" EntityType="RepositorioDocRCModel.DocumentChange" />
           <EntitySet Name="DocumentContents" EntityType="RepositorioDocRCModel.DocumentContent" />
           <EntitySet Name="DocumentGlossaries" EntityType="RepositorioDocRCModel.DocumentGlossary" />
@@ -776,10 +777,6 @@
           <EntitySet Name="Macroprocesses" EntityType="RepositorioDocRCModel.Macroprocess" />
           <EntitySet Name="Processes" EntityType="RepositorioDocRCModel.Process" />
           <EntitySet Name="Users" EntityType="RepositorioDocRCModel.User" />
-          <AssociationSet Name="FK_CreatedBy_DocumentApproval" Association="RepositorioDocRCModel.FK_CreatedBy_DocumentApproval">
-            <End Role="User" EntitySet="Users" />
-            <End Role="DocumentApproval" EntitySet="DocumentApprovals" />
-          </AssociationSet>
           <AssociationSet Name="FK_CreatedBy_DocumentChange" Association="RepositorioDocRCModel.FK_CreatedBy_DocumentChange">
             <End Role="User" EntitySet="Users" />
             <End Role="DocumentChange" EntitySet="DocumentChanges" />
@@ -826,10 +823,6 @@
           <AssociationSet Name="FK_Area_DocumentHeader" Association="RepositorioDocRCModel.FK_Area_DocumentHeader">
             <End Role="Area" EntitySet="Areas" />
             <End Role="DocumentHeader" EntitySet="DocumentHeaders" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DocHeader_Approval" Association="RepositorioDocRCModel.FK_DocHeader_Approval">
-            <End Role="DocumentHeader" EntitySet="DocumentHeaders" />
-            <End Role="DocumentApproval" EntitySet="DocumentApprovals" />
           </AssociationSet>
           <AssociationSet Name="FK_DocHeader_DocumentChange" Association="RepositorioDocRCModel.FK_DocHeader_DocumentChange">
             <End Role="DocumentHeader" EntitySet="DocumentHeaders" />
@@ -916,6 +909,15 @@
             <End Role="User" EntitySet="Users" />
             <End Role="DocumentType" EntitySet="DocumentTypes" />
           </AssociationSet>
+          <EntitySet Name="DocumentApprovals" EntityType="RepositorioDocRCModel.DocumentApproval" />
+          <AssociationSet Name="FK_CreatedBy_DocumentApproval" Association="RepositorioDocRCModel.FK_CreatedBy_DocumentApproval">
+            <End Role="User" EntitySet="Users" />
+            <End Role="DocumentApproval" EntitySet="DocumentApprovals" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DocHeader_Approval" Association="RepositorioDocRCModel.FK_DocHeader_Approval">
+            <End Role="DocumentHeader" EntitySet="DocumentHeaders" />
+            <End Role="DocumentApproval" EntitySet="DocumentApprovals" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="LoginHistory">
           <Key>
@@ -924,20 +926,6 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="LastLogin" Type="DateTime" Nullable="false" Precision="3" />
-        </EntityType>
-        <EntityType Name="DocumentApproval">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DocumentHeaderId" Type="Int32" Nullable="false" />
-          <Property Name="ProducedBy" Type="Int32" Nullable="false" />
-          <Property Name="ManagerArea" Type="Int32" Nullable="false" />
-          <Property Name="DirectorArea" Type="Int32" Nullable="false" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="User" Relationship="RepositorioDocRCModel.FK_CreatedBy_DocumentApproval" FromRole="DocumentApproval" ToRole="User" />
-          <NavigationProperty Name="DocumentHeader" Relationship="RepositorioDocRCModel.FK_DocHeader_Approval" FromRole="DocumentApproval" ToRole="DocumentHeader" />
         </EntityType>
         <EntityType Name="DocumentChange">
           <Key>
@@ -1043,7 +1031,6 @@
           <Property Name="Role" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="Email" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="DocumentApprovals" Relationship="RepositorioDocRCModel.FK_CreatedBy_DocumentApproval" FromRole="User" ToRole="DocumentApproval" />
           <NavigationProperty Name="DocumentChanges" Relationship="RepositorioDocRCModel.FK_CreatedBy_DocumentChange" FromRole="User" ToRole="DocumentChange" />
           <NavigationProperty Name="DocumentContents" Relationship="RepositorioDocRCModel.FK_CreatedBy_DocumentContent" FromRole="User" ToRole="DocumentContent" />
           <NavigationProperty Name="DocumentGlossaries" Relationship="RepositorioDocRCModel.FK_CreatedBy_DocumentGlossary" FromRole="User" ToRole="DocumentGlossary" />
@@ -1059,19 +1046,8 @@
           <NavigationProperty Name="Departments" Relationship="RepositorioDocRCModel.FK_CreatedBy_Department" FromRole="User" ToRole="Department" />
           <NavigationProperty Name="Directorates" Relationship="RepositorioDocRCModel.FK_CreatedBy_Directorate" FromRole="User" ToRole="Directorate" />
           <NavigationProperty Name="DocumentTypes" Relationship="RepositorioDocRCModel.FK_CreatedBy_DocumentType" FromRole="User" ToRole="DocumentType" />
+          <NavigationProperty Name="DocumentApprovals" Relationship="RepositorioDocRCModel.FK_CreatedBy_DocumentApproval" FromRole="User" ToRole="DocumentApproval" />
         </EntityType>
-        <Association Name="FK_CreatedBy_DocumentApproval">
-          <End Type="RepositorioDocRCModel.User" Role="User" Multiplicity="1" />
-          <End Type="RepositorioDocRCModel.DocumentApproval" Role="DocumentApproval" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="DocumentApproval">
-              <PropertyRef Name="CreatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_CreatedBy_DocumentChange">
           <End Type="RepositorioDocRCModel.User" Role="User" Multiplicity="1" />
           <End Type="RepositorioDocRCModel.DocumentChange" Role="DocumentChange" Multiplicity="*" />
@@ -1239,7 +1215,6 @@
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="CreatedBy" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Area" Relationship="RepositorioDocRCModel.FK_Area_DocumentHeader" FromRole="DocumentHeader" ToRole="Area" />
-          <NavigationProperty Name="DocumentApprovals" Relationship="RepositorioDocRCModel.FK_DocHeader_Approval" FromRole="DocumentHeader" ToRole="DocumentApproval" />
           <NavigationProperty Name="DocumentChanges" Relationship="RepositorioDocRCModel.FK_DocHeader_DocumentChange" FromRole="DocumentHeader" ToRole="DocumentChange" />
           <NavigationProperty Name="DocumentContents" Relationship="RepositorioDocRCModel.FK_DocHeader_DocumentContent" FromRole="DocumentHeader" ToRole="DocumentContent" />
           <NavigationProperty Name="DocumentGlossaries" Relationship="RepositorioDocRCModel.FK_DocHeader_DocumentGlossary" FromRole="DocumentHeader" ToRole="DocumentGlossary" />
@@ -1253,6 +1228,7 @@
           <NavigationProperty Name="Department" Relationship="RepositorioDocRCModel.FK_Department_DocumentHeader" FromRole="DocumentHeader" ToRole="Department" />
           <NavigationProperty Name="Directorate" Relationship="RepositorioDocRCModel.FK_Directorate_DocumentHeader" FromRole="DocumentHeader" ToRole="Directorate" />
           <NavigationProperty Name="DocumentType" Relationship="RepositorioDocRCModel.FK_DocType_DocumentHeader" FromRole="DocumentHeader" ToRole="DocumentType" />
+          <NavigationProperty Name="DocumentApprovals" Relationship="RepositorioDocRCModel.FK_DocHeader_Approval" FromRole="DocumentHeader" ToRole="DocumentApproval" />
         </EntityType>
         <Association Name="FK_Area_DocumentHeader">
           <End Type="RepositorioDocRCModel.Area" Role="Area" Multiplicity="1" />
@@ -1263,18 +1239,6 @@
             </Principal>
             <Dependent Role="DocumentHeader">
               <PropertyRef Name="AreaId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DocHeader_Approval">
-          <End Type="RepositorioDocRCModel.DocumentHeader" Role="DocumentHeader" Multiplicity="1" />
-          <End Type="RepositorioDocRCModel.DocumentApproval" Role="DocumentApproval" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DocumentHeader">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="DocumentApproval">
-              <PropertyRef Name="DocumentHeaderId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1586,6 +1550,47 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="DocumentApproval">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DocumentHeaderId" Type="Int32" Nullable="false" />
+          <Property Name="ProducedBy" Type="Int32" Nullable="false" />
+          <Property Name="ProducedByName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ManagerArea" Type="Int32" Nullable="false" />
+          <Property Name="ManagerAreaName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="DirectorArea" Type="Int32" Nullable="false" />
+          <Property Name="DirectorAreaName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="RepositorioDocRCModel.FK_CreatedBy_DocumentApproval" FromRole="DocumentApproval" ToRole="User" />
+          <NavigationProperty Name="DocumentHeader" Relationship="RepositorioDocRCModel.FK_DocHeader_Approval" FromRole="DocumentApproval" ToRole="DocumentHeader" />
+        </EntityType>
+        <Association Name="FK_CreatedBy_DocumentApproval">
+          <End Type="RepositorioDocRCModel.User" Role="User" Multiplicity="1" />
+          <End Type="RepositorioDocRCModel.DocumentApproval" Role="DocumentApproval" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DocumentApproval">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DocHeader_Approval">
+          <End Type="RepositorioDocRCModel.DocumentHeader" Role="DocumentHeader" Multiplicity="1" />
+          <End Type="RepositorioDocRCModel.DocumentApproval" Role="DocumentApproval" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DocumentHeader">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="DocumentApproval">
+              <PropertyRef Name="DocumentHeaderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1597,19 +1602,6 @@
               <MappingFragment StoreEntitySet="LoginHistory">
                 <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="DocumentApprovals">
-            <EntityTypeMapping TypeName="RepositorioDocRCModel.DocumentApproval">
-              <MappingFragment StoreEntitySet="DocumentApproval">
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="DirectorArea" ColumnName="DirectorArea" />
-                <ScalarProperty Name="ManagerArea" ColumnName="ManagerArea" />
-                <ScalarProperty Name="ProducedBy" ColumnName="ProducedBy" />
-                <ScalarProperty Name="DocumentHeaderId" ColumnName="DocumentHeaderId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1813,6 +1805,22 @@
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="Reference" ColumnName="Reference" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DocumentApprovals">
+            <EntityTypeMapping TypeName="RepositorioDocRCModel.DocumentApproval">
+              <MappingFragment StoreEntitySet="DocumentApproval">
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="DirectorAreaName" ColumnName="DirectorAreaName" />
+                <ScalarProperty Name="DirectorArea" ColumnName="DirectorArea" />
+                <ScalarProperty Name="ManagerAreaName" ColumnName="ManagerAreaName" />
+                <ScalarProperty Name="ManagerArea" ColumnName="ManagerArea" />
+                <ScalarProperty Name="ProducedByName" ColumnName="ProducedByName" />
+                <ScalarProperty Name="ProducedBy" ColumnName="ProducedBy" />
+                <ScalarProperty Name="DocumentHeaderId" ColumnName="DocumentHeaderId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

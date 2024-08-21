@@ -6,7 +6,6 @@
     <edmx:Diagrams>
       <Diagram DiagramId="42a29f9bbd43470db108b87314e29470" Name="Diagram1" ZoomLevel="38">
         <EntityTypeShape EntityType="RepositorioDocRCModel.LoginHistory" Width="1.5" PointX="3.375" PointY="3.75" />
-        <EntityTypeShape EntityType="RepositorioDocRCModel.DocumentApproval" Width="1.5" PointX="19.375" PointY="12.5" />
         <EntityTypeShape EntityType="RepositorioDocRCModel.DocumentChange" Width="1.5" PointX="19.375" PointY="4.25" />
         <EntityTypeShape EntityType="RepositorioDocRCModel.DocumentContent" Width="1.5" PointX="22.375" PointY="4.625" />
         <EntityTypeShape EntityType="RepositorioDocRCModel.DocumentGlossary" Width="1.5" PointX="22.375" PointY="8.5" />
@@ -15,7 +14,6 @@
         <EntityTypeShape EntityType="RepositorioDocRCModel.Macroprocess" Width="1.5" PointX="9.625" PointY="13.875" />
         <EntityTypeShape EntityType="RepositorioDocRCModel.Process" Width="1.5" PointX="11.875" PointY="9.875" />
         <EntityTypeShape EntityType="RepositorioDocRCModel.User" Width="1.5" PointX="7.375" PointY="6" />
-        <AssociationConnector Association="RepositorioDocRCModel.FK_CreatedBy_DocumentApproval" />
         <AssociationConnector Association="RepositorioDocRCModel.FK_CreatedBy_DocumentChange" />
         <AssociationConnector Association="RepositorioDocRCModel.FK_CreatedBy_DocumentContent" />
         <AssociationConnector Association="RepositorioDocRCModel.FK_CreatedBy_DocumentGlossary" />
@@ -30,7 +28,6 @@
         <AssociationConnector Association="RepositorioDocRCModel.FK_CreatedBy_DocumentCode" />
         <EntityTypeShape EntityType="RepositorioDocRCModel.DocumentHeader" Width="1.5" PointX="22.375" PointY="12.125" />
         <AssociationConnector Association="RepositorioDocRCModel.FK_Area_DocumentHeader" />
-        <AssociationConnector Association="RepositorioDocRCModel.FK_DocHeader_Approval" />
         <AssociationConnector Association="RepositorioDocRCModel.FK_DocHeader_DocumentChange" />
         <AssociationConnector Association="RepositorioDocRCModel.FK_DocHeader_DocumentContent" />
         <AssociationConnector Association="RepositorioDocRCModel.FK_DocHeader_DocumentGlossary" />
@@ -56,6 +53,9 @@
         <AssociationConnector Association="RepositorioDocRCModel.FK_Directorate_DocumentHeader" />
         <AssociationConnector Association="RepositorioDocRCModel.FK_DocType_DocumentHeader" />
         <AssociationConnector Association="RepositorioDocRCModel.FK_CreatedBy_DocumentType" />
+        <EntityTypeShape EntityType="RepositorioDocRCModel.DocumentApproval" Width="1.5" PointX="24.625" PointY="6.875" />
+        <AssociationConnector Association="RepositorioDocRCModel.FK_CreatedBy_DocumentApproval" />
+        <AssociationConnector Association="RepositorioDocRCModel.FK_DocHeader_Approval" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

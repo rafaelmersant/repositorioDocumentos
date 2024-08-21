@@ -17,7 +17,6 @@ namespace RepositorioDocumentos.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public DocumentHeader()
         {
-            this.DocumentApprovals = new HashSet<DocumentApproval>();
             this.DocumentChanges = new HashSet<DocumentChange>();
             this.DocumentContents = new HashSet<DocumentContent>();
             this.DocumentGlossaries = new HashSet<DocumentGlossary>();
@@ -25,6 +24,7 @@ namespace RepositorioDocumentos.Models
             this.DocumentProcedures = new HashSet<DocumentProcedure>();
             this.DocumentDetails = new HashSet<DocumentDetail>();
             this.DocumentReferences = new HashSet<DocumentReference>();
+            this.DocumentApprovals = new HashSet<DocumentApproval>();
         }
     
         public int Id { get; set; }
@@ -46,8 +46,6 @@ namespace RepositorioDocumentos.Models
     
         public virtual Area Area { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DocumentApproval> DocumentApprovals { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DocumentChange> DocumentChanges { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DocumentContent> DocumentContents { get; set; }
@@ -67,5 +65,7 @@ namespace RepositorioDocumentos.Models
         public virtual Department Department { get; set; }
         public virtual Directorate Directorate { get; set; }
         public virtual DocumentType DocumentType { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DocumentApproval> DocumentApprovals { get; set; }
     }
 }

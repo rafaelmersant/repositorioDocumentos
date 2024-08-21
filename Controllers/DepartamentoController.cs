@@ -291,9 +291,47 @@ namespace RepositorioDocumentos.Controllers
                             {
                                 employees.Add(new SelectListItem
                                 {
-                                    Text = reader.GetString(reader.GetOrdinal("EmployeeName")),
-                                    Value = reader.GetString(reader.GetOrdinal("EmployeeName"))
-                                    //Value = reader.GetInt32(reader.GetOrdinal("EmployeeId")).ToString()
+                                    Text = reader.GetString(reader.GetOrdinal("EmployeeName")).Trim(),
+                                    Value = reader.GetString(reader.GetOrdinal("EmployeeName")).Trim()
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Helper.SendException(ex);
+            }
+
+            return employees;
+        }
+
+        public List<SelectListItem> GetEmployeesWithID()
+        {
+            List<SelectListItem> employees = new List<SelectListItem>();
+
+            try
+            {
+                string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["RepoDB"].ConnectionString;
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("GetEmployees", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            employees.Add(new SelectListItem { Text = "Seleccionar...", Value = "" });
+
+                            while (reader.Read())
+                            {
+                                employees.Add(new SelectListItem
+                                {
+                                    Text = reader.GetString(reader.GetOrdinal("EmployeeName")).Trim(),
+                                    Value = reader.GetInt32(reader.GetOrdinal("EmployeeId")).ToString()
                                 });
                             }
                         }

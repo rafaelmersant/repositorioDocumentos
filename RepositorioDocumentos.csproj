@@ -132,6 +132,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\Helper.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AprobacionController.cs" />
     <Compile Include="Controllers\AreaController.cs" />
     <Compile Include="Controllers\DepartamentoController.cs" />
     <Compile Include="Controllers\DireccionController.cs" />
@@ -306,6 +307,7 @@
   <ItemGroup>
     <Folder Include="AnexosReferencias\" />
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Aprobacion\" />
     <Folder Include="Views\Glossary\" />
     <Folder Include="Views\Guideline\" />
     <Folder Include="Views\NotificacionCambios\" />

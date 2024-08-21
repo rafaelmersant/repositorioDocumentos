@@ -17,8 +17,11 @@ namespace RepositorioDocumentos.Models
         public int Id { get; set; }
         public int DocumentHeaderId { get; set; }
         public int ProducedBy { get; set; }
+        public string ProducedByName { get; set; }
         public int ManagerArea { get; set; }
+        public string ManagerAreaName { get; set; }
         public int DirectorArea { get; set; }
+        public string DirectorAreaName { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
     

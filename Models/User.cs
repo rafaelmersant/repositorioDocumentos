@@ -17,7 +17,6 @@ namespace RepositorioDocumentos.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public User()
         {
-            this.DocumentApprovals = new HashSet<DocumentApproval>();
             this.DocumentChanges = new HashSet<DocumentChange>();
             this.DocumentContents = new HashSet<DocumentContent>();
             this.DocumentGlossaries = new HashSet<DocumentGlossary>();
@@ -33,6 +32,7 @@ namespace RepositorioDocumentos.Models
             this.Departments = new HashSet<Department>();
             this.Directorates = new HashSet<Directorate>();
             this.DocumentTypes = new HashSet<DocumentType>();
+            this.DocumentApprovals = new HashSet<DocumentApproval>();
         }
     
         public int Id { get; set; }
@@ -43,8 +43,6 @@ namespace RepositorioDocumentos.Models
         public string Email { get; set; }
         public System.DateTime CreatedDate { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DocumentApproval> DocumentApprovals { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DocumentChange> DocumentChanges { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -75,5 +73,7 @@ namespace RepositorioDocumentos.Models
         public virtual ICollection<Directorate> Directorates { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DocumentType> DocumentTypes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DocumentApproval> DocumentApprovals { get; set; }
     }
 }

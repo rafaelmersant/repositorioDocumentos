@@ -119,7 +119,7 @@ namespace RepositorioDocumentos.Controllers
 
                 using (var db = new RepositorioDocRCEntities())
                 {
-                    var guidelines = db.DocumentChanges
+                    var changes = db.DocumentChanges
                                        .Where(o => o.DocumentHeaderId == documentHeaderId)
                                        .Select(s => new
                                        {
@@ -148,7 +148,7 @@ namespace RepositorioDocumentos.Controllers
                                            s.CreatedBy
                                        })
                                        .ToArray();
-                    return Json(new { result = "200", message = guidelines });
+                    return Json(new { result = "200", message = changes });
                 }
             }
             catch (Exception ex)

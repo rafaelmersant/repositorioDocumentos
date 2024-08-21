@@ -29,7 +29,7 @@ namespace RepositorioDocumentos.Controllers
                 ViewBag.Procesos = new List<SelectListItem>();
 
                 ViewBag.Macroprocesos = new MacroprocesoController().GetMacroprocesos();
-
+               
                 var db = new RepositorioDocRCEntities();
 
                 var documents = db.DocumentHeaders.OrderByDescending(o => o.Id).ToList();
@@ -59,6 +59,8 @@ namespace RepositorioDocumentos.Controllers
                 ViewBag.Procesos = new List<SelectListItem>();
 
                 ViewBag.Macroprocesos = new MacroprocesoController().GetMacroprocesos();
+
+                ViewBag.Employees = new DepartamentoController().GetEmployeesWithID();
             }
             catch (Exception ex)
             {
