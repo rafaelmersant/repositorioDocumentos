@@ -1032,18 +1032,29 @@
     function applyChangesAccordingToDocumentType() {
         $(".btnDetail").show();
 
+        //Document Type: INSTRUCTIVO and DIAGRAMA
         if ($("#DocumentTypeId :selected").text().toUpperCase().includes("INSTRUCTIVO") || $("#DocumentTypeId :selected").text().toUpperCase().includes("DIAGRAMA")) {
             $("#contentLabel").text("Pasos");
             $("#sectionContent").show();
             $(".btnDetail").hide();
             $("#btnDetail").show();
         }
+
+        //Document Type: ONLY ATTACHED DOCUMENT
+        if ($("#DocumentTypeId :selected").text().toUpperCase().includes("PUESTOS")) {
+            $("#sectionReference").show();
+            $(".btnDetail").hide();
+            //$("#btnDetail").show();
+        }
     }
 
     function prepareNextSection() {
         $("#btnNext").text("Guardar cambios en la cabecera");
 
-        if (!$("#DocumentTypeId :selected").text().toUpperCase().includes("INSTRUCTIVO") && !$("#DocumentTypeId :selected").text().toUpperCase().includes("DIGRAMA")) {
+        if (!$("#DocumentTypeId :selected").text().toUpperCase().includes("INSTRUCTIVO") &&
+            !$("#DocumentTypeId :selected").text().toUpperCase().includes("DIGRAMA") &&
+            !$("#DocumentTypeId :selected").text().toUpperCase().includes("PUESTOS")
+            ) {
             $("#sectionContent").show();
             $("#sectionScope").show();
             $("#sectionResponsabilities").show();
