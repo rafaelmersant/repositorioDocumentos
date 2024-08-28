@@ -96,7 +96,7 @@ namespace RepositorioDocumentos.Controllers
                         && department.DeptoOwner == owner
                         && department.DeptoCode != code) return Json(new { result = "500", message = "Este departamento ya existe." });
 
-                    var _reference_ = db.Departments.FirstOrDefault(o => o.Reference.ToLower() == _reference.ToLower());
+                    var _reference_ = db.Departments.FirstOrDefault(o => o.Reference.ToLower() == _reference.ToLower() && o.DeptoCode != code);
                     if (_reference_ != null && !string.IsNullOrEmpty(_reference)) return Json(new { result = "500", message = "Esta referencia ya existe." });
 
                     department.DeptoName = description;

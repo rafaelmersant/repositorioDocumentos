@@ -102,7 +102,7 @@
                     `<td class="text-center field-code-new"><input type="text" class="form-control form-control-sm new-code" placeholder="Código"></td>` +
                     `<td class="field-area-new"><select class="form-control form-control-sm new-area" id="area"> ${areas} </select></td>` +
                     `<td class="field-description-new"><input type="text" maxlength="100" min="3" class="form-control form-control-sm new-description" placeholder="Departamento"></td>` +
-                    `<td class="field-reference-new"><input type="text" maxlength="3" min="3" class="form-control form-control-sm new-reference"></td>` +
+                    `<td class="field-reference-new"><input type="text" maxlength="6" min="1" class="form-control form-control-sm new-reference"></td>` +
                     `<td class="field-owner-new"><select class="form-control form-control-sm new-owner" id="owner"> ${employees} </select></td>` +
                     `<td class="text-center">` +
                     `<button class="btn btn-sm btn-success save-btn">Guardar</button>` +
@@ -187,7 +187,7 @@
 
                 editButton.closest('tr').find('.field-area').html(`<select class="form-control form-control-sm edit-area" id="areas"> ${areas} </select>`);
                 editButton.closest('tr').find('.field-description').html('<input type="text" maxlength="100" min="3" class="form-control form-control-sm edit-description" value="' + description + '">');
-                editButton.closest('tr').find('.field-reference').html('<input type="text" maxlength="3" min="3" class="form-control form-control-sm edit-reference" value="' + reference + '">');
+                editButton.closest('tr').find('.field-reference').html('<input type="text" maxlength="6" min="1" class="form-control form-control-sm edit-reference" value="' + reference + '">');
                 editButton.closest('tr').find('.field-owner').html(`<select class="form-control form-control-sm edit-owner" id="owner"> ${employees} </select>`);
 
             } else {

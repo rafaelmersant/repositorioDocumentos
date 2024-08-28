@@ -72,10 +72,21 @@
 
                     <div class="row">
                         <div class="col-12 mb-1">
+                            <label for="AttachmentType">Archivo Adjunto</label>
+                            <select class="form-control form-control-sm col-12" id="AttachmentType">
+                                <option value="false">NO</option>
+                                <option value="true">SI</option>
+                            </select>
+                            <input type="hidden" id="Logo" name="Logo" value="Predeterminado"/>
+                        </div>
+                    </div>
+
+                    @*<div class="row">
+                        <div class="col-12 mb-1">
                             <label for="Logo">Logo</label>
                             <input type="text" id="Logo" name="Logo" value="Predeterminado" class="form-control form-control-sm col-12" readonly />
                         </div>
-                    </div>
+                    </div>*@
 
                     <div class="row">
                         <div class="col-12 mb-1">
@@ -586,6 +597,7 @@
                 DocumentTypeId: $("#DocumentTypeId").val(),
                 Status: $("#Status").val(),
                 Image: $("#Logo").val(),
+                AttachmentType: $("#AttachmentType :selected").val(),
                 Code: $("#DocumentCode :selected").text(),
                 Revision: $("#Revision").val(),
                 Date: GetEnglishDate($("#docDate").val()),
@@ -767,6 +779,9 @@
             await getProcessesByMacroprocessId(documentHeader.MacroprocessId, documentHeader.ProcessId);
 
             $("#DocumentTypeId").val(documentHeader.DocumentTypeId);
+
+            if (documentHeader.AttachmentType !== null)
+                $("#AttachmentType").val(`${documentHeader.AttachmentType}`);
 
             const documentCodeValue = $('#DocumentCode option').filter(function () { return $(this).html() == documentHeader.Code; }).val();
             $("#DocumentCode").val(documentCodeValue);
@@ -1033,7 +1048,8 @@
         $(".btnDetail").show();
 
         //Document Type: INSTRUCTIVO and DIAGRAMA
-        if ($("#DocumentTypeId :selected").text().toUpperCase().includes("INSTRUCTIVO") || $("#DocumentTypeId :selected").text().toUpperCase().includes("DIAGRAMA")) {
+        if ($("#DocumentTypeId :selected").text().toUpperCase().includes("INSTRUCTIVO")
+            || $("#DocumentTypeId :selected").text().toUpperCase().includes("DIAGRAMA")) {
             $("#contentLabel").text("Pasos");
             $("#sectionContent").show();
             $(".btnDetail").hide();
@@ -1041,7 +1057,7 @@
         }
 
         //Document Type: ONLY ATTACHED DOCUMENT
-        if ($("#DocumentTypeId :selected").text().toUpperCase().includes("PUESTOS")) {
+        if ($("#AttachmentType :selected").val() === "true") {
             $("#sectionReference").show();
             $(".btnDetail").hide();
             //$("#btnDetail").show();
@@ -1053,7 +1069,7 @@
 
         if (!$("#DocumentTypeId :selected").text().toUpperCase().includes("INSTRUCTIVO") &&
             !$("#DocumentTypeId :selected").text().toUpperCase().includes("DIGRAMA") &&
-            !$("#DocumentTypeId :selected").text().toUpperCase().includes("PUESTOS")
+            $("#AttachmentType :selected").val() !== "true"
             ) {
             $("#sectionContent").show();
             $("#sectionScope").show();

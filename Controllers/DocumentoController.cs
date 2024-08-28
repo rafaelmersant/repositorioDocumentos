@@ -139,6 +139,7 @@ namespace RepositorioDocumentos.Controllers
                         docHeader.DocumentTypeId = documentHeader.DocumentTypeId;
                         docHeader.Status = documentHeader.Status;
                         docHeader.Image = documentHeader.Image;
+                        docHeader.AttachmentType = documentHeader.AttachmentType;
                         docHeader.Revision = documentHeader.Revision;
                         docHeader.Date = documentHeader.Date;
                         docHeader.Title = documentHeader.Title;
@@ -162,6 +163,7 @@ namespace RepositorioDocumentos.Controllers
                             DocumentTypeId = documentHeader.DocumentTypeId,
                             Status = documentHeader.Status,
                             Image = documentHeader.Image,
+                            AttachmentType = documentHeader.AttachmentType,
                             Code = documentHeader.Code,
                             Revision = documentHeader.Revision,
                             Date = documentHeader.Date,
@@ -295,6 +297,7 @@ namespace RepositorioDocumentos.Controllers
                             s.DocumentTypeId,
                             s.Status,
                             s.Image,
+                            s.AttachmentType,
                             s.Code,
                             s.Revision,
                             s.Date,
@@ -315,6 +318,7 @@ namespace RepositorioDocumentos.Controllers
                             s.DocumentTypeId,
                             s.Status,
                             s.Image,
+                            s.AttachmentType,
                             s.Code,
                             s.Revision,
                             Date = s.Date.ToString("dd/MM/yyyy"), // Format date in memory

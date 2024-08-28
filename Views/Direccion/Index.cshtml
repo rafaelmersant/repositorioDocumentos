@@ -77,7 +77,7 @@
                 const newRowHtml = '<tr>' +
                     '<td class="text-center">##</td>' +
                     '<td class="field-description-new"><input type="text" maxlength="50" min="3" class="form-control form-control-sm new-description" placeholder="Escribir descripción"></td>' +
-                    '<td class="field-reference-new"><input type="text" maxlength="3" min="3" class="form-control form-control-sm new-reference"></td>' +
+                    '<td class="field-reference-new"><input type="text" maxlength="6" min="1" class="form-control form-control-sm new-reference"></td>' +
                     '<td class="text-center">' +
                     '<button class="btn btn-sm btn-success save-btn">Guardar</button>' +
                     '<button class="btn btn-sm btn-danger cancel-btn">Cancelar</button>' +
@@ -135,7 +135,7 @@
                 const reference = editButton.closest('tr').find('.field-reference').text();
 
                 editButton.closest('tr').find('.field-description').html('<input type="text" maxlength="50" min="3" class="form-control form-control-sm edit-description" value="' + description + '">');
-                editButton.closest('tr').find('.field-reference').html('<input type="text" maxlength="3" min="3" class="form-control form-control-sm edit-reference" value="' + reference + '">');
+                editButton.closest('tr').find('.field-reference').html('<input type="text" maxlength="6" min="1" class="form-control form-control-sm edit-reference" value="' + reference + '">');
 
             } else {
                 const id = editButton.closest('tr').find('.field-id').text();

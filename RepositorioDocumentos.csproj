@@ -184,6 +184,9 @@
     <Compile Include="Models\DocumentHeader.cs">
       <DependentUpon>RepositorioDocRC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DocumentPermission.cs">
+      <DependentUpon>RepositorioDocRC.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\DocumentProcedure.cs">
       <DependentUpon>RepositorioDocRC.tt</DependentUpon>
     </Compile>

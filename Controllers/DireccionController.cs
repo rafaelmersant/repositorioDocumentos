@@ -85,7 +85,7 @@ namespace RepositorioDocumentos.Controllers
 
                     if (!string.IsNullOrEmpty(_reference))
                     {
-                        var _reference_ = db.Directorates.FirstOrDefault(o => o.Reference.ToUpper() == _reference);
+                        var _reference_ = db.Directorates.FirstOrDefault(o => o.Reference.ToUpper() == _reference && o.Id != id);
                         if (_reference_ != null && !string.IsNullOrEmpty(_reference)) return Json(new { result = "500", message = "Esta referencia ya existe." });
                     }
 
