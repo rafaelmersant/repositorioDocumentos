@@ -33,6 +33,14 @@ namespace RepositorioDocumentos.Controllers
                 var db = new RepositorioDocRCEntities();
 
                 var documents = db.DocumentHeaders.OrderByDescending(o => o.Id).ToList();
+                if (Session["role"].ToString() != "Admin")
+                {
+                    var userId = int.Parse(Session["userID"].ToString());
+                    var permissions = db.DocumentPermissions.Where(p => p.UserId == userId).ToList();
+
+                    documents = documents.Where(d => permissions.Any(p => p.DocumentHeaderId == d.Id)).ToList();
+                }
+                   
                 return View(documents);
 
             }
@@ -61,6 +69,7 @@ namespace RepositorioDocumentos.Controllers
                 ViewBag.Macroprocesos = new MacroprocesoController().GetMacroprocesos();
 
                 ViewBag.Employees = new DepartamentoController().GetEmployeesWithID();
+                ViewBag.Users = new UserController().GetUsers();
             }
             catch (Exception ex)
             {

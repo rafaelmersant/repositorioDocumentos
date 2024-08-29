@@ -144,6 +144,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MacroprocesoController.cs" />
     <Compile Include="Controllers\NotificacionCambiosController.cs" />
+    <Compile Include="Controllers\PermisoController.cs" />
     <Compile Include="Controllers\ProcedimientoController.cs" />
     <Compile Include="Controllers\ProcesoController.cs" />
     <Compile Include="Controllers\AnexoReferenciaController.cs" />
@@ -225,6 +226,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\DocumentPreviewViewModel.cs" />
+    <Compile Include="ViewModels\UserPermission.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -257,6 +259,7 @@
       <DependentUpon>RepositorioDocRC.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\doc-permission.js" />
     <Content Include="Scripts\doc-approval.js" />
     <Content Include="Scripts\doc-change.js" />
     <Content Include="Scripts\doc-glossary.js" />
@@ -314,6 +317,7 @@
     <Folder Include="Views\Glossary\" />
     <Folder Include="Views\Guideline\" />
     <Folder Include="Views\NotificacionCambios\" />
+    <Folder Include="Views\Permiso\" />
     <Folder Include="Views\Procedure\" />
     <Folder Include="Views\References\" />
   </ItemGroup>

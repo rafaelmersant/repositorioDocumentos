@@ -646,6 +646,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        
         <EntityContainer Name="RepositorioDocRCModelStoreContainer">
           <EntitySet Name="Area" EntityType="Self.Area" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />

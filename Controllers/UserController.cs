@@ -2,6 +2,8 @@
 using RepositorioDocumentos.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Data;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -294,7 +296,7 @@ namespace RepositorioDocumentos.Controllers
         {
             IList<SelectListItem> roles = new List<SelectListItem>
              {
-                 new SelectListItem() {Text="Registro", Value="Registro"},
+                 new SelectListItem() {Text="Consulta", Value="Consulta"},
                  new SelectListItem() { Text="Admin", Value="Admin"}
              };
             return roles;
@@ -405,6 +407,45 @@ namespace RepositorioDocumentos.Controllers
             }
 
             return string.Empty;
+        }
+
+        public List<SelectListItem> GetUsers()
+        {
+            List<SelectListItem> users = new List<SelectListItem>();
+
+            try
+            {
+                string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["RepoDB"].ConnectionString;
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand("GetUsers", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            users.Add(new SelectListItem { Text = "Seleccionar...", Value = "" });
+
+                            while (reader.Read())
+                            {
+                                users.Add(new SelectListItem
+                                {
+                                    Text = reader.GetString(reader.GetOrdinal("EmployeeName")).Trim(),
+                                    Value = reader.GetInt32(reader.GetOrdinal("Id")).ToString()
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Helper.SendException(ex);
+            }
+
+            return users;
         }
     }
 }
