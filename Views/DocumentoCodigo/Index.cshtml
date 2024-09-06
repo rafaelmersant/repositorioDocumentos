@@ -184,7 +184,7 @@
             $(this).closest('tr').remove();
         });
 
-        $('.edit-btn').click(function () {
+        $('#documentCodeTable').on('click', '.edit-btn', function () {
             var editButton = $(this);
 
             if (editButton.prop('title') === "Editar") {
@@ -226,7 +226,7 @@
             }
         });
 
-        $('.btn-remove').click(function () {
+        $('#documentCodeTable').on('click', '.btn-remove', function () {
             var removeButton = $(this);
 
             if (removeButton.html() === "Cancelar") {

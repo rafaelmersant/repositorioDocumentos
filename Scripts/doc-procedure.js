@@ -26,7 +26,6 @@ $('.btn-new-procedure').click(function () {
 $(document).on('click', '.save-procedure-btn', async function () {
     var sortindex = $(this).closest('tr').find('.new-sortindex-procedure').val();
     var responsible = $(this).closest('tr').find('.new-responsible-procedure').val();
-    //var description = $(this).closest('tr').find('.new-description-procedure').val();
     var description = await getProcedureBody();
 
     const documentHeaderId = $("#DocumentHeaderId").val();
@@ -99,7 +98,7 @@ async function getProcedure() {
                 proceduresCount += 1;
             }
 
-            $('.btn-edit-procedure').click(async function () {
+            $('#procedureTable').on('click', '.btn-edit-procedure', function () {
                 var editButton = $(this);
 
                 if (editButton.prop('title') === "Editar") {
@@ -110,7 +109,6 @@ async function getProcedure() {
 
                     const sortindex = editButton.closest('tr').find('.field-sortindex-procedure').text();
                     const responsible = editButton.closest('tr').find('.field-responsible-procedure').text();
-                    //const description = editButton.closest('tr').find('.field-description-procedure').text();
                     const descriptionRaw = editButton.closest('tr').find('.field-description-procedure-raw').val();
 
                     sortindexProcedureEditing = sortindex;
@@ -120,17 +118,13 @@ async function getProcedure() {
                     editButton.closest('tr').find('.field-sortindex-procedure').html(`<input type="text" maxlength="3"  class="form-control form-control-sm edit-sortindex-procedure" value="${sortindex}">`);
                     editButton.closest('tr').find('.field-responsible-procedure').html(`<input type="text" value="${responsible}" class="form-control form-control-sm col-12 edit-responsible-procedure"/>`);
                     editButton.closest('tr').find('.field-description-procedure').html(`<div id="description-procedure" class="col-12 edit-description-procedure">${descriptionRaw}</div><input class="field-description-procedure-raw" type='hidden' value='${descriptionRaw}'>`);
-                    //editButton.closest('tr').find('.field-description-procedure').html(`<textarea id="description-procedure" class="form-control form-control-sm col-12 auto-resizing-textarea edit-description-procedure">${description}</textarea>`);
-
+            
                     tinymce.init({
                         selector: '#description-procedure',
                         menubar: false,
                         plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount linkchecker',
                         toolbar: 'undo redo | fontfamily fontsize | bold italic underline strikethrough | table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
                     });
-
-                    //descriptionProcedureTextarea();
-
                 } else {
                     const id = editButton.closest('tr').find('.field-id-procedure').val();
                     const sortindex = editButton.closest('tr').find('.edit-sortindex-procedure').val();
@@ -171,7 +165,7 @@ async function getProcedure() {
                 }
             });
 
-            $('.btn-remove-procedure').click(function () {
+            $('#procedureTable').on('click', '.btn-remove-procedure', function () {
                 var removeButton = $(this);
 
                 if (removeButton.html() === "Cancelar") {

@@ -122,7 +122,7 @@
             $(this).closest('tr').remove();
         });
 
-        $('.edit-btn').click(function () {
+        $('#directorateTable').on('click', '.edit-btn', function () {
             var editButton = $(this);
 
             if (editButton.prop('title') === "Editar") {
@@ -170,7 +170,7 @@
             }
         });
 
-        $('.btn-remove').click(function () {
+        $('#directorateTable').on('click', '.btn-remove', function () {
             var removeButton = $(this);
 
             if (removeButton.html() === "Cancelar") {

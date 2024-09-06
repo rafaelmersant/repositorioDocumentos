@@ -70,7 +70,6 @@ async function getPermissions() {
                     `<td class="field-createdDate">${item.CreatedDate}</td>` +
                     '<td class="text-center">' +
                     `<input type="hidden" class="field-id" value="${item.Id}">` +
-                    /*'<a class="btn btn-sm btn-success btn-edit-approval edit-button-width" href="javascript:void(0)" title="Editar">Editar</a> ' +*/
                     ' <a class="btn btn-sm btn-danger btn-remove-permission" href="javascript:void(0)" title="Eliminar">Eliminar</a>' +
                     '</td>' +
                     '</tr>';
@@ -78,7 +77,7 @@ async function getPermissions() {
                 $('#permissionTable tbody').append(itemRow);
             }
 
-            $('.btn-remove-permission').click(function () {
+            $('#permissionTable').on('click', '.btn-remove-permission', function () {
                 var removeButton = $(this);
 
                 const id = removeButton.closest('tr').find('.field-id').val();

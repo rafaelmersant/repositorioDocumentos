@@ -91,7 +91,7 @@ function getChanges() {
 
             $(".datepicker").datepicker({dateFormat: 'dd/mm/yy',});
 
-            $('.btn-edit-change').click(function () {
+            $('#changeTable').on('click', '.btn-edit-change', function () {
                 var editButton = $(this);
 
                 if (editButton.prop('title') === "Editar") {
@@ -157,7 +157,7 @@ function getChanges() {
                 }
             });
 
-            $('.btn-remove-change').click(function () {
+            $('#changeTable').on('click', '.btn-remove-change', function () {
                 var removeButton = $(this);
 
                 if (removeButton.html() === "Cancelar") {

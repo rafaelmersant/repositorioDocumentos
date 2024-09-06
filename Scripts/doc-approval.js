@@ -90,7 +90,7 @@ async function getApprovals() {
                 $('#approvalTable tbody').append(itemRow);
             }
 
-            $('.btn-edit-approval').click(function () {
+            $('#approvalTable').on('click', '.btn-edit-approval', function () {
                 var editButton = $(this);
 
                 if (editButton.prop('title') === "Editar") {
@@ -165,7 +165,7 @@ async function getApprovals() {
                 }
             });
 
-            $('.btn-remove-approval').click(function () {
+            $('#approvalTable').on('click', '.btn-remove-approval', function () {
                 var removeButton = $(this);
 
                 if (removeButton.html() === "Cancelar") {

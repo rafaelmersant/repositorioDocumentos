@@ -129,7 +129,7 @@
             $(this).closest('tr').remove();
         });
 
-        $('.edit-btn').click(function () {
+        $('#processTable').on('click', '.edit-btn', function () {
             var editButton = $(this);
 
             if (editButton.prop('title') === "Editar") {
@@ -184,7 +184,7 @@
             }
         });
 
-        $('.btn-remove').click(function () {
+        $('#processTable').on('click', '.btn-remove', function () {
             var removeButton = $(this);
 
             if (removeButton.html() === "Cancelar") {

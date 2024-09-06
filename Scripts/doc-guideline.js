@@ -94,9 +94,8 @@ async function getGuideline() {
                 guidelinesCount += 1;
             }
 
-            $('.btn-edit-guideline').click(async function () {
+            $('#guidelineTable').on('click', '.btn-edit-guideline', function () {
                 var editButton = $(this);
-                console.log('CHECKED HERE::::::', editButton.prop('title'))
                 if (editButton.prop('title') === "Editar") {
                     editButton.prop('title', 'Guardar');
                     editButton.html("Guardar");
@@ -104,14 +103,12 @@ async function getGuideline() {
                     editButton.closest('tr').find('.btn-remove-guideline').prop("title", "Cancelar");
 
                     const sortindex = editButton.closest('tr').find('.field-sortindex-guideline').text();
-                    //const description = editButton.closest('tr').find('.field-description-guideline').text();
                     const descriptionRaw = editButton.closest('tr').find('.field-description-guideline-raw').val();
 
                     sortindexGuidelineEditing = sortindex;
                     descriptionGuidelineEditing = descriptionRaw;
 
                     editButton.closest('tr').find('.field-sortindex-guideline').html(`<input type="text" maxlength="3"  class="form-control form-control-sm edit-sortindex-guideline" value="${sortindex}">`);
-                    //editButton.closest('tr').find('.field-description-guideline').html(`<textarea id="description-guideline" class="form-control form-control-sm col-12 auto-resizing-textarea edit-description-guideline">${description}</textarea>`);
                     editButton.closest('tr').find('.field-description-guideline').html(`<div id="description-guideline" class="col-12 edit-description-guideline">${descriptionRaw}</div><input class="field-description-guideline-raw" type='hidden' value='${descriptionRaw}'>`);
 
                     tinymce.init({
@@ -124,8 +121,7 @@ async function getGuideline() {
                 } else {
                     const id = editButton.closest('tr').find('.field-id-guideline').val();
                     const sortindex = editButton.closest('tr').find('.edit-sortindex-guideline').val();
-                    //const description = editButton.closest('tr').find('.edit-description-guideline').val();
-                    const description = await getGuidelineBody(); //editButton.closest('tr').find('.edit-description-procedure').val();
+                    const description = await getGuidelineBody();
 
                     if (!sortindex || !description) {
                         toastr.error("Debe completar todos los campos.");
@@ -160,7 +156,7 @@ async function getGuideline() {
                 }
             });
 
-            $('.btn-remove-guideline').click(async function () {
+            $('#guidelineTable').on('click', '.btn-remove-guideline', function () {
                 var removeButton = $(this);
 
                 if (removeButton.html() === "Cancelar") {
@@ -170,7 +166,6 @@ async function getGuideline() {
                     const __descriptionRaw = `<input class="field-description-procedure-raw" type='hidden' value='${descriptionGuidelineEditing}'>`;
 
                     removeButton.closest('tr').find('.field-sortindex-guideline').text(sortindexGuidelineEditing);
-                    //removeButton.closest('tr').find('.field-description-guideline').text(descriptionGuidelineEditing);
                     removeButton.closest('tr').find('.field-description-guideline').html(`${descriptionGuidelineEditing}${__descriptionRaw}`);
 
                     removeButton.closest('tr').find('.btn-edit-guideline').html("Editar");

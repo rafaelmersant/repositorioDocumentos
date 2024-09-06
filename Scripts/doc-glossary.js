@@ -74,7 +74,7 @@ function getGlossary() {
                 $('#glossaryTable tbody').append(itemRow);
             }
 
-            $('.btn-edit-glossary').click(function () {
+            $('#glossaryTable').on('click', '.btn-edit-glossary', function () {
                 var editButton = $(this);
 
                 if (editButton.prop('title') === "Editar") {
@@ -125,7 +125,7 @@ function getGlossary() {
                 }
             });
 
-            $('.btn-remove-glossary').click(function () {
+            $('#glossaryTable').on('click', '.btn-remove-glossary', function () {
                 var removeButton = $(this);
 
                 if (removeButton.html() === "Cancelar") {
