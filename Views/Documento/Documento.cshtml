@@ -169,8 +169,14 @@
                 <section class="col-12 mt-4">
                     <div class="row">
                         <div class="col-12 mb-1">
-                            <label for="Objective">Objetivo</label>
-                            <textarea type="tex" id="Objective" name="Objective" maxlength="500" class="form-control form-control-sm col-12" rows="3"></textarea>
+                            @*<label for="Objective">Objetivo</label>*@
+                            <div class="bg-secondary text-light panel-custom border">
+                                <h6 class="panel-title">
+                                    Objetivo
+                                </h6>
+                            </div>
+                            <div id="objectiveBody" class="tinyEditor" style="min-height: 100px"></div>
+                            @*<textarea type="tex" id="Objective" name="Objective" maxlength="500" class="form-control form-control-sm col-12" rows="3"></textarea>*@
                         </div>
                     </div>
                 </section>
@@ -186,30 +192,39 @@
     <section class="bg-light text-dark border-custom mb-4 mt-3" id="sectionContent">
         <div class="bg-secondary text-light panel-custom border">
             <h6 class="panel-title" id="contentLabel">
+                <a href="javascript:toggleComponent('btn-toggleContenido', 'wrapContenido')" id="btn-toggleContenido">-</a>
                 Contenido
             </h6>
         </div>
-        <div id="contenidoBody" class="tinyEditor" style="min-height: 100px"></div>
+        <div id="wrapContenido">
+            <div id="contenidoBody" class="tinyEditor" style="min-height: 100px"></div>
+        </div>
     </section>
 
     <!--Alcance-->
     <section class="bg-light text-dark border-custom mb-4" id="sectionScope">
         <div class="bg-secondary text-light panel-custom border">
             <h6 class="panel-title">
+                <a href="javascript:toggleComponent('btn-toggleScope', 'wrapScope')" id="btn-toggleScope">-</a>
                 Alcance
             </h6>
         </div>
-        <textarea type="tex" id="Scope" name="Scope" maxlength="500" class="form-control form-control-sm col-12" rows="3"></textarea>
+        <div id="wrapScope">
+            <div id="scopeBody" class="tinyEditor" style="min-height: 100px"></div>
+        </div>
     </section>
 
     <!--Responsabilidades-->
     <section class="bg-light text-dark border-custom mb-4" id="sectionResponsabilities">
         <div class="bg-secondary text-light panel-custom border">
             <h6 class="panel-title">
+                <a href="javascript:toggleComponent('btn-toggleResponsabilities', 'wrapResponsabilities')" id="btn-toggleResponsabilities">-</a>
                 Responsabilidades
             </h6>
         </div>
-        <div id="responsabilitiesBody" class="tinyEditor" style="min-height: 100px"></div>
+        <div id="wrapResponsabilities">
+            <div id="responsabilitiesBody" class="tinyEditor" style="min-height: 100px"></div>
+        </div>
     </section>
 
     <button id="btnDetail" class="btn btn-danger col-12 mb-4 btnDetail">Guardar cambios en el detalle</button>
@@ -218,10 +233,11 @@
     <section class="bg-light text-dark border-custom mb-4" id="sectionGlossary">
         <div class="bg-secondary text-light panel-custom border">
             <h6 class="panel-title">
+                <a href="javascript:toggleComponent('btn-toggleGlossary', 'wrapGlossary')" id="btn-toggleGlossary">-</a>
                 Glosario
             </h6>
         </div>
-        <div class="mt-3 ml-2 mr-2">
+        <div class="mt-3 ml-2 mr-2" id="wrapGlossary">
             <a href="javascript:void(0);" class="btn btn-danger btn-sm btn-new-glossary">Nuevo Registro</a>
             <table id="glossaryTable" class="table table-striped table-bordered table-condensed table-sm mt-1">
                 <thead class="bg-warning">
@@ -258,10 +274,11 @@
     <section class="bg-light text-dark border-custom mb-4" id="sectionGuideline">
         <div class="bg-secondary text-light panel-custom border">
             <h6 class="panel-title">
+                <a href="javascript:toggleComponent('btn-toggleGuideline', 'wrapGuideline')" id="btn-toggleGuideline">-</a>
                 Directrices
             </h6>
         </div>
-        <div class="mt-3 ml-2 mr-2">
+        <div class="mt-3 ml-2 mr-2" id="wrapGuideline">
             <a href="javascript:void(0);" class="btn btn-danger btn-sm btn-new-guideline">Nueva Directriz</a>
             <table id="guidelineTable" class="table table-striped table-bordered table-condensed table-sm mt-1">
                 <thead class="bg-warning">
@@ -298,10 +315,13 @@
     <section class="bg-light text-dark border-custom mb-4" id="sectionPolicy">
         <div class="bg-secondary text-light panel-custom border">
             <h6 class="panel-title">
+                <a href="javascript:toggleComponent('btn-togglePolicy', 'wrapPolicy')" id="btn-togglePolicy">-</a>
                 Politica
             </h6>
         </div>
-        <div id="policyBody" class="tinyEditor" style="min-height: 100px"></div>
+        <div id="wrapPolicy">
+            <div id="policyBody" class="tinyEditor" style="min-height: 100px"></div>
+        </div>
     </section>
 
     <button class="btn btn-danger col-12 mb-4 btnDetail">Guardar cambios en la política</button>
@@ -310,10 +330,11 @@
     <section class="bg-light text-dark border-custom mb-4" id="sectionProcedure">
         <div class="bg-secondary text-light panel-custom border">
             <h6 class="panel-title">
+                <a href="javascript:toggleComponent('btn-toggleProcedure', 'wrapProcedure')" id="btn-toggleProcedure">-</a>
                 Procedimientos
             </h6>
         </div>
-        <div class="mt-3 ml-2 mr-2">
+        <div class="mt-3 ml-2 mr-2" id="wrapProcedure">
             <a href="javascript:void(0);" class="btn btn-danger btn-sm btn-new-procedure">Nuevo Procedimiento</a>
             <table id="procedureTable" class="table table-striped table-bordered table-condensed table-sm mt-1">
                 <thead class="bg-warning">
@@ -354,6 +375,7 @@
     <section class="bg-light text-dark border-custom mb-4" id="sectionReference">
         <div class="bg-secondary text-light panel-custom border">
             <h6 class="panel-title">
+                <a href="javascript:toggleComponent('btn-toggleReferences', 'referencesBody')" id="btn-toggleReferences">-</a>
                 Referencias o Anexos
             </h6>
         </div>
@@ -405,10 +427,11 @@
     <section class="bg-light text-dark border-custom mb-4" id="sectionChange">
         <div class="bg-secondary text-light panel-custom border">
             <h6 class="panel-title">
+                <a href="javascript:toggleComponent('btn-toggleChanges', 'wrapChanges')" id="btn-toggleChanges">-</a>
                 Notificación de Cambios
             </h6>
         </div>
-        <div class="mt-3 ml-2 mr-2">
+        <div class="mt-3 ml-2 mr-2" id="wrapChanges">
             <a href="javascript:void(0);" class="btn btn-danger btn-sm btn-new-change">Nuevo Registro</a>
             <table id="changeTable" class="table table-striped table-bordered table-condensed table-sm mt-1">
                 <thead class="bg-warning">
@@ -458,10 +481,11 @@
     <section class="bg-light text-dark border-custom mb-4" id="sectionApproval">
         <div class="bg-secondary text-light panel-custom border">
             <h6 class="panel-title">
+                <a href="javascript:toggleComponent('btn-toggleApproval', 'wrapApproval')" id="btn-toggleApproval">-</a>
                 Aprobación
             </h6>
         </div>
-        <div class="mt-3 ml-2 mr-2">
+        <div class="mt-3 ml-2 mr-2" id="wrapApproval">
             <a href="javascript:void(0);" class="btn btn-danger btn-sm btn-new-approval">Nuevo Registro</a>
             <table id="approvalTable" class="table table-striped table-bordered table-condensed table-sm mt-1">
                 <thead class="bg-warning">
@@ -580,6 +604,8 @@
         var quill_policyBody;
         var quill_descriptionProcedure;
         var quill_descriptionGuideline;
+        var quill_objectiveBody;
+        var quill_scopeBody;
 
         $("#Documents").addClass("menu-active");
         $("#sectionContent").hide();
@@ -626,13 +652,15 @@
 
         loadCurrentEditor();
 
-        $("#btnNext").click(function (evt) {
+        $("#btnNext").click(async function (evt) {
 
             const _validateFields = validateFields();
             if (_validateFields) {
                 toastr.error(_validateFields);
                 return false;
             }
+
+            const objective = await getObjectiveBody();
 
             const documentHeader = {
                 Id: $("#DocumentHeaderId").val(),
@@ -649,7 +677,7 @@
                 AreaId: $("#AreaId").val(),
                 MacroprocessId: $("#MacroprocessId").val(),
                 ProcessId: $("#ProcessId").val(),
-                Objective: $("#Objective").val()
+                Objective: objective
             }
 
             console.log('documentHeader:', documentHeader)
@@ -657,7 +685,9 @@
             $.ajax({
                 url: "/Documento/SaveDocumentHeader",
                 type: "POST",
-                data: documentHeader
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                data: JSON.stringify(documentHeader),
             }).done(function (data) {
                 if (data.result === "200") {
                     console.log('Document HEADER saved:', data)
@@ -716,7 +746,7 @@
     }
 
     async function saveDocumentDetail(responsabilitiesBody, policyBody) {
-        const scope = $("#Scope").val();
+        const scope = await getScopeBody();
 
         const responsabilities = responsabilitiesBody ? responsabilitiesBody : "";
         const policy = policyBody ? policyBody : "";
@@ -840,19 +870,29 @@
             $("#MacroprocessId").val(documentHeader.MacroprocessId);
             $("#ProcessId").val(documentHeader.ProcessId);
 
-            $("#Objective").val(documentHeader.Objective);
-
+            if (documentHeader.Objective)
+                await setObjectiveBody(documentHeader.Objective);
+            
             if (documentContent && documentContent.Body)
-                setContentBody(documentContent.Body)
+                await setContentBody(documentContent.Body)
+            else
+                toggleComponent('btn-toggleContenido', 'wrapContenido');
 
             if (documentDetail) {
-                $("#Scope").text(documentDetail.Scope);
-
+                if (documentDetail.Scope)
+                    await setScopeBody(documentDetail.Scope);
+                else
+                    toggleComponent('btn-toggleScope', 'wrapScope');
+              
                 if (documentDetail.Responsabilities)
-                    setResponsabilitiesBody(documentDetail.Responsabilities);
+                    await setResponsabilitiesBody(documentDetail.Responsabilities);
+                else
+                    toggleComponent('btn-toggleResponsabilities', 'wrapResponsabilities');
 
                 if (documentDetail.Policy)
-                    setPolicyBody(documentDetail.Policy);
+                    await setPolicyBody(documentDetail.Policy);
+                else
+                    toggleComponent('btn-togglePolicy', 'wrapPolicy');
             }
 
             $(".btnDetail").show();
@@ -868,9 +908,6 @@
             getChanges();
             getApprovals();
             getPermissions();
-
-            ResizeDescriptionTextarea('Objective');
-            ResizeDescriptionTextarea('Scope');
 
             processing = false;
         });
@@ -987,6 +1024,20 @@
             },
             theme: 'snow'
         });
+
+        quill_objectiveBody = new Quill('#objectiveBody', {
+            modules: {
+                toolbar: toolbarOptions
+            },
+            theme: 'snow'
+        });
+
+        quill_scopeBody = new Quill('#scopeBody', {
+            modules: {
+                toolbar: toolbarOptions
+            },
+            theme: 'snow'
+        });
     }
 
     //Content BODY
@@ -1053,6 +1104,50 @@
             tinymce.get("policyBody").setContent(value);
         else
             quill_policyBody.root.innerHTML = value;
+    }
+
+    //Objective BODY
+    async function getObjectiveBody() {
+        const currentEditor = $("#CurrentEditor").val();
+        let value = "";
+
+        if (currentEditor === "Tiny")
+            value = tinymce.get("objectiveBody").getContent();
+        else
+            value = quill_objectiveBody.root.innerHTML;
+
+        return value ? value : "";
+    }
+
+    async function setObjectiveBody(value) {
+        const currentEditor = $("#CurrentEditor").val();
+
+        if (currentEditor === "Tiny")
+            tinymce.get("objectiveBody").setContent(value);
+        else
+            quill_objectiveBody.root.innerHTML = value;
+    }
+
+    //Scope BODY
+    async function getScopeBody() {
+        const currentEditor = $("#CurrentEditor").val();
+        let value = "";
+
+        if (currentEditor === "Tiny")
+            value = tinymce.get("scopeBody").getContent();
+        else
+            value = quill_scopeBody.root.innerHTML;
+
+        return value ? value : "";
+    }
+
+    async function setScopeBody(value) {
+        const currentEditor = $("#CurrentEditor").val();
+
+        if (currentEditor === "Tiny")
+            tinymce.get("scopeBody").setContent(value);
+        else
+            quill_scopeBody.root.innerHTML = value;
     }
 
     function validateFields() {
@@ -1127,6 +1222,16 @@
             $("#sectionChange").show();
             $("#sectionApproval").show();
             $("#sectionPermission").show();
+        }
+    }
+
+    async function toggleComponent(button, section) {
+        if ($(`#${button}`).html() === "-") {
+            $(`#${button}`).html("+");
+            $(`#${section}`).fadeOut(300);
+        } else {
+            $(`#${button}`).html("-");
+            $(`#${section}`).fadeIn(300);
         }
     }
 

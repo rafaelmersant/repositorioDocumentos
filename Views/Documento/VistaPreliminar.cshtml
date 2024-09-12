@@ -189,8 +189,8 @@
                         @if (!string.IsNullOrEmpty(Model.DocumentHeader.Objective))
                         {
                             <p class="topic-doc">@topicNumber. OBJETIVO</p>
-                            <span>
-                                @Model.DocumentHeader.Objective
+                            <span style="text-align: justify">
+                                @Html.Raw(Model.DocumentHeader.Objective)
                             </span>
                         }
 
@@ -205,7 +205,7 @@
                             }
 
                             <p class="topic-doc">@topicNumber. @content</p>
-                            <span>
+                            <span style="text-align: justify">
                                 @Html.Raw(Model.DocumentContent.Body)
                             </span>
                         }
@@ -217,8 +217,8 @@
                                 topicNumber += 1;
 
                                 <p class="topic-doc">@topicNumber. ALCANCE</p>
-                                <span>
-                                    @Model.DocumentDetail.Scope
+                                <span style="text-align: justify">
+                                    @Html.Raw(Model.DocumentDetail.Scope)
                                 </span>
                             }
 

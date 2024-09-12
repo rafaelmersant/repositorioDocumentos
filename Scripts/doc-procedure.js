@@ -98,7 +98,7 @@ async function getProcedure() {
                 proceduresCount += 1;
             }
 
-            $('#procedureTable').on('click', '.btn-edit-procedure', function () {
+            $('#procedureTable').on('click', '.btn-edit-procedure', async function () {
                 var editButton = $(this);
 
                 if (editButton.prop('title') === "Editar") {
@@ -129,7 +129,7 @@ async function getProcedure() {
                     const id = editButton.closest('tr').find('.field-id-procedure').val();
                     const sortindex = editButton.closest('tr').find('.edit-sortindex-procedure').val();
                     const responsible = editButton.closest('tr').find('.edit-responsible-procedure').val();
-                    const description = await getProcedureBody(); //editButton.closest('tr').find('.edit-description-procedure').val();
+                    const description = await getProcedureBody();
 
                     if (!sortindex || !responsible || !description) {
                         toastr.error("Debe completar todos los campos.");

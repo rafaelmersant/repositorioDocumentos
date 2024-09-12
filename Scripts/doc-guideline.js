@@ -94,7 +94,7 @@ async function getGuideline() {
                 guidelinesCount += 1;
             }
 
-            $('#guidelineTable').on('click', '.btn-edit-guideline', function () {
+            $('#guidelineTable').on('click', '.btn-edit-guideline', async function () {
                 var editButton = $(this);
                 if (editButton.prop('title') === "Editar") {
                     editButton.prop('title', 'Guardar');

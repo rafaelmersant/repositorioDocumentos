@@ -26,14 +26,14 @@ namespace RepositorioDocumentos.Models
             this.Processes = new HashSet<Process>();
             this.Areas = new HashSet<Area>();
             this.DocumentCodes = new HashSet<DocumentCode>();
-            this.DocumentDetails = new HashSet<DocumentDetail>();
             this.DocumentReferences = new HashSet<DocumentReference>();
             this.DocumentApprovals = new HashSet<DocumentApproval>();
             this.Departments = new HashSet<Department>();
             this.Directorates = new HashSet<Directorate>();
             this.DocumentTypes = new HashSet<DocumentType>();
-            this.DocumentHeaders = new HashSet<DocumentHeader>();
             this.DocumentPermissions = new HashSet<DocumentPermission>();
+            this.DocumentHeaders = new HashSet<DocumentHeader>();
+            this.DocumentDetails = new HashSet<DocumentDetail>();
         }
     
         public int Id { get; set; }
@@ -63,8 +63,6 @@ namespace RepositorioDocumentos.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DocumentCode> DocumentCodes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DocumentDetail> DocumentDetails { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DocumentReference> DocumentReferences { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DocumentApproval> DocumentApprovals { get; set; }
@@ -75,8 +73,10 @@ namespace RepositorioDocumentos.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DocumentType> DocumentTypes { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DocumentPermission> DocumentPermissions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DocumentHeader> DocumentHeaders { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DocumentPermission> DocumentPermissions { get; set; }
+        public virtual ICollection<DocumentDetail> DocumentDetails { get; set; }
     }
 }

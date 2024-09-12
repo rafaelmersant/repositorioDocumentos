@@ -20,7 +20,7 @@ namespace RepositorioDocumentos.Models
         public System.DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
     
-        public virtual DocumentHeader DocumentHeader { get; set; }
         public virtual User User { get; set; }
+        public virtual DocumentHeader DocumentHeader { get; set; }
     }
 }

@@ -20,12 +20,12 @@ namespace RepositorioDocumentos.Models
             this.DocumentApprovals = new HashSet<DocumentApproval>();
             this.DocumentChanges = new HashSet<DocumentChange>();
             this.DocumentContents = new HashSet<DocumentContent>();
-            this.DocumentDetails = new HashSet<DocumentDetail>();
             this.DocumentGlossaries = new HashSet<DocumentGlossary>();
             this.DocumentGuidelines = new HashSet<DocumentGuideline>();
             this.DocumentProcedures = new HashSet<DocumentProcedure>();
             this.DocumentReferences = new HashSet<DocumentReference>();
             this.DocumentPermissions = new HashSet<DocumentPermission>();
+            this.DocumentDetails = new HashSet<DocumentDetail>();
         }
     
         public int Id { get; set; }
@@ -56,8 +56,6 @@ namespace RepositorioDocumentos.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DocumentContent> DocumentContents { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DocumentDetail> DocumentDetails { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DocumentGlossary> DocumentGlossaries { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DocumentGuideline> DocumentGuidelines { get; set; }
@@ -71,5 +69,7 @@ namespace RepositorioDocumentos.Models
         public virtual DocumentType DocumentType { get; set; }
         public virtual Macroprocess Macroprocess { get; set; }
         public virtual Process Process { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DocumentDetail> DocumentDetails { get; set; }
     }
 }
