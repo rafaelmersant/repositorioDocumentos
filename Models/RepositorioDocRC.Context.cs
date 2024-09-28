@@ -42,7 +42,8 @@ namespace RepositorioDocumentos.Models
         public virtual DbSet<Directorate> Directorates { get; set; }
         public virtual DbSet<DocumentType> DocumentTypes { get; set; }
         public virtual DbSet<DocumentPermission> DocumentPermissions { get; set; }
-        public virtual DbSet<DocumentHeader> DocumentHeaders { get; set; }
         public virtual DbSet<DocumentDetail> DocumentDetails { get; set; }
+        public virtual DbSet<Permission> Permissions { get; set; }
+        public virtual DbSet<DocumentHeader> DocumentHeaders { get; set; }
     }
 }

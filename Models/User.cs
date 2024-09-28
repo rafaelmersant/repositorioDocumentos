@@ -32,8 +32,9 @@ namespace RepositorioDocumentos.Models
             this.Directorates = new HashSet<Directorate>();
             this.DocumentTypes = new HashSet<DocumentType>();
             this.DocumentPermissions = new HashSet<DocumentPermission>();
-            this.DocumentHeaders = new HashSet<DocumentHeader>();
             this.DocumentDetails = new HashSet<DocumentDetail>();
+            this.Permissions = new HashSet<Permission>();
+            this.DocumentHeaders = new HashSet<DocumentHeader>();
         }
     
         public int Id { get; set; }
@@ -75,8 +76,10 @@ namespace RepositorioDocumentos.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DocumentPermission> DocumentPermissions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<DocumentHeader> DocumentHeaders { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DocumentDetail> DocumentDetails { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Permission> Permissions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<DocumentHeader> DocumentHeaders { get; set; }
     }
 }

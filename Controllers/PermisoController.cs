@@ -13,6 +13,89 @@ namespace RepositorioDocumentos.Controllers
 {
     public class PermisoController : Controller
     {
+        public ActionResult Index()
+        {
+            if (Session["role"] == null) return RedirectToAction("Index", "Home");
+
+            try
+            {
+                ViewBag.Direcciones = new DireccionController().GetDirecciones();
+                ViewBag.Users = new UserController().GetUsers();
+                
+                var db = new RepositorioDocRCEntities();
+
+                var permissions = db.Permissions.OrderBy(o => o.Id).ToList();
+                return View(permissions);
+
+            }
+            catch (Exception ex)
+            {
+                Helper.SendException(ex);
+
+                return null;
+            }
+        }
+
+        [HttpPost]
+        public JsonResult AddPermissionUser(int userId, short directorateId, int? deptoCode)
+        {
+            try
+            {
+                if (Session["userID"] == null) throw new Exception("505: Por favor intente logearse de nuevo en el sistema. (La Sesión expiró)");
+
+                using (var db = new RepositorioDocRCEntities())
+                {
+                    var permission = db.Permissions.FirstOrDefault(o => o.UserId == userId && o.DirectorateId == directorateId && o.DeptoCode == deptoCode);
+                    if (permission != null) return Json(new { result = "500", message = "Este registro ya existe." });
+
+                    db.Permissions.Add(new Permission
+                    {
+                        UserId = userId,
+                        PermissionType = !deptoCode.HasValue || deptoCode == 0 ? "D" : "E",
+                        DirectorateId = directorateId,
+                        DeptoCode = deptoCode == 0 ? null : deptoCode,
+                        CreatedDate = DateTime.Now,
+                        CreatedBy = int.Parse(Session["userID"].ToString())
+                    });
+                    db.SaveChanges();
+                }
+
+                return Json(new { result = "200", message = "success" });
+            }
+            catch (Exception ex)
+            {
+                Helper.SendException(ex, $"directorateId: {directorateId} | userId: {userId}");
+
+                return Json(new { result = "500", message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult DeletePermissionUser(int id)
+        {
+            try
+            {
+                if (Session["userID"] == null) throw new Exception("505: Por favor intente logearse de nuevo en el sistema. (La Sesión expiró)");
+
+                using (var db = new RepositorioDocRCEntities())
+                {
+                    var permission = db.Permissions.FirstOrDefault(o => o.Id == id);
+                    if (permission == null) return Json(new { result = "500", message = "Este registro no existe." });
+
+                    db.Permissions.Remove(permission);
+                    db.SaveChanges();
+                }
+
+                return Json(new { result = "200", message = "success" });
+            }
+            catch (Exception ex)
+            {
+                Helper.SendException(ex, $"id: {id}");
+
+                return Json(new { result = "500", message = ex.Message });
+            }
+        }
+
         [HttpPost]
         public JsonResult AddPermission(int documentHeaderId, int userId)
         {
@@ -87,7 +170,7 @@ namespace RepositorioDocumentos.Controllers
                 {
                     var permission = db.DocumentPermissions.FirstOrDefault(o => o.Id == id);
                     if (permission == null) return Json(new { result = "500", message = "Este registro no existe." });
-                    
+
                     db.DocumentPermissions.Remove(permission);
                     db.SaveChanges();
                 }

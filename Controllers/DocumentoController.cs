@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RepositorioDocumentos.App_Start;
 using RepositorioDocumentos.Models;
 using static RepositorioDocumentos.ViewModels.DocumentPreviewViewModel;
@@ -31,17 +32,43 @@ namespace RepositorioDocumentos.Controllers
                 ViewBag.Macroprocesos = new MacroprocesoController().GetMacroprocesos();
                
                 var db = new RepositorioDocRCEntities();
+                var allDocuments = new List<DocumentHeader>();
 
                 var documents = db.DocumentHeaders.OrderByDescending(o => o.Id).ToList();
+
                 if (Session["role"].ToString() != "Admin")
                 {
+                    //Filter all public documents
+                    var publicDocuments = documents.Where(d => d.IsPublic).OrderByDescending(o => o.Id).ToList();
+
+                    //Filter all documents with the current user permissions
                     var userId = int.Parse(Session["userID"].ToString());
                     var permissions = db.DocumentPermissions.Where(p => p.UserId == userId).ToList();
 
-                    documents = documents.Where(d => permissions.Any(p => p.DocumentHeaderId == d.Id)).ToList();
+                    var privateDocuments = documents.Where(d => permissions.Any(p => p.DocumentHeaderId == d.Id)).ToList();
+
+                    //Filter all directorates with the current user permissions
+                    var directoratesPermissions = db.Permissions.Where(p => p.UserId == userId).ToList();
+                    var directoratesDocuments = documents.Where(d => directoratesPermissions.Any(p => p.DirectorateId == d.DirectorateId)).ToList();
+
+                    //Filter all departments with the current user permissions
+                    var departmentsPermissions = db.Permissions.Where(p => p.UserId == userId).ToList();
+                    var departmentsDocuments = documents.Where(d => departmentsPermissions.Any(p => p.DeptoCode == d.DepartmentCode)).ToList();
+
+                    allDocuments = allDocuments
+                        .Concat(publicDocuments)
+                        .Concat(privateDocuments)
+                        .Concat(directoratesDocuments)
+                        .Concat(departmentsDocuments)
+                        .Distinct()
+                        .ToList();
+                } 
+                else
+                {
+                    allDocuments = documents;
                 }
-                   
-                return View(documents);
+
+                return View(allDocuments);
 
             }
             catch (Exception ex)
@@ -159,6 +186,7 @@ namespace RepositorioDocumentos.Controllers
                         docHeader.ProcessId = documentHeader.ProcessId;
                         docHeader.Objective = documentHeader.Objective;
                         docHeader.Code = documentHeader.Code;
+                        docHeader.IsPublic = documentHeader.IsPublic;
                         
                         db.Entry(docHeader).State = System.Data.Entity.EntityState.Modified;
                         db.SaveChanges();
@@ -183,6 +211,7 @@ namespace RepositorioDocumentos.Controllers
                             MacroprocessId = documentHeader.MacroprocessId,
                             ProcessId = documentHeader.ProcessId,
                             Objective = documentHeader.Objective,
+                            IsPublic = documentHeader.IsPublic,
                             CreatedDate = DateTime.Now,
                             CreatedBy = int.Parse(Session["userID"].ToString())
                         });
@@ -307,6 +336,7 @@ namespace RepositorioDocumentos.Controllers
                             s.Status,
                             s.Image,
                             s.AttachmentType,
+                            s.IsPublic,
                             s.Code,
                             s.Revision,
                             s.Date,
@@ -328,6 +358,7 @@ namespace RepositorioDocumentos.Controllers
                             s.Status,
                             s.Image,
                             s.AttachmentType,
+                            s.IsPublic,
                             s.Code,
                             s.Revision,
                             Date = s.Date.ToString("dd/MM/yyyy"), // Format date in memory

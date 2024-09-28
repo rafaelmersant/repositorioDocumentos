@@ -58,16 +58,23 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-12 mb-1">
+                        <div class="col-6 mb-1">
                             <label for="Revision">Revisión</label>
                             <input type="text" id="Revision" name="Revision" value="" class="form-control form-control-sm col-12" autocomplete="off" />
+                        </div>
+                        <div class="col-6 mb-1">
+                            <label for="docDate">Fecha</label>
+                            <input type="text" id="docDate" name="docDate" value="" class="form-control form-control-sm col-12 datepicker" autocomplete="off" />
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-12 mb-1">
-                            <label for="docDate">Fecha</label>
-                            <input type="text" id="docDate" name="docDate" value="" class="form-control form-control-sm col-12 datepicker" autocomplete="off" />
+                            <label for="visibility">Visibilidad</label>
+                            <select class="form-control form-control-sm col-12" id="Visibility">
+                                <option value="false">Documento Privado</option>
+                                <option value="true">Documento Público</option>
+                            </select>
                         </div>
                     </div>
 
@@ -677,7 +684,8 @@
                 AreaId: $("#AreaId").val(),
                 MacroprocessId: $("#MacroprocessId").val(),
                 ProcessId: $("#ProcessId").val(),
-                Objective: objective
+                Objective: objective,
+                IsPublic: $("#Visibility :selected").val(),
             }
 
             console.log('documentHeader:', documentHeader)
@@ -854,6 +862,9 @@
 
             if (documentHeader.AttachmentType !== null)
                 $("#AttachmentType").val(`${documentHeader.AttachmentType}`);
+
+            if (documentHeader.IsPublic !== null)
+                $("#Visibility").val(`${documentHeader.IsPublic}`);
 
             const documentCodeValue = $('#DocumentCode option').filter(function () { return $(this).html() == documentHeader.Code; }).val();
             $("#DocumentCode").val(documentCodeValue);

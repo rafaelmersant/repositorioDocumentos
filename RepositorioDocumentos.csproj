@@ -203,6 +203,9 @@
     <Compile Include="Models\Macroprocess.cs">
       <DependentUpon>RepositorioDocRC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Permission.cs">
+      <DependentUpon>RepositorioDocRC.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Process.cs">
       <DependentUpon>RepositorioDocRC.tt</DependentUpon>
     </Compile>
@@ -309,6 +312,7 @@
     <Content Include="Views\Documento\Index.cshtml" />
     <Content Include="Views\Documento\Documento.cshtml" />
     <Content Include="Views\Documento\VistaPreliminar.cshtml" />
+    <Content Include="Views\Permiso\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AnexosReferencias\" />
@@ -317,7 +321,6 @@
     <Folder Include="Views\Glossary\" />
     <Folder Include="Views\Guideline\" />
     <Folder Include="Views\NotificacionCambios\" />
-    <Folder Include="Views\Permiso\" />
     <Folder Include="Views\Procedure\" />
     <Folder Include="Views\References\" />
   </ItemGroup>
