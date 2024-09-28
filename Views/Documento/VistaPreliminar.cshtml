@@ -78,6 +78,10 @@
             color: blue;
             font-weight: bold;
         }
+
+        .watermark {
+            display: none;
+        }
     </style>
     <link rel="stylesheet" href="~/Content/doc-preview.css">
     @*<script src="https://cdnjs.com/libraries/pdf.js"></script>*@
@@ -92,13 +96,14 @@
 </head>
 
 <body id="container-id">
-
+    <div class="watermark">CONFIDENCIAL</div>
+  
     <table id="table-container">
         <thead class="cabecera">
             <tr><th style="height: 40px"></th></tr>
             <tr>
                 <th>
-                    <table id="header-section" cellspacing="0" cellpadding="0" style="border: 2px solid black; width: 100%">
+                    <table id="header-section" class="table-container-class" cellspacing="0" cellpadding="0" style="border: 2px solid black; width: 100%">
                         <tr>
                             <td style="width: 120px; text-align: center; border: 1px solid black;"><img src="~/Content/images/RCImageDoc.png" width="90" alt="Logo RC" /></td>
                             <td>
@@ -188,7 +193,15 @@
                     <div style="text-align: justify">
                         @if (!string.IsNullOrEmpty(Model.DocumentHeader.Objective))
                         {
-                            <p class="topic-doc">@topicNumber. OBJETIVO</p>
+                            <div id="margin-objective"></div>
+                            <div class="section-margin" style="position: relative; height: 24px">
+
+                                <a href="javascript:void(0);" style="color: red; text-decoration: none; position: absolute; bottom: 0" class="btn-margin-manually-objective">Agregar margen de espacio</a>
+                            </div>
+
+                            <p class="topic-doc">
+                                @topicNumber. OBJETIVO
+                            </p>
                             <span style="text-align: justify">
                                 @Html.Raw(Model.DocumentHeader.Objective)
                             </span>
@@ -204,6 +217,11 @@
                                 content = "PASOS";
                             }
 
+                            <div id="margin-body"></div>
+                            <div class="section-margin" style="position: relative; height: 24px">
+
+                                <a href="javascript:void(0);" style="color: red; text-decoration: none; position: absolute; bottom: 0" class="btn-margin-manually-body">Agregar margen de espacio</a>
+                            </div>
                             <p class="topic-doc">@topicNumber. @content</p>
                             <span style="text-align: justify">
                                 @Html.Raw(Model.DocumentContent.Body)
@@ -216,6 +234,12 @@
                             {
                                 topicNumber += 1;
 
+                                <div id="margin-scope"></div>
+                                <div class="section-margin" style="position: relative; height: 24px">
+
+                                    <a href="javascript:void(0);" style="color: red; text-decoration: none; position: absolute; bottom: 0" class="btn-margin-manually-scope">Agregar margen de espacio</a>
+                                </div>
+
                                 <p class="topic-doc">@topicNumber. ALCANCE</p>
                                 <span style="text-align: justify">
                                     @Html.Raw(Model.DocumentDetail.Scope)
@@ -226,6 +250,12 @@
                             {
                                 topicNumber += 1;
 
+                                <div id="margin-responsabilities"></div>
+                                <div class="section-margin" style="position: relative; height: 24px">
+
+                                    <a href="javascript:void(0);" style="color: red; text-decoration: none; position: absolute; bottom: 0" class="btn-margin-manually-responsabilities">Agregar margen de espacio</a>
+                                </div>
+
                                 <p class="topic-doc">@topicNumber. RESPONSABILIDADES</p>
                                 <span>
                                     @Html.Raw(Model.DocumentDetail.Responsabilities)
@@ -235,6 +265,12 @@
                             if (Model.DocumentGuidelines.Count() > 0)
                             {
                                 topicNumber += 1;
+
+                                <div id="margin-guidelines"></div>
+                                <div class="section-margin" style="position: relative; height: 24px">
+
+                                    <a href="javascript:void(0);" style="color: red; text-decoration: none; position: absolute; bottom: 0" class="btn-margin-manually-guidelines">Agregar margen de espacio</a>
+                                </div>
 
                                 <p class="topic-doc">@topicNumber. DIRECTRICES</p>
                                 <table id="guidelineTable" class="border-table" cellpadding="4" style="width:100%; border-collapse: collapse">
@@ -252,6 +288,12 @@
                             {
                                 topicNumber += 1;
 
+                                <div id="margin-policy"></div>
+                                <div class="section-margin" style="position: relative; height: 24px">
+
+                                    <a href="javascript:void(0);" style="color: red; text-decoration: none; position: absolute; bottom: 0" class="btn-margin-manually-policy">Agregar margen de espacio</a>
+                                </div>
+
                                 <p class="topic-doc">@topicNumber. POLITICA</p>
                                 <div>
                                     @*@Html.Raw(Model.DocumentDetail.Policy.Replace("<ol>", "<ul>").Replace("</ol>", "</ul>"))*@
@@ -262,6 +304,12 @@
                             if (Model.DocumentProcedures.Count() > 0)
                             {
                                 topicNumber += 1;
+
+                                <div id="margin-procedures"></div>
+                                <div class="section-margin" style="position: relative; height: 24px">
+
+                                    <a href="javascript:void(0);" style="color: red; text-decoration: none; position: absolute; bottom: 0" class="btn-margin-manually-procedures">Agregar margen de espacio</a>
+                                </div>
 
                                 <p class="topic-doc">@topicNumber. PROCEDIMIENTO</p>
                                 <table id="procedureTable" class="border-table" cellpadding="4" style="width:100%; border-collapse: collapse">
@@ -285,6 +333,11 @@
                             {
                                 topicNumber += 1;
 
+                                <div id="margin-references"></div>
+                                <div class="section-margin" style="position: relative; height: 24px">
+
+                                    <a href="javascript:void(0);" style="color: red; text-decoration: none; position: absolute; bottom: 0" class="btn-margin-manually-references">Agregar margen de espacio</a>
+                                </div>
                                 <p class="topic-doc">@topicNumber. REFERENCIAS O ANEXOS</p>
 
                                 <ul>
@@ -302,27 +355,78 @@
         </tbody>
 
     </table>
+    <footer></footer>
 </body>
 </html>
 
-@*<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-        function addPageNumbers() {
-            console.log('DOING....')
-            var totalPages = Math.ceil($('#container-id')[0].scrollHeight / (11 * 96)); // 11 inches in pixels at 96dpi
 
-            console.log('PAGINAS 1: ', $('.page-number-header').length);
-            console.log('PAGINAS 2: ', $('#table-container thead').length);
-            console.log('PAGINAS 3: ', $('.cabecera').length);
+        $(".btn-margin-manually-objective").on("click", function (evt) {
+            $("#margin-objective").append("<br/>");
+        })
 
+        $(".btn-margin-manually-body").on("click", function (evt) {
+            $("#margin-body").append("<br/>");
+        })
 
-            $('.page-number-header').each(function (index) {
-                console.log('Pagina: ', index + 1, ' de ', totalPages);
-                $(this).html('<div class="page-number">Página ' + (index + 1) + ' de ' + totalPages + '</div>');
-            });
+        $(".btn-margin-manually-scope").on("click", function (evt) {
+            $("#margin-scope").append("<br/>");
+        })
+
+        $(".btn-margin-manually-responsabilities").on("click", function (evt) {
+            $("#margin-responsabilities").append("<br/>");
+        })
+
+        $(".btn-margin-manually-guidelines").on("click", function (evt) {
+            $("#margin-guidelines").append("<br/>");
+        })
+
+        $(".btn-margin-manually-policy").on("click", function (evt) {
+            $("#margin-policy").append("<br/>");
+        })
+
+        $(".btn-margin-manually-procedures").on("click", function (evt) {
+            $("#margin-procedures").append("<br/>");
+        })
+
+        $(".btn-margin-manually-references").on("click", function (evt) {
+            $("#margin-references").append("<br/>");
+        })
+
+        var contentHeight = document.getElementById("container-id").offsetHeight;
+
+        // Assuming an A4 page height in pixels (11.69 inches * 96 DPI = 1122 pixels at 96 DPI)
+        var pageHeight = 900; // Typical page height for A4 in pixels at 96 DPI
+
+        // Calculate the number of pages
+        var totalPages = Math.ceil(contentHeight / pageHeight);
+
+        // Display the result
+        console.log("Total number of pages: " + totalPages);
+        $("#content-page").html(`Página 1 de ${totalPages}`)
+
+        window.onbeforeprint = function () {
+
+            console.log('page-number-header:', $(".table-container-class").length);
         }
 
-        window.onbeforeprint = addPageNumbers;
+        //function addPageNumbers() {
+        //    console.log('DOING....')
+        //    var totalPages = Math.ceil($('#container-id')[0].scrollHeight / (11 * 96)); // 11 inches in pixels at 96dpi
+
+        //    console.log('PAGINAS 1: ', $('.page-number-header').length);
+        //    console.log('PAGINAS 2: ', $('#table-container thead').length);
+        //    console.log('PAGINAS 3: ', $('.cabecera').length);
+
+
+        //    $('.page-number-header').each(function (index) {
+        //        console.log('Pagina: ', index + 1, ' de ', totalPages);
+        //        $(this).html('<div class="page-number">Página ' + (index + 1) + ' de ' + totalPages + '</div>');
+        //    });
+        //}
+
+        //window.onbeforeprint = addPageNumbers;
     });
-</script>*@
+</script>
