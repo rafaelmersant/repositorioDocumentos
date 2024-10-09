@@ -32,6 +32,7 @@
         <section class="mt-3">
             <input type="hidden" name="DocumentHeaderId" id="DocumentHeaderId" value="0" />
             <input type="hidden" name="CurrentEditor" id="CurrentEditor" value="Tiny" />
+            <input type="hidden" name="userRole" id="userRole" value="@Session["role"]" />
 
             <div class="row mb-3">
                 <section class="col-xl-3 col-md-3 col-sm-12">
@@ -99,7 +100,11 @@
                     <div class="row">
                         <div class="col-12 mb-1">
                             <label for="Status">Estatus</label>
-                            <input type="text" id="Status" name="Status" value="Iniciado" class="form-control form-control-sm col-12" readonly />
+                            @*<input type="text" id="Status" name="Status" value="Iniciado" class="form-control form-control-sm col-12" readonly />*@
+                            <select class="form-control form-control-sm col-12" id="Status">
+                                <option value="Iniciado">Iniciado</option>
+                                <option value="Completado">Completado</option>
+                            </select>
                         </div>
                     </div>
 
@@ -687,7 +692,7 @@
             const documentHeader = {
                 Id: $("#DocumentHeaderId").val(),
                 DocumentTypeId: $("#DocumentTypeId").val(),
-                Status: $("#Status").val(),
+                Status: $("#Status :selected").val(),
                 Image: $("#Logo").val(),
                 AttachmentType: $("#AttachmentType :selected").val(),
                 Code: $("#DocumentCode :selected").text(),
@@ -924,6 +929,9 @@
             $("#DepartmentCode").val(documentHeader.DepartmentCode);
             $("#MacroprocessId").val(documentHeader.MacroprocessId);
             $("#ProcessId").val(documentHeader.ProcessId);
+
+            if ($("#userRole").val() !== "Admin")
+                $("#Status").attr("readonly", true);
 
             if (documentHeader.Objective)
                 await setObjectiveBody(documentHeader.Objective);
