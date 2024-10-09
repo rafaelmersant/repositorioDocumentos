@@ -48,6 +48,9 @@ namespace RepositorioDocumentos.Controllers
                     var permission = db.Permissions.FirstOrDefault(o => o.UserId == userId && o.DirectorateId == directorateId && o.DeptoCode == deptoCode);
                     if (permission != null) return Json(new { result = "500", message = "Este registro ya existe." });
 
+                    var permissionToDir = db.Permissions.FirstOrDefault(d => d.UserId == userId && d.DirectorateId == directorateId && (!d.DeptoCode.HasValue || d.DeptoCode == 0));
+                    if (permissionToDir != null && deptoCode > 0) return Json(new { result = "500", message = "Este usuario tiene permisos a esta dirección completa." });
+
                     db.Permissions.Add(new Permission
                     {
                         UserId = userId,

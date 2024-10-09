@@ -44,6 +44,7 @@ namespace RepositorioDocumentos.Models
         public string Objective { get; set; }
         public Nullable<bool> AttachmentType { get; set; }
         public bool IsPublic { get; set; }
+        public string FootNote { get; set; }
         public System.DateTime CreatedDate { get; set; }
         public int CreatedBy { get; set; }
     

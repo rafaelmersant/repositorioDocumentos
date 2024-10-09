@@ -129,6 +129,7 @@ namespace RepositorioDocumentos.Controllers
                 var procedures = db.DocumentProcedures.Where(p => p.DocumentHeaderId == id).OrderBy(o => o.SortIndex).ToList();
                 var references = db.DocumentReferences.Where(r => r.DocumentHeaderId == id).ToList();
                 var changes = db.DocumentChanges.Where(c => c.DocumentHeaderId == id).ToList();
+                var approvals = db.DocumentApprovals.Where(a => a.DocumentHeaderId == id).ToList();
 
                 documentContainer.DocumentHeader = documentHeader;
                 documentContainer.DocumentDetail = documentDetail;
@@ -139,6 +140,7 @@ namespace RepositorioDocumentos.Controllers
                 documentContainer.DocumentProcedures = procedures;
                 documentContainer.DocumentReferences = references;
                 documentContainer.DocumentChanges = changes;
+                documentContainer.DocumentApprovals = approvals;
             }
             catch (Exception ex)
             {
@@ -212,6 +214,7 @@ namespace RepositorioDocumentos.Controllers
                             ProcessId = documentHeader.ProcessId,
                             Objective = documentHeader.Objective,
                             IsPublic = documentHeader.IsPublic,
+                            FootNote = "La información contenida en este documento es estrictamente confidencial y propiedad de Radiocentro; queda prohibida su utilización total o parcial para cualquier fin ajeno a la empresa.",
                             CreatedDate = DateTime.Now,
                             CreatedBy = int.Parse(Session["userID"].ToString())
                         });
@@ -319,6 +322,35 @@ namespace RepositorioDocumentos.Controllers
         }
 
         [HttpPost]
+        public JsonResult SaveDocumentFootnote(DocumentHeader documentHeader)
+        {
+            try
+            {
+                if (Session["userID"] == null) throw new Exception("505: Por favor intente logearse de nuevo en el sistema. (La Sesión expiró)");
+
+                using (var db = new RepositorioDocRCEntities())
+                {
+                    var _documentHeader = db.DocumentHeaders.FirstOrDefault(d => d.Id == documentHeader.Id);
+
+                    if (_documentHeader != null)
+                    {
+                        _documentHeader.FootNote = documentHeader.FootNote;
+                        db.Entry(_documentHeader).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                }
+
+                return Json(new { result = "200", message = "success" });
+            }
+            catch (Exception ex)
+            {
+                Helper.SendException(ex, $"documentHeaderId: {documentHeader.Id}");
+
+                return Json(new { result = "500", message = ex.Message });
+            }
+        }
+
+        [HttpPost]
         public JsonResult GetDocument(int documentHeaderId)
         {
             try
@@ -347,6 +379,7 @@ namespace RepositorioDocumentos.Controllers
                             s.MacroprocessId,
                             s.ProcessId,
                             s.Objective,
+                            s.FootNote,
                             s.CreatedDate,
                             CreatedBy = s.User.Email
                         })
@@ -369,6 +402,7 @@ namespace RepositorioDocumentos.Controllers
                             s.MacroprocessId,
                             s.ProcessId,
                             s.Objective,
+                            s.FootNote,
                             s.CreatedDate,
                             s.CreatedBy
                         })

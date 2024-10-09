@@ -23,10 +23,10 @@
         display: block;
         position: fixed;
         top: 45%;
-        left: 10%;
-        transform: rotate(50deg);
+        left: 3%;
+        transform: rotate(-50deg);
         z-index: -1;
-        font-size: 80px;
+        font-size: 100px;
         color: rgba(0, 0, 0, 0.1); /* Light grey and semi-transparent */
         pointer-events: none; /* Ensures the text is non-interactive */
         opacity: 0.6; /* Adjust opacity for visibility */

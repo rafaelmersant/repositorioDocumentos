@@ -19,6 +19,7 @@ namespace RepositorioDocumentos.ViewModels
             public List<DocumentProcedure> DocumentProcedures { get; set; }
             public List<DocumentReference> DocumentReferences { get; set; }
             public List<DocumentChange> DocumentChanges { get; set; }
+            public List<DocumentApproval> DocumentApprovals { get; set; }
         }
     }
 }

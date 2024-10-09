@@ -568,6 +568,19 @@
             </table>
         </div>
     </section>
+
+    <!--Footnote-->
+    <section class="bg-light text-dark border-custom mb-4" id="sectionFootnote">
+        <div class="bg-secondary text-light panel-custom border">
+            <h6 class="panel-title">
+                Nota pie de página
+            </h6>
+        </div>
+        <textarea id="footnote" rows="6" style="max-width: none; width: 100%"> </textarea>
+
+    </section>
+    <button class="btn btn-danger col-12 mb-4 btnFootnote">Guardar cambios en Nota pie de página</button>
+
     <a href="/Documento/VistaPreliminar/" class="btn btn-danger btn-preview" target="_blank">Vista preliminar</a>
 </div>
 
@@ -626,8 +639,10 @@
         $("#sectionChange").hide();
         $("#sectionApproval").hide();
         $("#sectionPermission").hide();
+        $("#sectionFootnote").hide();
 
         $(".btnDetail").hide();
+        $(".btnFootnote").hide();
         $(".btn-preview").hide();
 
         $(".datepicker").datepicker(
@@ -728,6 +743,14 @@
             await saveDocumentContent(contenidoBody);
             await saveDocumentDetail(responsabilitiesBody, policyBody);
         });
+
+         $(".btnFootnote").click(async function (evt) {
+             evt.preventDefault();
+             evt.stopPropagation();
+
+             const footnote = $("#footnote").val();
+             await saveDocumentFootnote(footnote);
+         });
     });
 
     async function saveDocumentContent(contenidoBody) {
@@ -777,6 +800,26 @@
             }
         });
     }
+
+     async function saveDocumentFootnote(footnote) {
+         const documentHeaderId = $("#DocumentHeaderId").val();
+         const documentDetail = { Id: documentHeaderId, FootNote: footnote };
+
+         $.ajax({
+             url: `/Documento/SaveDocumentFootnote`,
+             type: "POST",
+             contentType: 'application/json; charset=utf-8',
+             dataType: 'json',
+             data: JSON.stringify(documentDetail),
+         }).done(async function (data) {
+             console.log('DATA SaveDocumentFootnote:', data)
+             if (data.result === "200") {
+                 toastr.success("La nota pie de página fue actualizada.");
+             } else {
+                 toastr.error(data.message);
+             }
+         });
+     }
 
     async function getAreasByDirectorateId(directorateId, defaultArea = 0) {
         $("#AreaId").empty();
@@ -859,6 +902,7 @@
             await getProcessesByMacroprocessId(documentHeader.MacroprocessId, documentHeader.ProcessId);
 
             $("#DocumentTypeId").val(documentHeader.DocumentTypeId);
+            $("#footnote").val(documentHeader.FootNote);
 
             if (documentHeader.AttachmentType !== null)
                 $("#AttachmentType").val(`${documentHeader.AttachmentType}`);
@@ -907,6 +951,7 @@
             }
 
             $(".btnDetail").show();
+            $(".btnFootnote").show();
             $(".btn-preview").show();
             $(".btn-preview").prop("href", `/Documento/VistaPreliminar/${documentHeader.Id}`);
 
@@ -1195,24 +1240,28 @@
 
     function applyChangesAccordingToDocumentType() {
         $(".btnDetail").show();
+        $("#sectionPermission").show();
+        $("#sectionApproval").show();
+        $("#sectionChange").show();
+        $("#sectionFootnote").show();
 
         //Document Type: INSTRUCTIVO and DIAGRAMA
         if ($("#DocumentTypeId :selected").text().toUpperCase().includes("INSTRUCTIVO")
             || $("#DocumentTypeId :selected").text().toUpperCase().includes("DIAGRAMA")) {
             $("#contentLabel").text("Pasos");
+            $("#wrapContenido").show();
             $("#sectionContent").show();
             $(".btnDetail").hide();
             $("#btnDetail").show();
-            $("#sectionPermission").show();
         }
 
         //Document Type: ONLY ATTACHED DOCUMENT
         if ($("#AttachmentType :selected").val() === "true") {
             $("#sectionReference").show();
-            $("#sectionPermission").show();
+            $("#sectionChange").show();
+            $("#sectionApproval").show();
             $(".btnDetail").hide();
             $("#ObjectiveSection").hide();
-            //$("#btnDetail").show();
         }
     }
 
@@ -1234,6 +1283,7 @@
             $("#sectionChange").show();
             $("#sectionApproval").show();
             $("#sectionPermission").show();
+            $("#sectionFootnote").show();
         }
     }
 

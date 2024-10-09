@@ -2,7 +2,7 @@
 @{
     Layout = null;
 
-    var topicNumber = 1;
+    var topicNumber = 0;
 }
 
 <!DOCTYPE html>
@@ -82,6 +82,24 @@
         .watermark {
             display: none;
         }
+
+        .detailTables thead tr th {
+            border: 1px solid gray;
+            padding: 3px;
+            background-color: #f5e9d1;
+        }
+
+        .detailTables tbody tr td {
+            border: 1px solid gray;
+            padding: 3px;
+        }
+
+        .btn-margin-general {
+            color: white;
+            text-decoration: none;
+            position: absolute;
+            bottom: 0;
+        }
     </style>
     <link rel="stylesheet" href="~/Content/doc-preview.css">
     @*<script src="https://cdnjs.com/libraries/pdf.js"></script>*@
@@ -146,7 +164,7 @@
         </thead>
         <tfoot>
             <tr>
-                <td style="text-align: right; color: lightgray; height: 40px; vertical-align: central; padding-right: 10px;">
+                <td style="text-align: right; color: gray; height: 40px; vertical-align: central; padding-right: 10px;">
                     @Model.DocumentHeader.Title
                     @*<br />Page <span class="pageNumber"></span> of <span class="totalPages"></span>*@
                 </td>
@@ -191,12 +209,13 @@
                     </div>
 
                     <div style="text-align: justify">
-                        @if (!string.IsNullOrEmpty(Model.DocumentHeader.Objective))
+                        @if (Model.DocumentHeader.AttachmentType != true && !string.IsNullOrEmpty(Model.DocumentHeader.Objective))
                         {
+                            topicNumber += 1;
                             <div id="margin-objective"></div>
                             <div class="section-margin" style="position: relative; height: 24px">
 
-                                <a href="javascript:void(0);" style="color: red; text-decoration: none; position: absolute; bottom: 0" class="btn-margin-manually-objective">Agregar margen de espacio</a>
+                                <a href="javascript:void(0);" class="btn-margin-general btn-margin-manually-objective">Agregar margen de espacio</a>
                             </div>
 
                             <p class="topic-doc">
@@ -220,7 +239,7 @@
                             <div id="margin-body"></div>
                             <div class="section-margin" style="position: relative; height: 24px">
 
-                                <a href="javascript:void(0);" style="color: red; text-decoration: none; position: absolute; bottom: 0" class="btn-margin-manually-body">Agregar margen de espacio</a>
+                                <a href="javascript:void(0);" class="btn-margin-general btn-margin-manually-body">Agregar margen de espacio</a>
                             </div>
                             <p class="topic-doc">@topicNumber. @content</p>
                             <span style="text-align: justify">
@@ -237,7 +256,7 @@
                                 <div id="margin-scope"></div>
                                 <div class="section-margin" style="position: relative; height: 24px">
 
-                                    <a href="javascript:void(0);" style="color: red; text-decoration: none; position: absolute; bottom: 0" class="btn-margin-manually-scope">Agregar margen de espacio</a>
+                                    <a href="javascript:void(0);" class="btn-margin-general btn-margin-manually-scope">Agregar margen de espacio</a>
                                 </div>
 
                                 <p class="topic-doc">@topicNumber. ALCANCE</p>
@@ -253,7 +272,7 @@
                                 <div id="margin-responsabilities"></div>
                                 <div class="section-margin" style="position: relative; height: 24px">
 
-                                    <a href="javascript:void(0);" style="color: red; text-decoration: none; position: absolute; bottom: 0" class="btn-margin-manually-responsabilities">Agregar margen de espacio</a>
+                                    <a href="javascript:void(0);" class="btn-margin-general btn-margin-manually-responsabilities">Agregar margen de espacio</a>
                                 </div>
 
                                 <p class="topic-doc">@topicNumber. RESPONSABILIDADES</p>
@@ -261,94 +280,172 @@
                                     @Html.Raw(Model.DocumentDetail.Responsabilities)
                                 </span>
                             }
-
-                            if (Model.DocumentGuidelines.Count() > 0)
-                            {
-                                topicNumber += 1;
-
-                                <div id="margin-guidelines"></div>
-                                <div class="section-margin" style="position: relative; height: 24px">
-
-                                    <a href="javascript:void(0);" style="color: red; text-decoration: none; position: absolute; bottom: 0" class="btn-margin-manually-guidelines">Agregar margen de espacio</a>
-                                </div>
-
-                                <p class="topic-doc">@topicNumber. DIRECTRICES</p>
-                                <table id="guidelineTable" class="border-table" cellpadding="4" style="width:100%; border-collapse: collapse">
-                                    @foreach (var item in Model.DocumentGuidelines)
-                                    {
-                                        <tr>
-                                            <td style="text-align: center; width: 60px">@item.SortIndex</td>
-                                            <td style="text-align: justify">@item.Description</td>
-                                        </tr>
-                                    }
-                                </table>
-                            }
-
-                            if (!string.IsNullOrEmpty(Model.DocumentDetail.Policy))
-                            {
-                                topicNumber += 1;
-
-                                <div id="margin-policy"></div>
-                                <div class="section-margin" style="position: relative; height: 24px">
-
-                                    <a href="javascript:void(0);" style="color: red; text-decoration: none; position: absolute; bottom: 0" class="btn-margin-manually-policy">Agregar margen de espacio</a>
-                                </div>
-
-                                <p class="topic-doc">@topicNumber. POLITICA</p>
-                                <div>
-                                    @*@Html.Raw(Model.DocumentDetail.Policy.Replace("<ol>", "<ul>").Replace("</ol>", "</ul>"))*@
-                                    @Html.Raw(Model.DocumentDetail.Policy)
-                                </div>
-                            }
-
-                            if (Model.DocumentProcedures.Count() > 0)
-                            {
-                                topicNumber += 1;
-
-                                <div id="margin-procedures"></div>
-                                <div class="section-margin" style="position: relative; height: 24px">
-
-                                    <a href="javascript:void(0);" style="color: red; text-decoration: none; position: absolute; bottom: 0" class="btn-margin-manually-procedures">Agregar margen de espacio</a>
-                                </div>
-
-                                <p class="topic-doc">@topicNumber. PROCEDIMIENTO</p>
-                                <table id="procedureTable" class="border-table" cellpadding="4" style="width:100%; border-collapse: collapse">
-                                    <tr>
-                                        <td style="text-align: center; width: 60px"> <strong>Numeral</strong></td>
-                                        <td style="text-align: center; width: 130px"> <strong>Responsable</strong></td>
-                                        <td style="text-align: center;"> <strong>Descripción</strong></td>
-                                    </tr>
-                                    @foreach (var item in Model.DocumentProcedures)
-                                    {
-                                        <tr>
-                                            <td style="text-align: center;">@item.SortIndex</td>
-                                            <td style="text-align: center;">@item.Responsible</td>
-                                            <td style="text-align: justify">@Html.Raw(item.Description)</td>
-                                        </tr>
-                                    }
-                                </table>
-                            }
-
-                            if (Model.DocumentReferences.Count() > 0)
-                            {
-                                topicNumber += 1;
-
-                                <div id="margin-references"></div>
-                                <div class="section-margin" style="position: relative; height: 24px">
-
-                                    <a href="javascript:void(0);" style="color: red; text-decoration: none; position: absolute; bottom: 0" class="btn-margin-manually-references">Agregar margen de espacio</a>
-                                </div>
-                                <p class="topic-doc">@topicNumber. REFERENCIAS O ANEXOS</p>
-
-                                <ul>
-                                    @foreach (var item in Model.DocumentReferences)
-                                    {
-                                        <li>@item.Name</li>
-                                    }
-                                </ul>
-                            }
                         }
 
+                        @if (Model.DocumentGuidelines.Count() > 0)
+                        {
+                            topicNumber += 1;
+
+                            <div id="margin-guidelines"></div>
+                            <div class="section-margin" style="position: relative; height: 24px">
+
+                                <a href="javascript:void(0);" class="btn-margin-general btn-margin-manually-guidelines">Agregar margen de espacio</a>
+                            </div>
+
+                            <p class="topic-doc">@topicNumber. DIRECTRICES</p>
+                            <table id="guidelineTable" class="border-table" cellpadding="4" style="width:100%; border-collapse: collapse">
+                                @foreach (var item in Model.DocumentGuidelines)
+                                {
+                                    <tr>
+                                        <td style="text-align: center; width: 60px">@item.SortIndex</td>
+                                        <td style="text-align: justify">@item.Description</td>
+                                    </tr>
+                                }
+                            </table>
+                        }
+
+                        @if (Model.DocumentDetail != null && !string.IsNullOrEmpty(Model.DocumentDetail.Policy))
+                        {
+                            topicNumber += 1;
+
+                            <div id="margin-policy"></div>
+                            <div class="section-margin" style="position: relative; height: 24px">
+
+                                <a href="javascript:void(0);" class="btn-margin-general btn-margin-manually-policy">Agregar margen de espacio</a>
+                            </div>
+
+                            <p class="topic-doc">@topicNumber. POLITICA</p>
+                            <div>
+                                @*@Html.Raw(Model.DocumentDetail.Policy.Replace("<ol>", "<ul>").Replace("</ol>", "</ul>"))*@
+                                @Html.Raw(Model.DocumentDetail.Policy)
+                            </div>
+                        }
+
+                        @if (Model.DocumentProcedures.Count() > 0)
+                        {
+                            topicNumber += 1;
+
+                            <div id="margin-procedures"></div>
+                            <div class="section-margin" style="position: relative; height: 24px">
+
+                                <a href="javascript:void(0);" class="btn-margin-general btn-margin-manually-procedures">Agregar margen de espacio</a>
+                            </div>
+
+                            <p class="topic-doc">@topicNumber. PROCEDIMIENTO</p>
+                            <table id="procedureTable" class="border-table" cellpadding="4" style="width:100%; border-collapse: collapse">
+                                <tr>
+                                    <td style="text-align: center; width: 60px"> <strong>Numeral</strong></td>
+                                    <td style="text-align: center; width: 130px"> <strong>Responsable</strong></td>
+                                    <td style="text-align: center;"> <strong>Descripción</strong></td>
+                                </tr>
+                                @foreach (var item in Model.DocumentProcedures)
+                                {
+                                    <tr>
+                                        <td style="text-align: center;">@item.SortIndex</td>
+                                        <td style="text-align: center;">@item.Responsible</td>
+                                        <td style="text-align: justify">@Html.Raw(item.Description)</td>
+                                    </tr>
+                                }
+                            </table>
+                        }
+
+                        @if (Model.DocumentReferences.Count() > 0)
+                        {
+                            topicNumber += 1;
+
+                            <div id="margin-references"></div>
+                            <div class="section-margin" style="position: relative; height: 24px">
+
+                                <a href="javascript:void(0);" class="btn-margin-general btn-margin-manually-references">Agregar margen de espacio</a>
+                            </div>
+                            <p class="topic-doc">@topicNumber. REFERENCIAS O ANEXOS</p>
+
+                            <ul>
+                                @foreach (var item in Model.DocumentReferences)
+                                {
+                                    <li>@item.Name</li>
+                                }
+                            </ul>
+                        }
+
+                        @if (Model.DocumentChanges.Count() > 0)
+                        {
+                            topicNumber += 1;
+
+                            <div id="margin-changes"></div>
+                            <div class="section-margin" style="position: relative; height: 24px">
+
+                                <a href="javascript:void(0);" class="btn-margin-general btn-margin-manually-changes">Agregar margen de espacio</a>
+                            </div>
+                            <p class="topic-doc">@topicNumber. NOTIFICACION DE CAMBIOS</p>
+
+                            <table width="100%" cellpadding="0" cellspacing="0" id="changesTable" class="detailTables">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th style="text-align: center">Revisión</th>
+                                        <th style="text-align: center">Páginas Afectadas</th>
+                                        <th style="text-align: center">Originador del Cambio</th>
+                                        <th style="text-align: center">Naturaleza del Cambio</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.DocumentChanges)
+                                    {
+                                        <tr>
+                                            <td>@item.Date.ToString("dd/MM/yyyy")</td>
+                                            <td style="text-align: center">@item.Revision</td>
+                                            <td style="text-align: center">@item.PagesAffected</td>
+                                            <td style="text-align: left">@item.Originator</td>
+                                            <td style="text-align: left">@item.NatureChange</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+
+                        @if (Model.DocumentApprovals.Count() > 0)
+                        {
+                            topicNumber += 1;
+
+                            <div id="margin-approvals"></div>
+                            <div class="section-margin" style="position: relative; height: 24px">
+
+                                <a href="javascript:void(0);" class="btn-margin-general btn-margin-manually-approvals">Agregar margen de espacio</a>
+                            </div>
+                            <p class="topic-doc">@topicNumber. APROBACION</p>
+
+                            <table width="100%" cellpadding="0" cellspacing="0" id="approvalsTable" class="detailTables">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Elaborado por</th>
+                                        <th>Gerente del Area</th>
+                                        <th>Director de Area</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.DocumentApprovals)
+                                    {
+                                        <tr>
+                                            <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
+                                            <td style="text-align: left">@item.ProducedByName</td>
+                                            <td style="text-align: left">@item.ManagerAreaName</td>
+                                            <td style="text-align: left">@item.DirectorAreaName</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+
+
+                        @if (!string.IsNullOrEmpty(Model.DocumentHeader.FootNote))
+                        {
+                            
+                            <div class="section-margin" style="position: relative; margin-top: 50px; margin-bottom: 40px; height: 24px">
+                                <span>"@(Model.DocumentHeader.FootNote)"</span>
+                            </div>
+                        }
                     </div>
                 </td>
             </tr>
@@ -393,6 +490,14 @@
 
         $(".btn-margin-manually-references").on("click", function (evt) {
             $("#margin-references").append("<br/>");
+        })
+
+        $(".btn-margin-manually-changes").on("click", function (evt) {
+            $("#margin-changes").append("<br/>");
+        })
+
+        $(".btn-margin-manually-approvals").on("click", function (evt) {
+            $("#margin-approvals").append("<br/>");
         })
 
         var contentHeight = document.getElementById("container-id").offsetHeight;

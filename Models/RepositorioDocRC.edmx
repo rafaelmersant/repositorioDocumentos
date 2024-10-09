@@ -141,6 +141,7 @@
           <Property Name="Objective" Type="varchar(max)" />
           <Property Name="AttachmentType" Type="bit" />
           <Property Name="IsPublic" Type="bit" Nullable="false" />
+          <Property Name="FootNote" Type="varchar(max)" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="CreatedBy" Type="int" Nullable="false" />
         </EntityType>
@@ -1602,6 +1603,7 @@
           <Property Name="Objective" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="AttachmentType" Type="Boolean" />
           <Property Name="IsPublic" Type="Boolean" Nullable="false" />
+          <Property Name="FootNote" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="CreatedBy" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Area" Relationship="RepositorioDocRCModel.FK_Area_DocumentHeader" FromRole="DocumentHeader" ToRole="Area" />
@@ -2054,6 +2056,7 @@
               <MappingFragment StoreEntitySet="DocumentHeader">
                 <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="FootNote" ColumnName="FootNote" />
                 <ScalarProperty Name="IsPublic" ColumnName="IsPublic" />
                 <ScalarProperty Name="AttachmentType" ColumnName="AttachmentType" />
                 <ScalarProperty Name="Objective" ColumnName="Objective" />
