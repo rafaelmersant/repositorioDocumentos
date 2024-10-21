@@ -30,7 +30,7 @@ namespace RepositorioDocumentos.Controllers
                         DocumentHeaderId = documentHeaderId,
                         SortIndex = sortindex,
                         Responsible = responsible,
-                        Description = description,
+                        Description = description.Replace("'", "\""),
                         CreatedDate = DateTime.Now,
                         CreatedBy = int.Parse(Session["userID"].ToString())
                     });
@@ -65,7 +65,7 @@ namespace RepositorioDocumentos.Controllers
 
                     procedure.SortIndex = sortindex;
                     procedure.Responsible = responsible;
-                    procedure.Description = description;
+                    procedure.Description = description.Replace("'", "\"");
                     db.SaveChanges();
                 }
 
@@ -116,7 +116,8 @@ namespace RepositorioDocumentos.Controllers
                 {
                     var guidelines = db.DocumentProcedures
                                        .Where(o => o.DocumentHeaderId == documentHeaderId)
-                                       .Select(s => new { s.Id, s.DocumentHeaderId, s.SortIndex, s.Responsible, s.Description, s.CreatedDate, CreatedBy = s.User.Email })
+                                       .Select(s => new { s.Id, s.DocumentHeaderId, s.SortIndex, s.Responsible, 
+                                           Description = s.Description.Replace("'", "\""), s.CreatedDate, CreatedBy = s.User.Email })
                                        .OrderBy(o => o.SortIndex)
                                        .ToArray();
                     return Json(new { result = "200", message = guidelines });

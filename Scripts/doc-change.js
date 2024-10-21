@@ -1,4 +1,7 @@
-﻿$('.btn-new-change').click(function () {
+﻿$('.btn-new-change').click(function (evt) {
+    evt.preventDefault();
+    evt.stopPropagation();
+
     if (!$('.save-change-btn')[0]) {
         const newRowHtml = '<tr>' +
             '<td class="field-date-change-new"><input type="text" name="changeDate" value="" autocomplete="off" class="form-control form-control-sm col-12 new-changeDate-change datepicker"/></td>' +
@@ -18,7 +21,10 @@
     }
 });
 
-$(document).on('click', '.save-change-btn', function () {
+$(document).on('click', '.save-change-btn', function (evt) {
+    evt.preventDefault();
+    evt.stopPropagation();
+
     var changeDate = $(this).closest('tr').find('.new-changeDate-change').val();
     var revision = $(this).closest('tr').find('.new-revision-change').val();
     var pagesAffected = $(this).closest('tr').find('.new-pagesAffected-change').val();
@@ -55,7 +61,10 @@ $(document).on('click', '.save-change-btn', function () {
     });
 });
 
-$(document).on('click', '.cancel-change-btn', function () {
+$(document).on('click', '.cancel-change-btn', function (evt) {
+    evt.preventDefault();
+    evt.stopPropagation();
+
     $(this).closest('tr').remove();
 });
 
@@ -91,7 +100,10 @@ function getChanges() {
 
             $(".datepicker").datepicker({dateFormat: 'dd/mm/yy',});
 
-            $('#changeTable').on('click', '.btn-edit-change', function () {
+            $('#changeTable').on('click', '.btn-edit-change', function (evt) {
+                evt.preventDefault();
+                evt.stopPropagation();
+
                 var editButton = $(this);
 
                 if (editButton.prop('title') === "Editar") {
@@ -157,7 +169,10 @@ function getChanges() {
                 }
             });
 
-            $('#changeTable').on('click', '.btn-remove-change', function () {
+            $('#changeTable').on('click', '.btn-remove-change', function (evt) {
+                evt.preventDefault();
+                evt.stopPropagation();
+
                 var removeButton = $(this);
 
                 if (removeButton.html() === "Cancelar") {

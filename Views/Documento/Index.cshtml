@@ -70,7 +70,7 @@
                             <a class="btn btn-sm btn-success edit-btn edit-button-width" href="~/Documento/Documento?id=@item.Id" title="Editar">
                                 Editar
                             </a>
-                            <a class="btn btn-sm btn-danger btn-remove" href="javascript:void(0)" title="Eliminar">
+                            <a class="btn btn-sm btn-danger btn-remove" onclick="DeleteDocument(@item.Id, '@item.Title')" title="Eliminar">
                                 Eliminar
                             </a>
                         </td>
@@ -141,5 +141,38 @@
             return this.nodeValue.replace('Search', 'Buscar');
         });
     });
+
+    function DeleteDocument(docID, titulo) {
+        const confirmation = confirm("Confirma que desea eliminar el documento?");
+
+        if (confirmation) {
+            if (confirm(`Será eliminado el documento: ${titulo}`)) {
+
+                const documentHeader = {
+                    Id: docID,
+                }
+
+                $.ajax({
+                    url: "/Documento/DeleteDocument",
+                    type: "POST",
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    data: JSON.stringify(documentHeader),
+                }).done(function (data) {
+                    if (data.result === "200") {
+                        console.log('Document Deleted:', data)
+
+                        toastr.success("El documento fue eliminado.");
+
+                        setTimeout(() => {
+                            window.location.reload(true);
+                        }, 500);
+                    } else {
+                        toastr.error(data.message);
+                    }
+                });
+            }
+        }
+    }
 
 </script>

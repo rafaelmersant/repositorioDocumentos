@@ -19,7 +19,10 @@
     }
 });
 
-$(document).on('click', '.save-permission-btn', async function () {
+$(document).on('click', '.save-permission-btn', async function (evt) {
+    evt.preventDefault();
+    evt.stopPropagation();
+
     var userId = $(this).closest('tr').find('.new-userId').val();
     
     const documentHeaderId = $("#DocumentHeaderId").val();
@@ -47,7 +50,10 @@ $(document).on('click', '.save-permission-btn', async function () {
     });
 });
 
-$(document).on('click', '.cancel-permission-btn', function () {
+$(document).on('click', '.cancel-permission-btn', function (evt) {
+    evt.preventDefault();
+    evt.stopPropagation();
+
     $(this).closest('tr').remove();
 });
 
@@ -77,7 +83,10 @@ async function getPermissions() {
                 $('#permissionTable tbody').append(itemRow);
             }
 
-            $('#permissionTable').on('click', '.btn-remove-permission', function () {
+            $('#permissionTable').on('click', '.btn-remove-permission', function (evt) {
+                evt.preventDefault();
+                evt.stopPropagation();
+
                 var removeButton = $(this);
 
                 const id = removeButton.closest('tr').find('.field-id').val();

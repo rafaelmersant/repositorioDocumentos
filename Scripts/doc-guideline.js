@@ -1,6 +1,9 @@
 var guidelinesCount = 1;
 
-$('.btn-new-guideline').click(function () {
+$('.btn-new-guideline').click(function (evt) {
+    evt.preventDefault();
+    evt.stopPropagation();
+
     if (!$('.save-guideline-btn')[0]) {
         const newRowHtml = '<tr>' +
             `<td class="field-sortindex-guideline-new"><input type="text" maxlength="3" value="${guidelinesCount}" class="form-control form-control-sm new-sortindex-guideline"></td>` +
@@ -22,7 +25,10 @@ $('.btn-new-guideline').click(function () {
     }
 });
 
-$(document).on('click', '.save-guideline-btn', async function () {
+$(document).on('click', '.save-guideline-btn', async function (evt) {
+    evt.preventDefault();
+    evt.stopPropagation();
+
     var sortindex = $(this).closest('tr').find('.new-sortindex-guideline').val();
     //var description = $(this).closest('tr').find('.new-description-guideline').val();
     var description = await getGuidelineBody();
@@ -56,7 +62,10 @@ $(document).on('click', '.save-guideline-btn', async function () {
     });
 });
 
-$(document).on('click', '.cancel-guideline-btn', function () {
+$(document).on('click', '.cancel-guideline-btn', function (evt) {
+    evt.preventDefault();
+    evt.stopPropagation();
+
     $(this).closest('tr').remove();
 });
 
@@ -74,27 +83,39 @@ async function getGuideline() {
         dataType: 'json'
     }).done(async function (data) {
         console.log('DATA GetGuideline:', data)
-
         if (data.result === "200") {
             guidelinesCount = 1;
 
             for (const item of data.message) {
+                let description = item.Description.replaceAll('text-indent:', '');
+
                 const itemRow = '<tr>' +
                     `<td class="field-sortindex-guideline text-center">${item.SortIndex}</td>` +
-                    `<td class="field-description-guideline">${item.Description}<input class="field-description-guideline-raw" type='hidden' value='${item.Description}'></td>` +
+                    `<td class="field-description-guideline">${description}<input class="field-description-guideline-raw" type='hidden' value='${description.replaceAll('text-indent:', '') }'></td>` +
                     '<td class="text-center">' +
                     `<input type="hidden" class="field-id-guideline" value="${item.Id}">` +
                     '<a class="btn btn-sm btn-success btn-edit-guideline edit-button-width" href="javascript:void(0)" title="Editar">Editar</a> ' +
                     ' <a class="btn btn-sm btn-danger btn-remove-guideline" href="javascript:void(0)" title="Eliminar">Eliminar</a>' +
                     '</td>' +
                     '</tr>';
-
+               
                 $('#guidelineTable tbody').append(itemRow);
 
                 guidelinesCount += 1;
             }
 
-            $('#guidelineTable').on('click', '.btn-edit-guideline', async function () {
+            $('.field-description-guideline p').each(function () {
+                const textIndentValue = parseFloat($(this).css('text-indent'));
+
+                if (textIndentValue < 0) {
+                    $(this).css('text-indent', '-8.0pt');
+                }
+            });
+                      
+            $('#guidelineTable').on('click', '.btn-edit-guideline', async function (evt) {
+                evt.preventDefault();
+                evt.stopPropagation();
+
                 var editButton = $(this);
                 if (editButton.prop('title') === "Editar") {
                     editButton.prop('title', 'Guardar');
@@ -110,6 +131,7 @@ async function getGuideline() {
 
                     editButton.closest('tr').find('.field-sortindex-guideline').html(`<input type="text" maxlength="3"  class="form-control form-control-sm edit-sortindex-guideline" value="${sortindex}">`);
                     editButton.closest('tr').find('.field-description-guideline').html(`<div id="description-guideline" class="col-12 edit-description-guideline">${descriptionRaw}</div><input class="field-description-guideline-raw" type='hidden' value='${descriptionRaw}'>`);
+                    console.log(`Editing Guideline: ${sortindex} :: ${descriptionRaw}`)
 
                     tinymce.init({
                         selector: '#description-guideline',
@@ -156,14 +178,17 @@ async function getGuideline() {
                 }
             });
 
-            $('#guidelineTable').on('click', '.btn-remove-guideline', function () {
+            $('#guidelineTable').on('click', '.btn-remove-guideline', function (evt) {
+                evt.preventDefault();
+                evt.stopPropagation();
+
                 var removeButton = $(this);
 
                 if (removeButton.html() === "Cancelar") {
                     removeButton.prop('title', 'Eliminar');
                     removeButton.html("Eliminar");
 
-                    const __descriptionRaw = `<input class="field-description-procedure-raw" type='hidden' value='${descriptionGuidelineEditing}'>`;
+                    const __descriptionRaw = `<input class="field-description-guideline-raw" type='hidden' value='${descriptionGuidelineEditing}'>`;
 
                     removeButton.closest('tr').find('.field-sortindex-guideline').text(sortindexGuidelineEditing);
                     removeButton.closest('tr').find('.field-description-guideline').html(`${descriptionGuidelineEditing}${__descriptionRaw}`);

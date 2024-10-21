@@ -20,6 +20,7 @@
         overflow-y: hidden;
         box-sizing: border-box;
     }
+
 </style>
 <div class="container-fluid pb-5">
     <section class="bg-light text-dark border-custom">
@@ -103,6 +104,8 @@
                             @*<input type="text" id="Status" name="Status" value="Iniciado" class="form-control form-control-sm col-12" readonly />*@
                             <select class="form-control form-control-sm col-12" id="Status">
                                 <option value="Iniciado">Iniciado</option>
+                                <option value="Firma/Aprobación">Firma/Aprobación</option>
+                                <option value="Divulgación">Divulgación</option>
                                 <option value="Completado">Completado</option>
                             </select>
                         </div>
@@ -281,7 +284,7 @@
             </table>
         </div>
     </section>
-
+   
     <!--Directrices-->
     <section class="bg-light text-dark border-custom mb-4" id="sectionGuideline">
         <div class="bg-secondary text-light panel-custom border">

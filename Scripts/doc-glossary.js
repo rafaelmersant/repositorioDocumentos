@@ -1,4 +1,7 @@
-$('.btn-new-glossary').click(function () {
+$('.btn-new-glossary').click(function (evt) {
+    evt.preventDefault();
+    evt.stopPropagation();
+
     if (!$('.save-glossary-btn')[0]) {
         const newRowHtml = '<tr>' +
             '<td class="field-word-glossary-new"><input type="text" maxlength="50" min="3" class="form-control form-control-sm new-word-glossary"></td>' +
@@ -15,7 +18,10 @@ $('.btn-new-glossary').click(function () {
     }
 });
 
-$(document).on('click', '.save-glossary-btn', function () {
+$(document).on('click', '.save-glossary-btn', function (evt) {
+    evt.preventDefault();
+    evt.stopPropagation();
+
     var word = $(this).closest('tr').find('.new-word-glossary').val();
     var description = $(this).closest('tr').find('.new-description-glossary').val();
     const documentHeaderId = $("#DocumentHeaderId").val();
@@ -43,7 +49,10 @@ $(document).on('click', '.save-glossary-btn', function () {
     });
 });
 
-$(document).on('click', '.cancel-glossary-btn', function () {
+$(document).on('click', '.cancel-glossary-btn', function (evt) {
+    evt.preventDefault();
+    evt.stopPropagation();
+
     $(this).closest('tr').remove();
 });
 
@@ -74,7 +83,10 @@ function getGlossary() {
                 $('#glossaryTable tbody').append(itemRow);
             }
 
-            $('#glossaryTable').on('click', '.btn-edit-glossary', function () {
+            $('#glossaryTable').on('click', '.btn-edit-glossary', function (evt) {
+                evt.preventDefault();
+                evt.stopPropagation();
+
                 var editButton = $(this);
 
                 if (editButton.prop('title') === "Editar") {
@@ -125,7 +137,10 @@ function getGlossary() {
                 }
             });
 
-            $('#glossaryTable').on('click', '.btn-remove-glossary', function () {
+            $('#glossaryTable').on('click', '.btn-remove-glossary', function (evt) {
+                evt.preventDefault();
+                evt.stopPropagation();
+
                 var removeButton = $(this);
 
                 if (removeButton.html() === "Cancelar") {

@@ -46,7 +46,7 @@
         <AssociationConnector Association="RepositorioDocRCModel.FK_Depto_Permission" />
         <AssociationConnector Association="RepositorioDocRCModel.FK_Directorate_Permission" />
         <AssociationConnector Association="RepositorioDocRCModel.FK_CreatedBy_Permission" />
-        <EntityTypeShape EntityType="RepositorioDocRCModel.DocumentHeader" Width="1.5" PointX="19.375" PointY="8.875" />
+        <EntityTypeShape EntityType="RepositorioDocRCModel.DocumentHeader" Width="1.5" PointX="19.375" PointY="8.75" />
         <AssociationConnector Association="RepositorioDocRCModel.FK_Area_DocumentHeader" />
         <AssociationConnector Association="RepositorioDocRCModel.FK_Department_DocumentHeader" />
         <AssociationConnector Association="RepositorioDocRCModel.FK_Directorate_DocumentHeader" />

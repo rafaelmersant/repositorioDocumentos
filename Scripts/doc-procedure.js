@@ -1,6 +1,9 @@
 var proceduresCount = 1;
 
-$('.btn-new-procedure').click(function () {
+$('.btn-new-procedure').click(function (evt) {
+    evt.preventDefault();
+    evt.stopPropagation();
+
     if (!$('.save-procedure-btn')[0]) {
         const newRowHtml = '<tr>' +
             `<td class="field-sortindex-procedure-new"><input type="text" maxlength="3" value="${proceduresCount}" class="form-control form-control-sm new-sortindex-procedure"></td>` +
@@ -23,7 +26,10 @@ $('.btn-new-procedure').click(function () {
     }
 });
 
-$(document).on('click', '.save-procedure-btn', async function () {
+$(document).on('click', '.save-procedure-btn', async function (evt) {
+    evt.preventDefault();
+    evt.stopPropagation();
+
     var sortindex = $(this).closest('tr').find('.new-sortindex-procedure').val();
     var responsible = $(this).closest('tr').find('.new-responsible-procedure').val();
     var description = await getProcedureBody();
@@ -58,7 +64,10 @@ $(document).on('click', '.save-procedure-btn', async function () {
     });
 });
 
-$(document).on('click', '.cancel-procedure-btn', function () {
+$(document).on('click', '.cancel-procedure-btn', function (evt) {
+    evt.preventDefault();
+    evt.stopPropagation();
+
     $(this).closest('tr').remove();
 });
 
@@ -81,11 +90,12 @@ async function getProcedure() {
             proceduresCount = 1;
 
             for (const item of data.message) {
-               
+                let description = item.Description;//.replaceAll('text-indent:', '');
+
                 const itemRow = '<tr>' +
                     `<td class="field-sortindex-procedure text-center">${item.SortIndex}</td>` +
                     `<td class="field-responsible-procedure">${item.Responsible}</td>` +
-                    `<td class="field-description-procedure">${item.Description}<input class="field-description-procedure-raw" type='hidden' value='${item.Description}'></td>` +
+                    `<td class="field-description-procedure">${description}<input class="field-description-procedure-raw" type='hidden' value='${description.replaceAll('text-indent:', '')}'></td>` +
                     '<td class="text-center">' +
                     `<input type="hidden" class="field-id-procedure" value="${item.Id}">` +
                     '<a class="btn btn-sm btn-success btn-edit-procedure edit-button-width" href="javascript:void(0)" title="Editar">Editar</a> ' +
@@ -97,8 +107,18 @@ async function getProcedure() {
 
                 proceduresCount += 1;
             }
+            $('.field-description-procedure p').each(function () {
+                const textIndentValue = parseFloat($(this).css('text-indent'));
 
-            $('#procedureTable').on('click', '.btn-edit-procedure', async function () {
+                if (textIndentValue < 0) {
+                    $(this).css('text-indent', '-8.0pt');
+                }
+            });
+                       
+            $('#procedureTable').on('click', '.btn-edit-procedure', async function (evt) {
+                evt.preventDefault();
+                evt.stopPropagation();
+
                 var editButton = $(this);
 
                 if (editButton.prop('title') === "Editar") {
@@ -165,7 +185,10 @@ async function getProcedure() {
                 }
             });
 
-            $('#procedureTable').on('click', '.btn-remove-procedure', function () {
+            $('#procedureTable').on('click', '.btn-remove-procedure', function (evt) {
+                evt.preventDefault();
+                evt.stopPropagation();
+
                 var removeButton = $(this);
 
                 if (removeButton.html() === "Cancelar") {

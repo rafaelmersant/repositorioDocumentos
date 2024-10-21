@@ -28,7 +28,7 @@ namespace RepositorioDocumentos.Controllers
                     {
                         DocumentHeaderId = documentHeaderId,
                         SortIndex = sortindex,
-                        Description = description,
+                        Description = description.Replace("'", "\""),
                         CreatedDate = DateTime.Now,
                         CreatedBy = int.Parse(Session["userID"].ToString())
                     });
@@ -61,7 +61,7 @@ namespace RepositorioDocumentos.Controllers
                         && guideline.Id != id) return Json(new { result = "500", message = "Esta directriz ya existe." });
 
                     guideline.SortIndex = sortindex;
-                    guideline.Description = description;
+                    guideline.Description = description.Replace("'", "\"");
                     db.SaveChanges();
                 }
 
@@ -112,7 +112,7 @@ namespace RepositorioDocumentos.Controllers
                 {
                     var guidelines = db.DocumentGuidelines
                                        .Where(o => o.DocumentHeaderId == documentHeaderId)
-                                       .Select(s => new { s.Id, s.DocumentHeaderId, s.SortIndex, s.Description, s.CreatedDate, CreatedBy = s.User.Email })
+                                       .Select(s => new { s.Id, s.DocumentHeaderId, s.SortIndex, Description = s.Description.Replace("'", "\""), s.CreatedDate, CreatedBy = s.User.Email })
                                        .OrderBy(o => o.SortIndex)
                                        .ToArray();
                     return Json(new { result = "200", message = guidelines });

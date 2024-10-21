@@ -34,7 +34,7 @@ namespace RepositorioDocumentos.Controllers
                 var db = new RepositorioDocRCEntities();
                 var allDocuments = new List<DocumentHeader>();
 
-                var documents = db.DocumentHeaders.OrderByDescending(o => o.Id).ToList();
+                var documents = db.DocumentHeaders.Where(d => !d.Deleted).OrderByDescending(o => o.Id).ToList();
 
                 if (Session["role"].ToString() != "Admin")
                 {
@@ -442,5 +442,35 @@ namespace RepositorioDocumentos.Controllers
                 return Json(new { result = "500", message = ex.Message });
             }
         }
+
+        [HttpPost]
+        public JsonResult DeleteDocument(int Id)
+        {
+            try
+            {
+                if (Session["userID"] == null) throw new Exception("505: Por favor intente logearse de nuevo en el sistema. (La Sesión expiró)");
+
+                using (var db = new RepositorioDocRCEntities())
+                {
+                    var _documentHeader = db.DocumentHeaders.FirstOrDefault(d => d.Id == Id);
+
+                    if (_documentHeader != null)
+                    {
+                        _documentHeader.Deleted = true;
+                        db.Entry(_documentHeader).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                }
+
+                return Json(new { result = "200", message = "success" });
+            }
+            catch (Exception ex)
+            {
+                Helper.SendException(ex, $"documentHeaderId: {Id}");
+
+                return Json(new { result = "500", message = ex.Message });
+            }
+        }
+
     }
 }

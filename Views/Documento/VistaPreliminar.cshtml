@@ -282,6 +282,28 @@
                             }
                         }
 
+                        @if (Model.DocumentGlossary.Count() > 0)
+                        {
+                            topicNumber += 1;
+
+                            <div id="margin-glossary"></div>
+                            <div class="section-margin" style="position: relative; height: 24px">
+
+                                <a href="javascript:void(0);" class="btn-margin-general btn-margin-manually-glossary">Agregar margen de espacio</a>
+                            </div>
+
+                            <p class="topic-doc">@topicNumber. GLOSARIO</p>
+                            <table id="glossaryTable" class="border-table" cellpadding="4" style="width:100%; border-collapse: collapse">
+                                @foreach (var item in Model.DocumentGlossary)
+                                {
+                                    <tr>
+                                        <td style="text-align: left; min-width: 160px">@item.Word</td>
+                                        <td style="text-align: justify">@Html.Raw(item.Description)</td>
+                                    </tr>
+                                }
+                            </table>
+                        }
+
                         @if (Model.DocumentGuidelines.Count() > 0)
                         {
                             topicNumber += 1;
@@ -298,7 +320,7 @@
                                 {
                                     <tr>
                                         <td style="text-align: center; width: 60px">@item.SortIndex</td>
-                                        <td style="text-align: justify">@item.Description</td>
+                                        <td style="text-align: justify">@Html.Raw(item.Description)</td>
                                     </tr>
                                 }
                             </table>
@@ -441,7 +463,7 @@
 
                         @if (!string.IsNullOrEmpty(Model.DocumentHeader.FootNote))
                         {
-                            
+
                             <div class="section-margin" style="position: relative; margin-top: 50px; margin-bottom: 40px; height: 24px">
                                 <span>"@(Model.DocumentHeader.FootNote)"</span>
                             </div>
