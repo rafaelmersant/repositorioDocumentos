@@ -49,6 +49,12 @@ namespace RepositorioDocumentos.Controllers
                 {
                     string _reference = string.IsNullOrEmpty(reference) ? "" : reference.ToUpper();
 
+                    var department_code = db.Departments.FirstOrDefault(o => o.DeptoCode == code);
+                    if (department_code != null) return Json(new { result = "500", message = "Este código de departamento ya existe." });
+
+                    var department_description = db.Departments.FirstOrDefault(o => o.DeptoName.ToLower() == description.ToLower());
+                    if (department_description != null) return Json(new { result = "500", message = "Existe un departamento con este nombre." });
+
                     var department = db.Departments.FirstOrDefault(o => o.DeptoName.ToLower() == description.ToLower() && o.DeptoCode == code);
                     if (department != null) return Json(new { result = "500", message = "Este departamento ya existe." });
 
@@ -98,6 +104,9 @@ namespace RepositorioDocumentos.Controllers
 
                     var _reference_ = db.Departments.FirstOrDefault(o => o.Reference.ToLower() == _reference.ToLower() && o.DeptoCode != code);
                     if (_reference_ != null && !string.IsNullOrEmpty(_reference)) return Json(new { result = "500", message = "Esta referencia ya existe." });
+
+                    var department_description = db.Departments.FirstOrDefault(o => o.DeptoName.ToLower() == description.ToLower() && o.DeptoCode != code);
+                    if (department_description != null) return Json(new { result = "500", message = "Existe un departamento con este nombre." });
 
                     department.DeptoName = description;
                     department.Reference = _reference;

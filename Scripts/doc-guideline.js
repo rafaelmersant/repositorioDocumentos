@@ -1,5 +1,24 @@
 var guidelinesCount = 1;
 
+var toolbarOptions = [
+    ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+    ['image'],
+    [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+    [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'list': 'check' }],
+    [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
+    [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
+    [{ 'direction': 'rtl' }],                         // text direction
+
+    [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+    [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+    [{ 'font': [] }],
+    [{ 'align': [] }],
+
+    ['clean'],
+];
+
 $('.btn-new-guideline').click(function (evt) {
     evt.preventDefault();
     evt.stopPropagation();
@@ -16,12 +35,23 @@ $('.btn-new-guideline').click(function (evt) {
 
         $('#guidelineTable tbody').prepend(newRowHtml);
 
-        tinymce.init({
-            selector: '#description-guideline',
-            menubar: false,
-            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount linkchecker',
-            toolbar: 'undo redo | fontfamily fontsize | bold italic underline strikethrough | table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-        });
+        const currentEditor = localStorage.getItem("currentEditor");
+        if (currentEditor === "Tiny") {
+            tinymce.init({
+                selector: '#description-guideline',
+                menubar: false,
+                plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount linkchecker',
+                toolbar: 'undo redo | fontfamily fontsize | bold italic underline strikethrough | table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+            });
+
+        } else {
+            quill_descriptionGuideline = new Quill('#description-guideline', {
+                modules: {
+                    toolbar: toolbarOptions
+                },
+                theme: 'snow'
+            });
+        }
     }
 });
 
@@ -133,13 +163,23 @@ async function getGuideline() {
                     editButton.closest('tr').find('.field-description-guideline').html(`<div id="description-guideline" class="col-12 edit-description-guideline">${descriptionRaw}</div><input class="field-description-guideline-raw" type='hidden' value='${descriptionRaw}'>`);
                     console.log(`Editing Guideline: ${sortindex} :: ${descriptionRaw}`)
 
-                    tinymce.init({
-                        selector: '#description-guideline',
-                        menubar: false,
-                        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount linkchecker',
-                        toolbar: 'undo redo | fontfamily fontsize | bold italic underline strikethrough | table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-                    });
+                    const currentEditor = localStorage.getItem("currentEditor");
+                    if (currentEditor === "Tiny") {
+                        tinymce.init({
+                            selector: '#description-guideline',
+                            menubar: false,
+                            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount linkchecker',
+                            toolbar: 'undo redo | fontfamily fontsize | bold italic underline strikethrough | table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+                        });
 
+                    } else {
+                        quill_descriptionGuideline = new Quill('#description-guideline', {
+                            modules: {
+                                toolbar: toolbarOptions
+                            },
+                            theme: 'snow'
+                        });
+                    }
                 } else {
                     const id = editButton.closest('tr').find('.field-id-guideline').val();
                     const sortindex = editButton.closest('tr').find('.edit-sortindex-guideline').val();
@@ -242,7 +282,7 @@ function descriptionGuidelineTextarea() {
 
 //Guideline BODY
 async function getGuidelineBody() {
-    const currentEditor = $("#CurrentEditor").val();
+    const currentEditor = localStorage.getItem("currentEditor");
     let value = "";
 
     if (currentEditor === "Tiny")
@@ -254,7 +294,7 @@ async function getGuidelineBody() {
 }
 
 async function setGuidelineBody(value) {
-    const currentEditor = $("#CurrentEditor").val();
+    const currentEditor = localStorage.getItem("currentEditor");
 
     if (currentEditor === "Tiny")
         tinymce.get("description-guideline").setContent(value);

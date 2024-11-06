@@ -33,7 +33,7 @@ namespace RepositorioDocumentos.Models
         public string Status { get; set; }
         public string Image { get; set; }
         public string Code { get; set; }
-        public short Revision { get; set; }
+        public string Revision { get; set; }
         public System.DateTime Date { get; set; }
         public string Title { get; set; }
         public short DirectorateId { get; set; }

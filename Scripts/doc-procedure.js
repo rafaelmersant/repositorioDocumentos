@@ -1,5 +1,24 @@
 var proceduresCount = 1;
 
+var toolbarOptions = [
+    ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+    ['image'],
+    [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+    [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'list': 'check' }],
+    [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
+    [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
+    [{ 'direction': 'rtl' }],                         // text direction
+
+    [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+    [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+    [{ 'font': [] }],
+    [{ 'align': [] }],
+
+    ['clean'],
+];
+
 $('.btn-new-procedure').click(function (evt) {
     evt.preventDefault();
     evt.stopPropagation();
@@ -17,12 +36,22 @@ $('.btn-new-procedure').click(function (evt) {
 
         $('#procedureTable tbody').prepend(newRowHtml);
       
-        tinymce.init({
-            selector: '#description-procedure',
-            menubar: false,
-            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount linkchecker',
-            toolbar: 'undo redo | fontfamily fontsize | bold italic underline strikethrough | table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-        });
+        const currentEditor = localStorage.getItem("currentEditor");
+        if (currentEditor === "Tiny") {
+            tinymce.init({
+                selector: '#description-procedure',
+                menubar: false,
+                plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount linkchecker',
+                toolbar: 'undo redo | fontfamily fontsize | bold italic underline strikethrough | table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+            });
+        } else {
+            quill_descriptionProcedure = new Quill('#description-procedure', {
+                modules: {
+                    toolbar: toolbarOptions
+                },
+                theme: 'snow'
+            });
+        }
     }
 });
 
@@ -138,13 +167,24 @@ async function getProcedure() {
                     editButton.closest('tr').find('.field-sortindex-procedure').html(`<input type="text" maxlength="3"  class="form-control form-control-sm edit-sortindex-procedure" value="${sortindex}">`);
                     editButton.closest('tr').find('.field-responsible-procedure').html(`<input type="text" value="${responsible}" class="form-control form-control-sm col-12 edit-responsible-procedure"/>`);
                     editButton.closest('tr').find('.field-description-procedure').html(`<div id="description-procedure" class="col-12 edit-description-procedure">${descriptionRaw}</div><input class="field-description-procedure-raw" type='hidden' value='${descriptionRaw}'>`);
-            
-                    tinymce.init({
-                        selector: '#description-procedure',
-                        menubar: false,
-                        plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount linkchecker',
-                        toolbar: 'undo redo | fontfamily fontsize | bold italic underline strikethrough | table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-                    });
+
+                    const currentEditor = localStorage.getItem("currentEditor");
+                    if (currentEditor === "Tiny") {
+                        tinymce.init({
+                            selector: '#description-procedure',
+                            menubar: false,
+                            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount linkchecker',
+                            toolbar: 'undo redo | fontfamily fontsize | bold italic underline strikethrough | table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+                        });
+                    } else {
+                        quill_descriptionProcedure = new Quill('#description-procedure', {
+                            modules: {
+                                toolbar: toolbarOptions
+                            },
+                            theme: 'snow'
+                        });
+                    }
+
                 } else {
                     const id = editButton.closest('tr').find('.field-id-procedure').val();
                     const sortindex = editButton.closest('tr').find('.edit-sortindex-procedure').val();
@@ -250,7 +290,7 @@ function descriptionProcedureTextarea() {
 
 //Procedure BODY
 async function getProcedureBody() {
-    const currentEditor = $("#CurrentEditor").val();
+    const currentEditor = localStorage.getItem("currentEditor");
     let value = "";
 
     if (currentEditor === "Tiny")
@@ -262,7 +302,7 @@ async function getProcedureBody() {
 }
 
 async function setProcedureBody(value) {
-    const currentEditor = $("#CurrentEditor").val();
+    const currentEditor = localStorage.getItem("currentEditor");
 
     if (currentEditor === "Tiny")
         tinymce.get("description-procedure").setContent(value);

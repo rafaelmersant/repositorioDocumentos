@@ -23,6 +23,11 @@
     @*@Styles.Render("~/Content/custom-breadcrums.css")*@
 
     @RenderSection("Styles", false)
+
+    @{
+        string controllerName = ViewContext.RouteData.Values["controller"].ToString();
+        string actionName = ViewContext.RouteData.Values["action"].ToString();
+    }
 </head>
 <body>
     @*<div style="height: 27px" class="bg-warning text-center">
@@ -51,16 +56,21 @@
                     <li><a id="Process" href="/Proceso/"><i class="fa fa-list-alt"></i>Procesos</a></li>
                     <li><a id="Permisos" href="/Permiso/"><i class="fa fa-list-alt"></i>Permisos</a></li>
                     @*<li><a id="Navieras" href="/Naviera/"><i class="fa fa-ship"></i>Navieras</a></li>
-                        <li><a id="Providers" href="/Suplidores/"><i class="fa fa-industry"></i>Suplidores</a></li>
-                        <li><a id="ContainerStatus" href="/ContenedorEstatus/"><i class="fa fa-comment"></i>Estatus de Contenedores</a></li>
-                        <li><a id="OrderStatus" href="/OrdenEstatus/"><i class="fa fa-comment"></i>Estatus de Ordenes</a></li>
-                        <li><a id="Notifications" href="/Notificacion/"><i class="fa fa-inbox"></i>Notificaciones</a></li>*@
+            <li><a id="Providers" href="/Suplidores/"><i class="fa fa-industry"></i>Suplidores</a></li>
+            <li><a id="ContainerStatus" href="/ContenedorEstatus/"><i class="fa fa-comment"></i>Estatus de Contenedores</a></li>
+            <li><a id="OrderStatus" href="/OrdenEstatus/"><i class="fa fa-comment"></i>Estatus de Ordenes</a></li>
+            <li><a id="Notifications" href="/Notificacion/"><i class="fa fa-inbox"></i>Notificaciones</a></li>*@
                     if (Session["role"].ToString() == "Admin")
                     {
                         <li><hr style="border: 1px solid #fff; opacity: 0.4"></li>
                         <li><a id="Users" href="/User/UsersList"><i class="fa fa-group"></i>Usuarios</a></li>
                     }
 
+                    if (actionName == "Documento")
+                    {
+                        <li><hr style="border: 1px solid #fff; opacity: 0.4"></li>
+                        <li><a id="Users" href="javascript:void(0);" onclick="changeCurrentEditor();"><i class="fa fa-page"></i>Cambiar Editor</a></li>
+                    }
                     @*<li><a id="ReporteExistencia" href="/Reporte/Existencia"><i class="fa fa-newspaper-o"></i>Reporte de Existencia</a></li>*@
                     <li>@*<a id="ReporteAduana" href="/Reporte/Aduana"><i class="fa fa-newspaper-o"></i>Reporte de Aduana</a>*@</li>
                 }
@@ -123,7 +133,24 @@
                     $('#site_logo_id').width(220);
                 }
             });
+
+            //Set the current editor if it's not present
+            const currentEditor = localStorage.getItem("currentEditor");
+            if (!currentEditor)
+                localStorage.setItem("currentEditor", "Tiny")
+            
         });
+
+        function changeCurrentEditor() {
+            const currentEditor = localStorage.getItem("currentEditor");
+            if (!currentEditor || currentEditor !== "Tiny") {
+                localStorage.setItem("currentEditor", "Tiny")
+            } else {
+                localStorage.setItem("currentEditor", "Quill")
+            }
+
+            window.location.reload(true);
+        }
     </script>
 </body>
 

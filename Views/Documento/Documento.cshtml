@@ -32,7 +32,6 @@
 
         <section class="mt-3">
             <input type="hidden" name="DocumentHeaderId" id="DocumentHeaderId" value="0" />
-            <input type="hidden" name="CurrentEditor" id="CurrentEditor" value="Tiny" />
             <input type="hidden" name="userRole" id="userRole" value="@Session["role"]" />
 
             <div class="row mb-3">
@@ -601,7 +600,8 @@
     <script src="~/Scripts/toastr.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
-    <script src="https://cdn.tiny.cloud/1/ooprn6x3slemw47jqbeenlvfu5msrfxpjpktjpllexhn4eqw/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    @*<script src="https://cdn.tiny.cloud/1/ooprn6x3slemw47jqbeenlvfu5msrfxpjpktjpllexhn4eqw/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>*@
+    <script src="https://cdn.tiny.cloud/1/d6lq09snbzfgp5fwt6bqc8okvx9dkhhbsyug6xbhc88lxs0a/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 }
 <script type="text/javascript">
     var processing = false;
@@ -676,9 +676,9 @@
             }
         })
 
-        const _currentEditor = new URLSearchParams(window.location.search).get('editor');
-        if (_currentEditor)
-            $("#CurrentEditor").val(_currentEditor);
+        //const _currentEditor = new URLSearchParams(window.location.search).get('editor');
+        //if (_currentEditor)
+        //    $("#CurrentEditor").val(_currentEditor);
 
         loadCurrentEditor();
 
@@ -981,7 +981,7 @@
     }
 
     async function loadCurrentEditor() {
-        const currentEditor = $("#CurrentEditor").val();
+        const currentEditor = localStorage.getItem("currentEditor");
 
         if (currentEditor === "Tiny")
             loadTinyEditor();
@@ -1078,19 +1078,19 @@
             theme: 'snow'
         });
 
-        quill_descriptionProcedure = new Quill('#description-procedure', {
-            modules: {
-                toolbar: toolbarOptions
-            },
-            theme: 'snow'
-        });
-
-        quill_descriptionGuideline = new Quill('#description-guideline', {
-            modules: {
-                toolbar: toolbarOptions
-            },
-            theme: 'snow'
-        });
+        //quill_descriptionProcedure = new Quill('#description-procedure', {
+        //    modules: {
+        //        toolbar: toolbarOptions
+        //    },
+        //    theme: 'snow'
+        //});
+        
+        //quill_descriptionGuideline = new Quill('#description-guideline', {
+        //    modules: {
+        //        toolbar: toolbarOptions
+        //    },
+        //    theme: 'snow'
+        //});
 
         quill_objectiveBody = new Quill('#objectiveBody', {
             modules: {
@@ -1109,7 +1109,7 @@
 
     //Content BODY
     async function getContentBody() {
-        const currentEditor = $("#CurrentEditor").val();
+        const currentEditor = localStorage.getItem("currentEditor");
         let value = "";
 
         if (currentEditor === "Tiny")
@@ -1121,7 +1121,7 @@
     }
 
     async function setContentBody(value) {
-        const currentEditor = $("#CurrentEditor").val();
+        const currentEditor = localStorage.getItem("currentEditor");
 
         if (currentEditor === "Tiny")
             tinymce.get("contenidoBody").setContent(value);
@@ -1131,7 +1131,7 @@
 
     //Responsabilities BODY
     async function getResponsabilitiesBody() {
-        const currentEditor = $("#CurrentEditor").val();
+        const currentEditor = localStorage.getItem("currentEditor");
         let value = "";
 
         if (currentEditor === "Tiny")
@@ -1143,7 +1143,7 @@
     }
 
     async function setResponsabilitiesBody(value) {
-        const currentEditor = $("#CurrentEditor").val();
+        const currentEditor = localStorage.getItem("currentEditor");
 
         if (currentEditor === "Tiny")
             tinymce.get("responsabilitiesBody").setContent(value);
@@ -1153,7 +1153,7 @@
 
     //Policy BODY
     async function getPolicyBody() {
-        const currentEditor = $("#CurrentEditor").val();
+        const currentEditor = localStorage.getItem("currentEditor");
         let value = "";
 
         if (currentEditor === "Tiny")
@@ -1165,7 +1165,7 @@
     }
 
     async function setPolicyBody(value) {
-        const currentEditor = $("#CurrentEditor").val();
+        const currentEditor = localStorage.getItem("currentEditor");
 
         if (currentEditor === "Tiny")
             tinymce.get("policyBody").setContent(value);
@@ -1175,7 +1175,7 @@
 
     //Objective BODY
     async function getObjectiveBody() {
-        const currentEditor = $("#CurrentEditor").val();
+        const currentEditor = localStorage.getItem("currentEditor");
         let value = "";
 
         if (currentEditor === "Tiny")
@@ -1187,7 +1187,7 @@
     }
 
     async function setObjectiveBody(value) {
-        const currentEditor = $("#CurrentEditor").val();
+        const currentEditor = localStorage.getItem("currentEditor");
 
         if (currentEditor === "Tiny")
             tinymce.get("objectiveBody").setContent(value);
@@ -1197,7 +1197,7 @@
 
     //Scope BODY
     async function getScopeBody() {
-        const currentEditor = $("#CurrentEditor").val();
+        const currentEditor = localStorage.getItem("currentEditor");
         let value = "";
 
         if (currentEditor === "Tiny")
@@ -1209,7 +1209,7 @@
     }
 
     async function setScopeBody(value) {
-        const currentEditor = $("#CurrentEditor").val();
+        const currentEditor = localStorage.getItem("currentEditor");
 
         if (currentEditor === "Tiny")
             tinymce.get("scopeBody").setContent(value);
