@@ -119,16 +119,20 @@ async function getGuideline() {
             for (const item of data.message) {
                 let description = item.Description.replaceAll('text-indent:', '');
 
-                const itemRow = '<tr>' +
+                let itemRow = '<tr>' +
                     `<td class="field-sortindex-guideline text-center">${item.SortIndex}</td>` +
-                    `<td class="field-description-guideline">${description}<input class="field-description-guideline-raw" type='hidden' value='${description.replaceAll('text-indent:', '') }'></td>` +
+                    `<td class="field-description-guideline">${description}<input class="field-description-guideline-raw" type='hidden' value='${description.replaceAll('text-indent:', '')}'></td>` +
                     '<td class="text-center">' +
-                    `<input type="hidden" class="field-id-guideline" value="${item.Id}">` +
-                    '<a class="btn btn-sm btn-success btn-edit-guideline edit-button-width" href="javascript:void(0)" title="Editar">Editar</a> ' +
-                    ' <a class="btn btn-sm btn-danger btn-remove-guideline" href="javascript:void(0)" title="Eliminar">Eliminar</a>' +
-                    '</td>' +
+                    `<input type="hidden" class="field-id-guideline" value="${item.Id}">`;
+
+                if ("Consulta" === "Consulta") {
+                    itemRow += '<a class="btn btn-sm btn-success btn-edit-guideline edit-button-width" href="javascript:void(0)" title="Editar">Editar</a> ' +
+                        ' <a class="btn btn-sm btn-danger btn-remove-guideline" href="javascript:void(0)" title="Eliminar">Eliminar</a>';
+                }
+
+                itemRow += '</td>' +
                     '</tr>';
-               
+
                 $('#guidelineTable tbody').append(itemRow);
 
                 guidelinesCount += 1;

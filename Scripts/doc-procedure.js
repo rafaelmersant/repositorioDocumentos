@@ -121,17 +121,21 @@ async function getProcedure() {
             for (const item of data.message) {
                 let description = item.Description;//.replaceAll('text-indent:', '');
 
-                const itemRow = '<tr>' +
+                let itemRow = '<tr>' +
                     `<td class="field-sortindex-procedure text-center">${item.SortIndex}</td>` +
                     `<td class="field-responsible-procedure">${item.Responsible}</td>` +
                     `<td class="field-description-procedure">${description}<input class="field-description-procedure-raw" type='hidden' value='${description.replaceAll('text-indent:', '')}'></td>` +
                     '<td class="text-center">' +
-                    `<input type="hidden" class="field-id-procedure" value="${item.Id}">` +
-                    '<a class="btn btn-sm btn-success btn-edit-procedure edit-button-width" href="javascript:void(0)" title="Editar">Editar</a> ' +
-                    ' <a class="btn btn-sm btn-danger btn-remove-procedure" href="javascript:void(0)" title="Eliminar">Eliminar</a>' +
-                    '</td>' +
-                    '</tr>';
+                    `<input type="hidden" class="field-id-procedure" value="${item.Id}">`;
 
+                if ("Consulta" === "Consulta") {
+                    itemRow += '<a class="btn btn-sm btn-success btn-edit-procedure edit-button-width" href="javascript:void(0)" title="Editar">Editar</a> ' +
+                        ' <a class="btn btn-sm btn-danger btn-remove-procedure" href="javascript:void(0)" title="Eliminar">Eliminar</a>';
+                }
+
+                itemRow += '</td>' +
+                    '</tr>';
+                 
                 $('#procedureTable tbody').append(itemRow);
 
                 proceduresCount += 1;

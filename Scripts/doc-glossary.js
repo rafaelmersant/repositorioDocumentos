@@ -70,15 +70,19 @@ function getGlossary() {
 
         if (data.result === "200") {
             for (const item of data.message) {
-                const itemRow = '<tr>' +
+                let itemRow = '<tr>' +
                     `<td class="field-word-glossary">${item.Word}</td>` +
                     `<td class="field-description-glossary">${item.Description}</td>` +
                     '<td class="text-center">' +
-                    `<input type="hidden" class="field-id-glossary" value="${item.Id}">` +
-                    '<a class="btn btn-sm btn-success btn-edit-glossary edit-button-width" href="javascript:void(0)" title="Editar">Editar</a> ' +
-                    ' <a class="btn btn-sm btn-danger btn-remove-glossary" href="javascript:void(0)" title="Eliminar">Eliminar</a>' +
-                    '</td>' +
-                    '</tr>';
+                    `<input type="hidden" class="field-id-glossary" value="${item.Id}">`;
+
+                if ("Consulta" === "Consulta") {
+                        itemRow += '<a class="btn btn-sm btn-success btn-edit-glossary edit-button-width" href="javascript:void(0)" title="Editar">Editar</a> ' +
+                            ' <a class="btn btn-sm btn-danger btn-remove-glossary" href="javascript:void(0)" title="Eliminar">Eliminar</a>';
+                     }
+                   
+                    itemRow += '</td>' +
+                                '</tr>';
 
                 $('#glossaryTable tbody').append(itemRow);
             }

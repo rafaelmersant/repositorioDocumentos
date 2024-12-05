@@ -46,33 +46,28 @@
                 @if (Session["role"] != null)
                 {
                     <li><a id="Documents" href="/Documento/"><i class="fa fa-newspaper-o"></i>Listado de Documentos</a></li>
-                    <li><hr style="border: 1px solid #fff; opacity: 0.4"></li>
-                    <li><a id="DocumentTypes" href="/DocumentoTipos/"><i class="fa fa-list-alt"></i>Tipos de Documentos</a></li>
-                    <li><a id="DocumentCodes" href="/DocumentoCodigo/"><i class="fa fa-list-alt"></i>Códigos de Documentos</a></li>
-                    <li><a id="Directorate" href="/Direccion/"><i class="fa fa-list-alt"></i>Direcciones</a></li>
-                    <li><a id="Area" href="/Area/"><i class="fa fa-list-alt"></i>Areas</a></li>
-                    <li><a id="Department" href="/Departamento/"><i class="fa fa-list-alt"></i>Departamentos</a></li>
-                    <li><a id="Macroprocess" href="/Macroproceso/"><i class="fa fa-list-alt"></i>Macroprocesos</a></li>
-                    <li><a id="Process" href="/Proceso/"><i class="fa fa-list-alt"></i>Procesos</a></li>
-                    <li><a id="Permisos" href="/Permiso/"><i class="fa fa-list-alt"></i>Permisos</a></li>
-                    @*<li><a id="Navieras" href="/Naviera/"><i class="fa fa-ship"></i>Navieras</a></li>
-            <li><a id="Providers" href="/Suplidores/"><i class="fa fa-industry"></i>Suplidores</a></li>
-            <li><a id="ContainerStatus" href="/ContenedorEstatus/"><i class="fa fa-comment"></i>Estatus de Contenedores</a></li>
-            <li><a id="OrderStatus" href="/OrdenEstatus/"><i class="fa fa-comment"></i>Estatus de Ordenes</a></li>
-            <li><a id="Notifications" href="/Notificacion/"><i class="fa fa-inbox"></i>Notificaciones</a></li>*@
+
                     if (Session["role"].ToString() == "Admin")
                     {
+                        <li><hr style="border: 1px solid #fff; opacity: 0.4"></li>
+                        <li><a id="DocumentTypes" href="/DocumentoTipos/"><i class="fa fa-list-alt"></i>Tipos de Documentos</a></li>
+                        <li><a id="DocumentCodes" href="/DocumentoCodigo/"><i class="fa fa-list-alt"></i>Códigos de Documentos</a></li>
+                        <li><a id="Directorate" href="/Direccion/"><i class="fa fa-list-alt"></i>Direcciones</a></li>
+                        <li><a id="Area" href="/Area/"><i class="fa fa-list-alt"></i>Areas</a></li>
+                        <li><a id="Department" href="/Departamento/"><i class="fa fa-list-alt"></i>Departamentos</a></li>
+                        <li><a id="Macroprocess" href="/Macroproceso/"><i class="fa fa-list-alt"></i>Macroprocesos</a></li>
+                        <li><a id="Process" href="/Proceso/"><i class="fa fa-list-alt"></i>Procesos</a></li>
+                        <li><a id="Permisos" href="/Permiso/"><i class="fa fa-list-alt"></i>Permisos</a></li>
+
                         <li><hr style="border: 1px solid #fff; opacity: 0.4"></li>
                         <li><a id="Users" href="/User/UsersList"><i class="fa fa-group"></i>Usuarios</a></li>
                     }
 
-                    if (actionName == "Documento")
+                    if (actionName == "Documento" && Session["role"].ToString() == "Admin")
                     {
                         <li><hr style="border: 1px solid #fff; opacity: 0.4"></li>
                         <li><a id="Users" href="javascript:void(0);" onclick="changeCurrentEditor();"><i class="fa fa-page"></i>Cambiar Editor</a></li>
                     }
-                    @*<li><a id="ReporteExistencia" href="/Reporte/Existencia"><i class="fa fa-newspaper-o"></i>Reporte de Existencia</a></li>*@
-                    <li>@*<a id="ReporteAduana" href="/Reporte/Aduana"><i class="fa fa-newspaper-o"></i>Reporte de Aduana</a>*@</li>
                 }
             </ul>
         </nav>
@@ -137,7 +132,22 @@
             //Set the current editor if it's not present
             const currentEditor = localStorage.getItem("currentEditor");
             if (!currentEditor)
-                localStorage.setItem("currentEditor", "Tiny")
+                localStorage.setItem("currentEditor", "Tiny");
+
+            setInterval(function () {
+                $.ajax({
+                    url: '/Home/IsSessionExpired',
+                    type: 'GET',
+                    success: function (data) {
+                        if (data.expired) {
+                            window.location.href = "/Home/Index";
+                        }
+                    },
+                    error: function () {
+                        console.error("Failed to check session status.");
+                    }
+                });
+            }, 60000);
             
         });
 

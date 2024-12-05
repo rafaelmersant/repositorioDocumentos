@@ -195,7 +195,7 @@ namespace RepositorioDocumentos.Controllers
 
                         _documentHeader = docHeader;
                     }
-                    else
+                    else if (documentHeader.Id == 0)
                     {
                         _documentHeader = db.DocumentHeaders.Add(new DocumentHeader
                         {

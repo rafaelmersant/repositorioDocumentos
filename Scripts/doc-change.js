@@ -82,17 +82,21 @@ function getChanges() {
 
         if (data.result === "200") {
             for (const item of data.message) {
-                const itemRow = '<tr>' +
+                let itemRow = '<tr>' +
                     `<td class="field-changeDate-change text-center">${item.Date}</td>` +
                     `<td class="field-revision-change">${item.Revision}</td>` +
                     `<td class="field-pagesAffected-change">${item.PagesAffected}</td>` +
                     `<td class="field-originator-change">${item.Originator}</td>` +
                     `<td class="field-natureChange-change">${item.NatureChange}</td>` +
                     '<td class="text-center">' +
-                    `<input type="hidden" class="field-id-change" value="${item.Id}">` +
-                    '<a class="btn btn-sm btn-success btn-edit-change edit-button-width" href="javascript:void(0)" title="Editar">Editar</a> ' +
-                    ' <a class="btn btn-sm btn-danger btn-remove-change" href="javascript:void(0)" title="Eliminar">Eliminar</a>' +
-                    '</td>' +
+                    `<input type="hidden" class="field-id-change" value="${item.Id}">`;
+
+                if ("Consulta" === "Consulta") {
+                    itemRow += '<a class="btn btn-sm btn-success btn-edit-change edit-button-width" href="javascript:void(0)" title="Editar">Editar</a> ' +
+                        ' <a class="btn btn-sm btn-danger btn-remove-change" href="javascript:void(0)" title="Eliminar">Eliminar</a>';
+                }
+
+                itemRow += '</td>' +
                     '</tr>';
 
                 $('#changeTable tbody').append(itemRow);

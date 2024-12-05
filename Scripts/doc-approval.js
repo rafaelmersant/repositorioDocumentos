@@ -76,17 +76,21 @@ async function getApprovals() {
 
         if (data.result === "200") {
             for (const item of data.message) {
-                const itemRow = '<tr>' +
+                let itemRow = '<tr>' +
                     `<td class="field-producedBy">${item.ProducedByName}</td>` +
                     `<td class="field-managerArea">${item.ManagerAreaName}</td>` +
                     `<td class="field-directorArea">${item.DirectorAreaName}</td>` +
                     '<td class="text-center">' +
-                    `<input type="hidden" class="field-id" value="${item.Id}">` +
-                    '<a class="btn btn-sm btn-success btn-edit-approval edit-button-width" href="javascript:void(0)" title="Editar">Editar</a> ' +
-                    ' <a class="btn btn-sm btn-danger btn-remove-approval" href="javascript:void(0)" title="Eliminar">Eliminar</a>' +
-                    '</td>' +
-                    '</tr>';
+                    `<input type="hidden" class="field-id" value="${item.Id}">`;
 
+                if ("Consulta" === "Consulta") {
+                    itemRow += '<a class="btn btn-sm btn-success btn-edit-approval edit-button-width" href="javascript:void(0)" title="Editar">Editar</a> ' +
+                        ' <a class="btn btn-sm btn-danger btn-remove-approval" href="javascript:void(0)" title="Eliminar">Eliminar</a>';
+                }
+
+                itemRow += '</td>' +
+                    '</tr>';
+                   
                 $('#approvalTable tbody').append(itemRow);
             }
 

@@ -27,5 +27,11 @@ namespace RepositorioDocumentos.Controllers
 
             return View();
         }
+
+        public JsonResult IsSessionExpired()
+        {
+            bool isExpired = Session["role"] == null;
+            return Json(new { expired = isExpired }, JsonRequestBehavior.AllowGet);
+        }
     }
 }
