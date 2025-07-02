@@ -163,14 +163,18 @@ namespace RepositorioDocumentos.Controllers
 
                 using (var db = new RepositorioDocRCEntities())
                 {
-                    var docHeader = db.DocumentHeaders.FirstOrDefault(d => d.Title.ToLower() == documentHeader.Title.ToLower()
-                                                                       && d.DirectorateId == documentHeader.DirectorateId
-                                                                       && d.AreaId == documentHeader.AreaId
-                                                                       && d.DepartmentCode == documentHeader.DepartmentCode
-                                                                       && d.MacroprocessId == documentHeader.MacroprocessId
-                                                                       && d.ProcessId == documentHeader.ProcessId);
+                    //var docHeader = db.DocumentHeaders.FirstOrDefault(d => d.DirectorateId == documentHeader.DirectorateId
+                    //                                                   && d.AreaId == documentHeader.AreaId
+                    //                                                   && d.DepartmentCode == documentHeader.DepartmentCode
+                    //                                                   && d.MacroprocessId == documentHeader.MacroprocessId
+                    //                                                   && d.ProcessId == documentHeader.ProcessId);
 
-                    if (docHeader != null && documentHeader.Id == 0) return Json(new { result = "500", message = "Este documento ya existe." });
+                    var docHeader = db.DocumentHeaders.FirstOrDefault(d => d.Id == documentHeader.Id);
+
+                    var docWithTitle = db.DocumentHeaders.FirstOrDefault(d => d.Title.ToLower() == documentHeader.Title.ToLower());
+                    if (docWithTitle != null && documentHeader.Id == 0) return Json(new { result = "500", message = "Existe un documento con este titulo." });
+
+                    //if (docHeader != null && documentHeader.Id == 0) return Json(new { result = "500", message = "Este documento ya existe." });
 
                     if (docHeader != null)
                     {
